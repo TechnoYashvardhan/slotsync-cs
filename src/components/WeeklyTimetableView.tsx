@@ -12,6 +12,7 @@ import {
   Sparkles,
   Printer,
   CheckCircle2,
+  Utensils,
 } from 'lucide-react';
 import type { ScheduleRow } from '../types/schedule';
 import {
@@ -21,6 +22,9 @@ import {
   DEPT_START_MINUTES,
   DEPT_END_MINUTES,
   formatFriendlyDate,
+  LUNCH_BREAK_START_MINUTES,
+  LUNCH_BREAK_END_MINUTES,
+  LUNCH_BREAK_LABEL,
 } from '../utils/timeUtils';
 
 interface WeeklyTimetableViewProps {
@@ -36,15 +40,30 @@ interface WeeklyTimetableViewProps {
   }) => void;
 }
 
-// 1-hour time slices from 08:00 AM to 05:00 PM
-const HOURLY_BLOCKS: { start: number; end: number; label: string }[] = [];
-for (let m = DEPT_START_MINUTES; m < DEPT_END_MINUTES; m += 60) {
-  HOURLY_BLOCKS.push({
-    start: m,
-    end: m + 60,
-    label: `${minutesToReadable(m)} – ${minutesToReadable(m + 60)}`,
-  });
+export interface TimetablePeriod {
+  start: number;
+  end: number;
+  label: string;
+  name: string;
+  isLunchBreak?: boolean;
 }
+
+// Department academic timetable periods including mandatory lunch recess
+export const TIMETABLE_PERIODS: TimetablePeriod[] = [
+  { start: 480, end: 555, label: '08:00 AM – 09:15 AM', name: 'Period 1' },
+  { start: 555, end: 630, label: '09:15 AM – 10:30 AM', name: 'Period 2' },
+  {
+    start: LUNCH_BREAK_START_MINUTES,
+    end: LUNCH_BREAK_END_MINUTES,
+    label: LUNCH_BREAK_LABEL,
+    name: 'Lunch Recess',
+    isLunchBreak: true,
+  },
+  { start: 705, end: 795, label: '11:45 AM – 01:15 PM', name: 'Period 3' },
+  { start: 795, end: 870, label: '01:15 PM – 02:30 PM', name: 'Period 4' },
+  { start: 870, end: 945, label: '02:30 PM – 03:45 PM', name: 'Period 5' },
+  { start: 945, end: 1020, label: '03:45 PM – 05:00 PM', name: 'Period 6' },
+];
 
 export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
   schedule,
@@ -91,12 +110,13 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
     });
   }, [schedule, weekDatesSet, selectedBatch, selectedVenue]);
 
-  // Map lectures by date and hourly block
+  // Map lectures by date and timetable period
   const cellLectures = useMemo(() => {
     const map = new Map<string, ScheduleRow[]>();
 
     for (const row of filteredSchedule) {
-      for (const block of HOURLY_BLOCKS) {
+      for (const block of TIMETABLE_PERIODS) {
+        if (block.isLunchBreak) continue;
         // Overlap condition: block.start < row.endMinutes && block.end > row.startMinutes
         if (block.start < row.endMinutes && block.end > row.startMinutes) {
           const key = `${row.date}-${block.start}`;
@@ -272,15 +292,30 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
               </tr>
             </thead>
 
-            {/* Table Body: 9 Hourly Blocks */}
+            {/* Table Body: Timetable Periods */}
             <tbody className="text-xs">
-              {HOURLY_BLOCKS.map((block) => (
-                <tr key={block.start} className="border-b-2 border-slate-300 last:border-b-0 hover:bg-slate-50/30 transition">
+              {TIMETABLE_PERIODS.map((block) => (
+                <tr
+                  key={block.start}
+                  className={`border-b-2 border-slate-300 last:border-b-0 hover:bg-slate-50/30 transition ${
+                    block.isLunchBreak ? 'bg-amber-50/40' : ''
+                  }`}
+                >
                   
                   {/* Time Label Column (Sticky Left Anchor) */}
-                  <td className="p-3.5 border-r-2 border-slate-300 bg-slate-100/90 font-mono text-xs font-black text-slate-900 whitespace-nowrap sticky left-0 z-10 shadow-[2px_0_4px_rgba(0,0,0,0.04)]">
+                  <td
+                    className={`p-3.5 border-r-2 border-slate-300 ${
+                      block.isLunchBreak
+                        ? 'bg-amber-100/90 border-y-2 border-y-amber-300'
+                        : 'bg-slate-100/90'
+                    } font-mono text-xs font-black text-slate-900 whitespace-nowrap sticky left-0 z-10 shadow-[2px_0_4px_rgba(0,0,0,0.04)]`}
+                  >
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-indigo-600 flex-shrink-0" />
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          block.isLunchBreak ? 'bg-amber-600' : 'bg-indigo-600'
+                        } flex-shrink-0`}
+                      />
                       <div className="flex flex-col">
                         <span className="text-xs font-black text-slate-900 tracking-tight font-mono">
                           {minutesToReadable(block.start)}
@@ -288,110 +323,142 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                         <span className="text-[10px] text-slate-500 font-semibold font-mono">
                           to {minutesToReadable(block.end)}
                         </span>
+                        <span
+                          className={`text-[9px] uppercase tracking-wide font-black ${
+                            block.isLunchBreak ? 'text-amber-800 font-extrabold' : 'text-indigo-600'
+                          }`}
+                        >
+                          {block.name}
+                        </span>
                       </div>
                     </div>
                   </td>
 
-                  {/* 6 Day Columns */}
-                  {weekDays.map((day, dayIdx) => {
-                    const key = `${day.date}-${block.start}`;
-                    const lectures = cellLectures.get(key) || [];
-                    const isVacant = lectures.length === 0;
+                  {/* If Lunch Break, render unified Department Lunch Recess row */}
+                  {block.isLunchBreak ? (
+                    <td
+                      colSpan={6}
+                      className="p-4 bg-gradient-to-r from-amber-50 via-amber-100/80 to-amber-50 border-y-2 border-amber-300 text-center select-none"
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="p-2 bg-amber-200 text-amber-900 rounded-xl shadow-2xs">
+                          <Utensils className="w-4 h-4" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs uppercase tracking-wider font-black text-amber-950">
+                            Department Lunch Break
+                          </span>
+                          <span className="text-[11px] font-mono font-black text-amber-900 bg-amber-200/90 px-2.5 py-0.5 rounded-full border border-amber-300">
+                            10:30 AM – 11:45 AM
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-amber-800 font-semibold hidden lg:inline">
+                          — Mandatory Department Recess • No Classes Scheduled
+                        </span>
+                      </div>
+                    </td>
+                  ) : (
+                    /* 6 Day Columns */
+                    weekDays.map((day, dayIdx) => {
+                      const key = `${day.date}-${block.start}`;
+                      const lectures = cellLectures.get(key) || [];
+                      const isVacant = lectures.length === 0;
 
-                    return (
-                      <td
-                        key={day.date}
-                        className={`p-2.5 border-r-2 border-slate-300 last:border-r-0 align-top h-28 ${
-                          day.isTarget
-                            ? 'bg-indigo-50/20'
-                            : dayIdx % 2 === 1
-                            ? 'bg-slate-50/40'
-                            : 'bg-white'
-                        }`}
-                      >
-                        {isVacant ? (
-                          /* Empty Vacant Slot with High-Contrast Dashed Border */
-                          <div
-                            onClick={() =>
-                              onBookSlot({
-                                date: day.date,
-                                startMinutes: block.start,
-                                endMinutes: block.end,
-                                batch: selectedBatch !== 'All' ? selectedBatch : undefined,
-                              })
-                            }
-                            className="w-full h-full min-h-[84px] rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 p-2 flex flex-col items-center justify-center text-slate-400 hover:text-emerald-700 transition cursor-pointer group bg-slate-50/30"
-                            title={`Click to book slot on ${day.dayName} ${day.date} (${block.label})`}
-                          >
-                            <div className="w-6 h-6 rounded-full bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors shadow-2xs">
-                              <Plus className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:scale-110 transition-transform" />
+                      return (
+                        <td
+                          key={day.date}
+                          className={`p-2.5 border-r-2 border-slate-300 last:border-r-0 align-top h-28 ${
+                            day.isTarget
+                              ? 'bg-indigo-50/20'
+                              : dayIdx % 2 === 1
+                              ? 'bg-slate-50/40'
+                              : 'bg-white'
+                          }`}
+                        >
+                          {isVacant ? (
+                            /* Empty Vacant Slot with High-Contrast Dashed Border */
+                            <div
+                              onClick={() =>
+                                onBookSlot({
+                                  date: day.date,
+                                  startMinutes: block.start,
+                                  endMinutes: block.end,
+                                  batch: selectedBatch !== 'All' ? selectedBatch : undefined,
+                                })
+                              }
+                              className="w-full h-full min-h-[84px] rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 p-2 flex flex-col items-center justify-center text-slate-400 hover:text-emerald-700 transition cursor-pointer group bg-slate-50/30"
+                              title={`Click to book slot on ${day.dayName} ${day.date} (${block.label})`}
+                            >
+                              <div className="w-6 h-6 rounded-full bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors shadow-2xs">
+                                <Plus className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:scale-110 transition-transform" />
+                              </div>
+                              <span className="text-[10px] font-bold mt-1 text-slate-400 group-hover:text-emerald-700 transition-colors">
+                                Vacant Slot
+                              </span>
+                              <span className="text-[9px] font-mono text-emerald-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                + Book Now
+                              </span>
                             </div>
-                            <span className="text-[10px] font-bold mt-1 text-slate-400 group-hover:text-emerald-700 transition-colors">
-                              Vacant Slot
-                            </span>
-                            <span className="text-[9px] font-mono text-emerald-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                              + Book Now
-                            </span>
-                          </div>
-                        ) : (
-                          /* Occupied Lecture Cards with Multi-Class Header */
-                          <div className="space-y-2">
-                            {lectures.length > 1 && (
-                              <div className="flex items-center justify-between px-2 py-0.5 bg-indigo-50 border border-indigo-200/90 rounded-md text-[9px] font-bold text-indigo-900">
-                                <span className="flex items-center gap-1">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
-                                  <span>{lectures.length} Simultaneous Classes</span>
-                                </span>
-                                <span className="font-mono text-[9px] text-indigo-700 font-extrabold">
-                                  {minutesToReadable(block.start)}
-                                </span>
-                              </div>
-                            )}
-
-                            {lectures.map((lecture) => (
-                              <div
-                                key={lecture.id}
-                                className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs transition text-[11px] space-y-1 border-l-4 border-l-indigo-600"
-                              >
-                                {/* Batch badge + Start time pill */}
-                                <div className="flex items-center justify-between gap-1">
-                                  <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-extrabold whitespace-nowrap ${
-                                    lecture.courseSem.includes('B.Tech')
-                                      ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                      : lecture.courseSem.includes('MCA')
-                                      ? 'bg-purple-50 text-purple-800 border-purple-300'
-                                      : 'bg-indigo-50 text-indigo-800 border-indigo-300'
-                                  }`}>
-                                    {lecture.courseSem}
+                          ) : (
+                            /* Occupied Lecture Cards with Multi-Class Header */
+                            <div className="space-y-2">
+                              {lectures.length > 1 && (
+                                <div className="flex items-center justify-between px-2 py-0.5 bg-indigo-50 border border-indigo-200/90 rounded-md text-[9px] font-bold text-indigo-900">
+                                  <span className="flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
+                                    <span>{lectures.length} Simultaneous Classes</span>
                                   </span>
-                                  <span className="text-[9px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1 rounded border border-emerald-200">
-                                    {lecture.time.split(' to ')[0]}
+                                  <span className="font-mono text-[9px] text-indigo-700 font-extrabold">
+                                    {minutesToReadable(block.start)}
                                   </span>
                                 </div>
+                              )}
 
-                                {/* Full Subject Name */}
-                                <div className="font-black text-slate-900 text-xs leading-snug break-words" title={lecture.subject}>
-                                  {lecture.subject}
-                                </div>
+                              {lectures.map((lecture) => (
+                                <div
+                                  key={lecture.id}
+                                  className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs transition text-[11px] space-y-1 border-l-4 border-l-indigo-600"
+                                >
+                                  {/* Batch badge + Start time pill */}
+                                  <div className="flex items-center justify-between gap-1">
+                                    <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-extrabold whitespace-nowrap ${
+                                      lecture.courseSem.includes('B.Tech')
+                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                        : lecture.courseSem.includes('MCA')
+                                        ? 'bg-purple-50 text-purple-800 border-purple-300'
+                                        : 'bg-indigo-50 text-indigo-800 border-indigo-300'
+                                    }`}>
+                                      {lecture.courseSem}
+                                    </span>
+                                    <span className="text-[9px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1 rounded border border-emerald-200">
+                                      {lecture.time.split(' to ')[0]}
+                                    </span>
+                                  </div>
 
-                                {/* Faculty & Venue */}
-                                <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-1 border-t border-slate-100">
-                                  <span className="truncate flex items-center gap-1">
-                                    <User className="w-2.5 h-2.5 text-indigo-600 flex-shrink-0" />
-                                    <span className="truncate max-w-[70px]">{lecture.teacherName}</span>
-                                  </span>
-                                  <span className="truncate flex items-center gap-1 font-semibold text-slate-700">
-                                    <MapPin className="w-2.5 h-2.5 text-sky-600 flex-shrink-0" />
-                                    <span className="truncate max-w-[70px]">{lecture.venue}</span>
-                                  </span>
+                                  {/* Full Subject Name */}
+                                  <div className="font-black text-slate-900 text-xs leading-snug break-words" title={lecture.subject}>
+                                    {lecture.subject}
+                                  </div>
+
+                                  {/* Faculty & Venue */}
+                                  <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-1 border-t border-slate-100">
+                                    <span className="truncate flex items-center gap-1">
+                                      <User className="w-2.5 h-2.5 text-indigo-600 flex-shrink-0" />
+                                      <span className="truncate max-w-[70px]">{lecture.teacherName}</span>
+                                    </span>
+                                    <span className="truncate flex items-center gap-1 font-semibold text-slate-700">
+                                      <MapPin className="w-2.5 h-2.5 text-sky-600 flex-shrink-0" />
+                                      <span className="truncate max-w-[70px]">{lecture.venue}</span>
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </td>
-                    );
-                  })}
+                              ))}
+                            </div>
+                          )}
+                        </td>
+                      );
+                    })
+                  )}
 
                 </tr>
               ))}
@@ -430,9 +497,35 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
           })}
         </div>
 
-        {/* Selected Day Hourly Feed */}
+        {/* Selected Day Timetable Feed */}
         <div className="space-y-3">
-          {HOURLY_BLOCKS.map((block) => {
+          {TIMETABLE_PERIODS.map((block) => {
+            if (block.isLunchBreak) {
+              return (
+                <div
+                  key={block.start}
+                  className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/80 border-2 border-amber-300 p-4 shadow-2xs flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-amber-200 text-amber-900 shadow-2xs">
+                      <Utensils className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-wider text-amber-950">
+                        Department Lunch Break
+                      </div>
+                      <div className="text-[11px] font-mono font-bold text-amber-800">
+                        10:30 AM – 11:45 AM (75 Minutes)
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] uppercase font-mono font-black px-2.5 py-1 bg-amber-200 text-amber-950 rounded-lg border border-amber-300">
+                    Recess
+                  </span>
+                </div>
+              );
+            }
+
             const key = `${mobileActiveDay}-${block.start}`;
             const lectures = cellLectures.get(key) || [];
             const isVacant = lectures.length === 0;
@@ -444,10 +537,15 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
               >
                 {/* Time Block Header */}
                 <div className="flex items-center justify-between text-xs px-3.5 py-2.5 bg-slate-100/90 border-b-2 border-slate-200">
-                  <span className="font-mono font-black text-slate-900 flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>{block.label}</span>
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-black px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">
+                      {block.name}
+                    </span>
+                    <span className="font-mono font-black text-slate-900 flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>{block.label}</span>
+                    </span>
+                  </div>
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                       isVacant

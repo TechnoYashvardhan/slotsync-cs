@@ -5,6 +5,9 @@ import {
   DEPT_END_MINUTES,
   TOTAL_OPERATING_MINUTES,
   formatDuration,
+  LUNCH_BREAK_START_MINUTES,
+  LUNCH_BREAK_END_MINUTES,
+  LUNCH_BREAK_LABEL,
 } from '../utils/timeUtils';
 import {
   Calendar,
@@ -12,6 +15,7 @@ import {
   Plus,
   Sparkles,
   Layers,
+  Utensils,
 } from 'lucide-react';
 
 interface TimelineVisualizerProps {
@@ -138,6 +142,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
             <div className="w-3.5 h-3.5 rounded-md bg-emerald-100 border border-emerald-400 shadow-sm" />
             <span className="text-emerald-800 font-bold">Available Free Slot (Emerald)</span>
           </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3.5 h-3.5 rounded-md bg-amber-100 border border-amber-400 shadow-sm" />
+            <span className="text-amber-900 font-bold">Lunch Break ({LUNCH_BREAK_LABEL})</span>
+          </div>
           {batches.length > 1 && (
             <div className="flex items-center gap-2 text-slate-900 font-bold">
               <div className="w-3.5 h-3.5 rounded-md bg-gradient-to-r from-sky-500 to-emerald-500 shadow-sm ring-1 ring-emerald-400" />
@@ -194,6 +202,15 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
             ))}
           </div>
 
+          {/* Department Lunch Break Background Recess Column */}
+          <div
+            style={{
+              left: `calc(16.666% + (100% - 16.666%) * ${((LUNCH_BREAK_START_MINUTES - DEPT_START_MINUTES) / TOTAL_OPERATING_MINUTES)})`,
+              width: `calc((100% - 16.666%) * ${((LUNCH_BREAK_END_MINUTES - LUNCH_BREAK_START_MINUTES) / TOTAL_OPERATING_MINUTES)})`,
+            }}
+            className="absolute top-12 bottom-0 bg-amber-500/5 border-x border-dashed border-amber-300/40 pointer-events-none z-0"
+          />
+
           {/* Master Common Free Slots Track (When > 1 batch selected) - Light Mode */}
           {batches.length > 1 && (
             <div className="mb-5 p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-300/80 shadow-sm">
@@ -209,6 +226,21 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                 </div>
 
                 <div className="col-span-10 relative h-14 bg-slate-100/80 rounded-xl overflow-hidden border border-slate-200">
+                  {/* Department Lunch Break Recess Strip */}
+                  <div
+                    style={{
+                      left: `${getPercent(LUNCH_BREAK_START_MINUTES)}%`,
+                      width: `${getWidthPercent(LUNCH_BREAK_START_MINUTES, LUNCH_BREAK_END_MINUTES)}%`,
+                    }}
+                    className="absolute top-1 bottom-1 bg-amber-100/90 border border-dashed border-amber-400/90 rounded-xl flex items-center justify-center gap-1.5 text-amber-900 pointer-events-none select-none z-10 shadow-2xs"
+                    title={`Mandatory Department Lunch Break (${LUNCH_BREAK_LABEL})`}
+                  >
+                    <Utensils className="w-3 h-3 text-amber-700 flex-shrink-0" />
+                    <span className="text-[10px] font-mono font-black uppercase tracking-wide text-amber-950">
+                      Lunch Break
+                    </span>
+                  </div>
+
                   {commonFreeSlots.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-xs text-slate-500 font-medium">
                       No common free slots found for ≥ {minDurationMinutes} mins across all {batches.length} batches
@@ -273,6 +305,21 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                   {/* Track Bar */}
                   <div className="col-span-10 relative h-15 bg-white rounded-xl border border-slate-200 overflow-hidden shadow-inner">
                     
+                    {/* Lunch Break Strip */}
+                    <div
+                      style={{
+                        left: `${getPercent(LUNCH_BREAK_START_MINUTES)}%`,
+                        width: `${getWidthPercent(LUNCH_BREAK_START_MINUTES, LUNCH_BREAK_END_MINUTES)}%`,
+                      }}
+                      className="absolute top-1.5 bottom-1.5 bg-amber-50/90 border border-dashed border-amber-300 rounded-xl flex items-center justify-center gap-1 text-amber-900 pointer-events-none select-none z-10"
+                      title={`Mandatory Department Lunch Break (${LUNCH_BREAK_LABEL})`}
+                    >
+                      <Utensils className="w-2.5 h-2.5 text-amber-700 flex-shrink-0" />
+                      <span className="text-[9px] font-mono font-black text-amber-900 uppercase tracking-wide">
+                        Lunch Recess
+                      </span>
+                    </div>
+
                     {/* Free Slots (Emerald) */}
                     {freeSlots.map((slot) => {
                       const left = getPercent(slot.startMinutes);

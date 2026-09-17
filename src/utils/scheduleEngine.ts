@@ -6,6 +6,8 @@ import {
 import {
   DEPT_START_MINUTES,
   DEPT_END_MINUTES,
+  LUNCH_BREAK_START_MINUTES,
+  LUNCH_BREAK_END_MINUTES,
   minutesToHHMM,
   minutesToReadable,
   formatTimeRangeToCSV,
@@ -108,6 +110,12 @@ export function findFreeSlots(
     endMinutes: row.endMinutes,
   }));
 
+  // Mandatory Department Lunch Break (10:30 AM – 11:45 AM)
+  occupiedIntervals.push({
+    startMinutes: LUNCH_BREAK_START_MINUTES,
+    endMinutes: LUNCH_BREAK_END_MINUTES,
+  });
+
   // Invert the occupied blocks
   const freeIntervals = invertOccupiedBlocks(occupiedIntervals);
 
@@ -154,6 +162,12 @@ export function getBatchBreakdown(
       startMinutes: r.startMinutes,
       endMinutes: r.endMinutes,
     }));
+
+    // Mandatory Department Lunch Break (10:30 AM – 11:45 AM)
+    occupiedIntervals.push({
+      startMinutes: LUNCH_BREAK_START_MINUTES,
+      endMinutes: LUNCH_BREAK_END_MINUTES,
+    });
 
     const freeIntervals = invertOccupiedBlocks(occupiedIntervals);
     const freeSlots: FreeSlot[] = freeIntervals

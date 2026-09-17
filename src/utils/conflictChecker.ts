@@ -1,5 +1,5 @@
 import { ScheduleRow, ConflictCheckResult, ConflictDetail } from '../types/schedule';
-import { minutesToReadable } from './timeUtils';
+import { minutesToReadable, overlapsLunchBreak } from './timeUtils';
 
 /**
  * Checks if two intervals [s1, e1] and [s2, e2] overlap.
@@ -32,6 +32,15 @@ export function checkBookingConflicts(
 ): ConflictCheckResult {
   const conflicts: ConflictDetail[] = [];
   const { date, startMinutes, endMinutes, teacherName, venue, courseSems, excludeId } = proposed;
+
+  // 0. Department Lunch Break Check (10:30 AM – 11:45 AM)
+  if (overlapsLunchBreak(startMinutes, endMinutes)) {
+    conflicts.push({
+      type: 'batch',
+      entity: 'Department Lunch Break',
+      description: `Cannot schedule classes during mandatory Department Lunch Break (10:30 AM – 11:45 AM).`,
+    });
+  }
 
   const targetDateRows = schedule.filter(
     (row) => row.date === date && (!excludeId || row.id !== excludeId)

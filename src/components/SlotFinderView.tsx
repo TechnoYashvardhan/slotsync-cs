@@ -85,8 +85,11 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                 Slot Inversion Engine
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-1 font-medium">
-              Select date, semester batches, and desired duration. Operating range: <span className="text-slate-800 font-mono font-bold">08:00 AM – 05:00 PM</span>.
+            <p className="text-xs text-slate-500 mt-1 font-medium flex flex-wrap items-center gap-1.5">
+              <span>Select date, semester batches, and desired duration. Operating range: <span className="text-slate-800 font-mono font-bold">08:00 AM – 05:00 PM</span></span>
+              <span className="text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-md font-mono text-[11px] font-bold border border-amber-300">
+                Lunch Break: 10:30 AM – 11:45 AM
+              </span>
             </p>
           </div>
 

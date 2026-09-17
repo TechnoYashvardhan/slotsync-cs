@@ -54,7 +54,7 @@ export interface BookingFormData {
 export interface ConflictDetail {
   type: 'teacher' | 'venue' | 'batch';
   entity: string;
-  conflictingRow: ScheduleRow;
+  conflictingRow?: ScheduleRow;
   description: string;
 }
 

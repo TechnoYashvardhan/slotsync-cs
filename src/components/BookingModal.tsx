@@ -9,6 +9,8 @@ import {
   DEPT_END_MINUTES,
   addWeeksToDDMMYYYY,
   getDayOfWeek,
+  overlapsLunchBreak,
+  LUNCH_BREAK_LABEL,
 } from '../utils/timeUtils';
 import {
   checkBookingConflicts,
@@ -219,6 +221,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       return;
     }
 
+    if (overlapsLunchBreak(startMinutes, endMinutes)) {
+      alert(`Cannot schedule session: overlaps mandatory Department Lunch Break (${LUNCH_BREAK_LABEL}).`);
+      return;
+    }
+
     if (conflictResult.hasConflict && !forceBook) {
       return;
     }
@@ -260,7 +267,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   };
 
   const timeStepOptions: { minutes: number; label: string }[] = [];
-  for (let m = DEPT_START_MINUTES; m <= DEPT_END_MINUTES; m += 30) {
+  for (let m = DEPT_START_MINUTES; m <= DEPT_END_MINUTES; m += 15) {
     timeStepOptions.push({ minutes: m, label: minutesToReadable(m) });
   }
 
@@ -397,6 +404,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </select>
             </div>
           </div>
+
+          {/* Lunch Break Warning Banner */}
+          {overlapsLunchBreak(startMinutes, endMinutes) && (
+            <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 flex items-start gap-2.5 text-xs shadow-sm">
+              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-black text-amber-950">
+                  Mandatory Department Lunch Break ({LUNCH_BREAK_LABEL}):
+                </strong>
+                <p className="mt-0.5 text-amber-800 font-medium">
+                  University regulations prohibit scheduling lectures, labs, or extra classes during the lunch recess. Please adjust start or end time before 10:30 AM or after 11:45 AM.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Row 2b: Reservation Recurrence (Single vs Weekly Repeat) */}
           <div className="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200/90 space-y-2.5">
@@ -657,9 +679,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={conflictResult.hasConflict && !forceBook}
+              disabled={(conflictResult.hasConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes)}
               className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all shadow-md cursor-pointer ${
-                conflictResult.hasConflict && !forceBook
+                (conflictResult.hasConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes)
                   ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                   : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 active:scale-95'
               }`}

@@ -2,6 +2,19 @@ export const DEPT_START_MINUTES = 8 * 60; // 08:00 AM = 480 mins
 export const DEPT_END_MINUTES = 17 * 60;  // 05:00 PM = 1020 mins
 export const TOTAL_OPERATING_MINUTES = DEPT_END_MINUTES - DEPT_START_MINUTES; // 540 mins (9 hours)
 
+// Mandatory Department Lunch Break: 10:30 AM (630m) to 11:45 AM (705m)
+export const LUNCH_BREAK_START_MINUTES = 10 * 60 + 30; // 630 mins
+export const LUNCH_BREAK_END_MINUTES = 11 * 60 + 45;   // 705 mins
+export const LUNCH_BREAK_LABEL = '10:30 AM – 11:45 AM';
+
+/**
+ * Returns true if the interval [startMinutes, endMinutes] strictly overlaps with
+ * the department lunch break [10:30 AM, 11:45 AM].
+ */
+export function overlapsLunchBreak(startMinutes: number, endMinutes: number): boolean {
+  return Math.max(startMinutes, LUNCH_BREAK_START_MINUTES) < Math.min(endMinutes, LUNCH_BREAK_END_MINUTES);
+}
+
 /**
  * Converts a time token like "0800 AM", "800 AM", "08:00 AM", or "1:30 PM" into minutes from midnight.
  */

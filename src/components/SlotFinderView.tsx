@@ -416,7 +416,7 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                       onBookSlot({
                         date: slot.date,
                         startMinutes: slot.startMinutes,
-                        endMinutes: slot.endMinutes,
+                        endMinutes: Math.min(slot.endMinutes, slot.startMinutes + selectedDuration),
                         batch: slot.applicableBatches.length === 1 ? slot.applicableBatches[0] : undefined,
                         batches: slot.applicableBatches,
                       })

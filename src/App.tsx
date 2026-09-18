@@ -55,8 +55,31 @@ export function App() {
     }, 4000);
   };
 
-  // 1. Initial Mount: load mock CS schedule
+  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data';
+
+  // 1. Initial Mount: restore from localStorage or fallback to mock CS schedule
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_SCHEDULE_KEY);
+      if (saved) {
+        const parsedSaved = JSON.parse(saved);
+        if (Array.isArray(parsedSaved) && parsedSaved.length > 0) {
+          setSchedule(parsedSaved);
+          const dates = getDistinctDates(parsedSaved);
+          const batches = getDistinctBatches(parsedSaved);
+          if (dates.length > 0) setTargetDate(dates[0]);
+          if (batches.length > 1) {
+            setSelectedBatches([batches[0], batches[1]]);
+          } else if (batches.length > 0) {
+            setSelectedBatches([batches[0]]);
+          }
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Could not restore schedule from localStorage:', e);
+    }
+
     const parsed = parseScheduleCSV(DEFAULT_MOCK_CSV);
     if (parsed.rows.length > 0) {
       setSchedule(parsed.rows);
@@ -70,6 +93,17 @@ export function App() {
       }
     }
   }, []);
+
+  // Persist schedule changes to localStorage
+  useEffect(() => {
+    if (schedule.length > 0) {
+      try {
+        localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(schedule));
+      } catch (e) {
+        console.warn('Could not persist schedule to localStorage:', e);
+      }
+    }
+  }, [schedule]);
 
   // 2. Extracted Distinct Lists
   const availableDates = useMemo(() => getDistinctDates(schedule), [schedule]);
@@ -120,6 +154,11 @@ export function App() {
   const handleLoadDemo = () => {
     const parsed = parseScheduleCSV(DEFAULT_MOCK_CSV);
     setSchedule(parsed.rows);
+    try {
+      localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(parsed.rows));
+    } catch (e) {
+      // ignore
+    }
     const dates = getDistinctDates(parsed.rows);
     const batches = getDistinctBatches(parsed.rows);
     if (dates.length > 0) setTargetDate(dates[0]);
@@ -131,6 +170,11 @@ export function App() {
 
   const handleImportSchedule = (newRows: ScheduleRow[]) => {
     setSchedule(newRows);
+    try {
+      localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(newRows));
+    } catch (e) {
+      // ignore
+    }
     const dates = getDistinctDates(newRows);
     const batches = getDistinctBatches(newRows);
     if (dates.length > 0) setTargetDate(dates[0]);
@@ -154,9 +198,22 @@ export function App() {
     setIsBookingOpen(true);
   };
 
+  const handleQuickBook = () => {
+    handleOpenBooking({
+      date: targetDate || (availableDates.length > 0 ? availableDates[0] : '21-09-2026'),
+      startMinutes: 480,
+      endMinutes: 540,
+      batches: selectedBatches.length > 0 ? selectedBatches : undefined,
+    });
+  };
+
   const handleConfirmBooking = (newRows: ScheduleRow[]) => {
     setSchedule((prev) => [...prev, ...newRows]);
-    showToast(`Successfully booked session for ${newRows.map((r) => r.courseSem).join(', ')}!`);
+    if (newRows.length > 0 && newRows[0].date) {
+      setTargetDate(newRows[0].date);
+    }
+    const distinctBatches = Array.from(new Set(newRows.map((r) => r.courseSem))).join(', ');
+    showToast(`Successfully booked ${newRows.length} session(s) for ${distinctBatches}!`);
   };
 
   const handleDeleteRow = (id: string) => {
@@ -208,6 +265,7 @@ export function App() {
         onLoadDemo={handleLoadDemo}
         onExportPDF={handleExportPDF}
         onOpenAIModal={() => setIsAIOpen(true)}
+        onOpenBooking={handleQuickBook}
       />
 
       {/* Main Container */}
@@ -267,6 +325,7 @@ export function App() {
             schedule={schedule}
             selectedDate={targetDate}
             onDeleteRow={handleDeleteRow}
+            onOpenBooking={handleQuickBook}
           />
         )}
 

@@ -256,7 +256,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             onBookSlot({
                               date,
                               startMinutes: slot.startMinutes,
-                              endMinutes: slot.endMinutes,
+                              endMinutes: Math.min(
+                                slot.endMinutes,
+                                slot.startMinutes + (minDurationMinutes >= 30 ? minDurationMinutes : 60)
+                              ),
                               batches: batches,
                             })
                           }
@@ -334,7 +337,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             onBookSlot({
                               date,
                               startMinutes: slot.startMinutes,
-                              endMinutes: slot.endMinutes,
+                              endMinutes: Math.min(
+                                slot.endMinutes,
+                                slot.startMinutes + (minDurationMinutes >= 30 ? minDurationMinutes : 60)
+                              ),
                               batch,
                               batches: [batch],
                             })

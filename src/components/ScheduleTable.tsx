@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { ScheduleRow } from '../types/schedule';
-import { Search, Trash2, Filter, MapPin, User, Layers } from 'lucide-react';
+import { Search, Trash2, Filter, MapPin, User, Layers, Plus } from 'lucide-react';
 import { formatDuration } from '../utils/timeUtils';
 
 interface ScheduleTableProps {
   schedule: ScheduleRow[];
   selectedDate: string;
   onDeleteRow: (id: string) => void;
+  onOpenBooking?: () => void;
 }
 
 export const ScheduleTable: React.FC<ScheduleTableProps> = ({
   schedule,
   selectedDate,
   onDeleteRow,
+  onOpenBooking,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterByDateOnly, setFilterByDateOnly] = useState(true);
@@ -77,6 +79,17 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
             <Filter className="w-3.5 h-3.5 text-indigo-600" />
             <span>{filterByDateOnly ? `Only ${selectedDate}` : 'Show All Dates'}</span>
           </button>
+
+          {onOpenBooking && (
+            <button
+              type="button"
+              onClick={onOpenBooking}
+              className="px-4 py-2.5 rounded-2xl text-xs font-black bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Book Session</span>
+            </button>
+          )}
         </div>
       </div>
 

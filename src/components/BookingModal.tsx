@@ -11,6 +11,8 @@ import {
   getDayOfWeek,
   overlapsLunchBreak,
   LUNCH_BREAK_LABEL,
+  htmlDateToDDMMYYYY,
+  ddmmYYYYToHtmlDate,
 } from '../utils/timeUtils';
 import {
   checkBookingConflicts,
@@ -236,6 +238,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     endMinutes
   );
 
+  // Auto-switch to an available free teacher/venue if current selection is occupied at the new time
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!isCustomTeacher && freeTeachers.length > 0 && !freeTeachers.includes(teacherName)) {
+      setTeacherName(freeTeachers[0]);
+    }
+  }, [isOpen, date, startMinutes, endMinutes, isCustomTeacher, freeTeachers, teacherName]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!isCustomVenue && freeVenues.length > 0 && !freeVenues.includes(venue)) {
+      setVenue(freeVenues[0]);
+    }
+  }, [isOpen, date, startMinutes, endMinutes, isCustomVenue, freeVenues, venue]);
+
   const hasMultiWeekConflict = recurrenceType === 'weekly' && multiWeekConflicts.length > 0;
   const hasAnyConflict = conflictResult.hasConflict || hasMultiWeekConflict;
   const isBlocked = (hasAnyConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes);
@@ -253,11 +270,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!sessionTitle.trim()) {
-      alert('Please enter a session title or topic.');
-      return;
-    }
-
     if (isCustomTeacher && !customTeacher.trim()) {
       alert('Please enter a name for the guest speaker or custom faculty.');
       return;
@@ -269,11 +281,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
 
     if (overlapsLunchBreak(startMinutes, endMinutes)) {
-      alert(`Cannot schedule session: overlaps mandatory Department Lunch Break (${LUNCH_BREAK_LABEL}).`);
+      alert(`Cannot schedule session: overlaps mandatory Department Lunch Break (${LUNCH_BREAK_LABEL}). Please select a time before 10:30 AM or after 11:45 AM.`);
       return;
     }
 
     if (conflictResult.hasConflict && !forceBook) {
+      alert(`Cannot schedule session: ${conflictResult.conflicts.length} conflict(s) detected. Please select an available faculty/venue or check 'Admin override'.`);
       return;
     }
 
@@ -283,6 +296,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
 
     const formattedTime = formatTimeRangeToCSV(startMinutes, endMinutes);
+    const finalSessionTitle = sessionTitle.trim() || `${subject.trim() || 'Core CS'} (${sessionType})`;
     const newRows: ScheduleRow[] = [];
 
     recurringDates.forEach((d, wIdx) => {
@@ -300,8 +314,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           sessionType,
           sessionTitle:
             recurrenceType === 'weekly'
-              ? `${sessionTitle.trim()} (Wk ${wIdx + 1})`
-              : sessionTitle.trim(),
+              ? `${finalSessionTitle} (Wk ${wIdx + 1})`
+              : finalSessionTitle,
         });
       });
     });
@@ -371,14 +385,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                Topic / Details <span className="text-rose-500">*</span>
+                Topic / Details <span className="text-slate-400 font-normal">(Optional)</span>
               </label>
               <input
                 type="text"
-                required
                 value={sessionTitle}
                 onChange={(e) => setSessionTitle(e.target.value)}
-                placeholder="e.g. Raft Consensus Lecture"
+                placeholder="e.g. Core Lecture / Lab"
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-sm font-medium"
               />
             </div>
@@ -405,10 +418,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 Date
               </label>
               <input
-                type="text"
-                readOnly
-                value={date}
-                className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-900 shadow-sm"
+                type="date"
+                value={ddmmYYYYToHtmlDate(date)}
+                onChange={(e) => {
+                  const newD = htmlDateToDDMMYYYY(e.target.value);
+                  if (newD) setDate(newD);
+                }}
+                className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-indigo-500 cursor-pointer shadow-sm"
               />
             </div>
 
@@ -754,25 +770,45 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           )}
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isBlocked}
-              className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all shadow-md cursor-pointer ${
-                isBlocked
-                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
-                  : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 active:scale-95'
-              }`}
-            >
-              Confirm Reservation
-            </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-200">
+            <div className="text-xs">
+              {overlapsLunchBreak(startMinutes, endMinutes) ? (
+                <span className="text-amber-800 font-bold flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-300">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                  <span>Overlaps Lunch Break ({LUNCH_BREAK_LABEL})</span>
+                </span>
+              ) : hasAnyConflict && !forceBook ? (
+                <span className="text-rose-700 font-bold flex items-center gap-1.5 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-300">
+                  <AlertTriangle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
+                  <span>Conflict detected. Check override or change slot.</span>
+                </span>
+              ) : (
+                <span className="text-emerald-700 font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-300">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span>Slot verified & ready to reserve</span>
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center space-x-3 w-full sm:w-auto justify-end">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all shadow-md cursor-pointer ${
+                  isBlocked
+                    ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-600/20 active:scale-95'
+                    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20 active:scale-95'
+                }`}
+              >
+                {isBlocked ? 'Confirm (Resolve Conflict)' : 'Confirm Reservation'}
+              </button>
+            </div>
           </div>
 
         </form>

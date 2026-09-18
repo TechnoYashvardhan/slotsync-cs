@@ -10,6 +10,7 @@ import {
   FileText,
   Cpu,
   Bot,
+  Plus,
 } from 'lucide-react';
 
 export type NavTab = 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
@@ -22,6 +23,7 @@ interface NavbarProps {
   onLoadDemo: () => void;
   onExportPDF: () => void;
   onOpenAIModal: () => void;
+  onOpenBooking?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -32,6 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLoadDemo,
   onExportPDF,
   onOpenAIModal,
+  onOpenBooking,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-slate-200/90 shadow-sm">
@@ -157,6 +160,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-200"></span>
               </span>
             </button>
+
+            {onOpenBooking && (
+              <button
+                onClick={onOpenBooking}
+                title="Quickly schedule or reserve a class session"
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 sm:px-3.5 sm:py-2.5 rounded-2xl text-xs font-black text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 shadow-xs transition-all cursor-pointer active:scale-95"
+              >
+                <Plus className="w-3.5 h-3.5 text-indigo-600" />
+                <span className="hidden sm:inline">Book Class</span>
+                <span className="sm:hidden">Book</span>
+              </button>
+            )}
 
             <button
               onClick={onLoadDemo}

@@ -37,6 +37,8 @@ interface WeeklyTimetableViewProps {
     startMinutes: number;
     endMinutes: number;
     batch?: string;
+    batches?: string[];
+    venue?: string;
   }) => void;
 }
 
@@ -390,6 +392,8 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                   startMinutes: block.start,
                                   endMinutes: block.end,
                                   batch: selectedBatch !== 'All' ? selectedBatch : undefined,
+                                  batches: selectedBatch !== 'All' ? [selectedBatch] : undefined,
+                                  venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                                 })
                               }
                               className="w-full h-full min-h-[84px] rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 p-2 flex flex-col items-center justify-center text-slate-400 hover:text-emerald-700 transition cursor-pointer group bg-slate-50/30"
@@ -596,6 +600,8 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                           startMinutes: block.start,
                           endMinutes: block.end,
                           batch: selectedBatch !== 'All' ? selectedBatch : undefined,
+                          batches: selectedBatch !== 'All' ? [selectedBatch] : undefined,
+                          venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                         })
                       }
                       className="w-full py-3 px-3 rounded-xl border-2 border-dashed border-emerald-300 bg-emerald-50/50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98"

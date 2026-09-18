@@ -38,6 +38,10 @@ export function App() {
     startMinutes: number;
     endMinutes: number;
     batch?: string;
+    subject?: string;
+    teacherName?: string;
+    venue?: string;
+    sessionTitle?: string;
   } | null>(null);
 
   // Toast Notification
@@ -121,7 +125,7 @@ export function App() {
     if (batches.length > 1) {
       setSelectedBatches([batches[0], batches[1]]);
     }
-    showToast('Loaded 22 demo CS timetable entries across multiple batches.');
+    showToast(`Loaded ${parsed.rows.length} demo CS timetable entries across multiple batches.`);
   };
 
   const handleImportSchedule = (newRows: ScheduleRow[]) => {
@@ -139,6 +143,10 @@ export function App() {
     startMinutes: number;
     endMinutes: number;
     batch?: string;
+    subject?: string;
+    teacherName?: string;
+    venue?: string;
+    sessionTitle?: string;
   }) => {
     setBookingContext(slot);
     setIsBookingOpen(true);
@@ -289,6 +297,10 @@ export function App() {
         initialStartMinutes={bookingContext?.startMinutes || 480}
         initialEndMinutes={bookingContext?.endMinutes || 540}
         initialBatch={bookingContext?.batch}
+        initialSubject={bookingContext?.subject}
+        initialTeacherName={bookingContext?.teacherName}
+        initialVenue={bookingContext?.venue}
+        initialSessionTitle={bookingContext?.sessionTitle}
         availableBatches={availableBatches}
         availableTeachers={availableTeachers}
         availableVenues={availableVenues}

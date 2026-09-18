@@ -37,6 +37,10 @@ interface BookingModalProps {
   initialStartMinutes: number;
   initialEndMinutes: number;
   initialBatch?: string;
+  initialSubject?: string;
+  initialTeacherName?: string;
+  initialVenue?: string;
+  initialSessionTitle?: string;
   availableBatches: string[];
   availableTeachers: string[];
   availableVenues: string[];
@@ -60,6 +64,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   initialStartMinutes,
   initialEndMinutes,
   initialBatch,
+  initialSubject,
+  initialTeacherName,
+  initialVenue,
+  initialSessionTitle,
   availableBatches,
   availableTeachers,
   availableVenues,
@@ -69,8 +77,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [date, setDate] = useState(initialDate);
   const [startMinutes, setStartMinutes] = useState(initialStartMinutes || 480);
   const [endMinutes, setEndMinutes] = useState(initialEndMinutes || 540);
-  const [sessionTitle, setSessionTitle] = useState('');
-  const [subject, setSubject] = useState('Advanced Computer Science');
+  const [sessionTitle, setSessionTitle] = useState(initialSessionTitle || '');
+  const [subject, setSubject] = useState(initialSubject || 'Advanced Computer Science');
   const [sessionType, setSessionType] = useState<typeof SESSION_TYPES[number]>('Guest Lecture');
   const [selectedBatches, setSelectedBatches] = useState<string[]>(
     initialBatch ? [initialBatch] : availableBatches.slice(0, 1)
@@ -94,42 +102,65 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       setStartMinutes(initialStartMinutes || 480);
       setEndMinutes(initialEndMinutes || 540);
       setSelectedBatches(initialBatch ? [initialBatch] : availableBatches.slice(0, 1));
-      setSessionTitle('');
+      setSessionTitle(initialSessionTitle || '');
+      setSubject(initialSubject || 'Advanced Computer Science');
       setForceBook(false);
-      setIsCustomTeacher(false);
-      setCustomTeacher('');
-      setIsCustomVenue(false);
-      setCustomVenue('');
       setRecurrenceType('once');
       setRepeatWeeks(4);
 
-      const teachers = getAvailableTeachers(
-        schedule,
-        availableTeachers,
-        initialDate,
-        initialStartMinutes,
-        initialEndMinutes
-      );
-      if (teachers.available.length > 0) {
-        setTeacherName(teachers.available[0]);
-      } else if (availableTeachers.length > 0) {
-        setTeacherName(availableTeachers[0]);
+      if (initialTeacherName) {
+        if (availableTeachers.includes(initialTeacherName)) {
+          setTeacherName(initialTeacherName);
+          setIsCustomTeacher(false);
+          setCustomTeacher('');
+        } else {
+          setIsCustomTeacher(true);
+          setCustomTeacher(initialTeacherName);
+        }
+      } else {
+        setIsCustomTeacher(false);
+        setCustomTeacher('');
+        const teachers = getAvailableTeachers(
+          schedule,
+          availableTeachers,
+          initialDate,
+          initialStartMinutes,
+          initialEndMinutes
+        );
+        if (teachers.available.length > 0) {
+          setTeacherName(teachers.available[0]);
+        } else if (availableTeachers.length > 0) {
+          setTeacherName(availableTeachers[0]);
+        }
       }
 
-      const venues = getAvailableVenues(
-        schedule,
-        availableVenues,
-        initialDate,
-        initialStartMinutes,
-        initialEndMinutes
-      );
-      if (venues.available.length > 0) {
-        setVenue(venues.available[0]);
-      } else if (availableVenues.length > 0) {
-        setVenue(availableVenues[0]);
+      if (initialVenue) {
+        if (availableVenues.includes(initialVenue)) {
+          setVenue(initialVenue);
+          setIsCustomVenue(false);
+          setCustomVenue('');
+        } else {
+          setIsCustomVenue(true);
+          setCustomVenue(initialVenue);
+        }
+      } else {
+        setIsCustomVenue(false);
+        setCustomVenue('');
+        const venues = getAvailableVenues(
+          schedule,
+          availableVenues,
+          initialDate,
+          initialStartMinutes,
+          initialEndMinutes
+        );
+        if (venues.available.length > 0) {
+          setVenue(venues.available[0]);
+        } else if (availableVenues.length > 0) {
+          setVenue(availableVenues[0]);
+        }
       }
     }
-  }, [isOpen, initialDate, initialStartMinutes, initialEndMinutes, initialBatch]);
+  }, [isOpen, initialDate, initialStartMinutes, initialEndMinutes, initialBatch, initialSubject, initialTeacherName, initialVenue, initialSessionTitle]);
 
   if (!isOpen) return null;
 

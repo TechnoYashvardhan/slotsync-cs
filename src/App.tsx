@@ -19,6 +19,7 @@ import { ScheduleTable } from './components/ScheduleTable';
 import { DataManagementView } from './components/DataManagementView';
 import { BookingModal } from './components/BookingModal';
 import { GeminiAssistantModal } from './components/GeminiAssistantModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { CheckCircle2, Sparkles, ShieldCheck } from 'lucide-react';
 
 export function App() {
@@ -208,7 +209,15 @@ export function App() {
   };
 
   const handleConfirmBooking = (newRows: ScheduleRow[]) => {
-    setSchedule((prev) => [...prev, ...newRows]);
+    setSchedule((prev) => {
+      const updated = [...prev, ...newRows];
+      try {
+        localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
+      } catch (e) {
+        // ignore
+      }
+      return updated;
+    });
     if (newRows.length > 0 && newRows[0].date) {
       setTargetDate(newRows[0].date);
     }
@@ -217,7 +226,15 @@ export function App() {
   };
 
   const handleDeleteRow = (id: string) => {
-    setSchedule((prev) => prev.filter((r) => r.id !== id));
+    setSchedule((prev) => {
+      const updated = prev.filter((r) => r.id !== id);
+      try {
+        localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
+      } catch (e) {
+        // ignore
+      }
+      return updated;
+    });
     showToast('Class removed from schedule.');
   };
 
@@ -348,27 +365,31 @@ export function App() {
       </main>
 
       {/* Reservation & Booking Modal (Single & Recurring Weekly) */}
-      <BookingModal
-        isOpen={isBookingOpen}
-        onClose={() => {
-          setIsBookingOpen(false);
-          setBookingContext(null);
-        }}
-        initialDate={bookingContext?.date || targetDate}
-        initialStartMinutes={bookingContext?.startMinutes || 480}
-        initialEndMinutes={bookingContext?.endMinutes || 540}
-        initialBatch={bookingContext?.batch}
-        initialBatches={bookingContext?.batches}
-        initialSubject={bookingContext?.subject}
-        initialTeacherName={bookingContext?.teacherName}
-        initialVenue={bookingContext?.venue}
-        initialSessionTitle={bookingContext?.sessionTitle}
-        availableBatches={availableBatches}
-        availableTeachers={availableTeachers}
-        availableVenues={availableVenues}
-        schedule={schedule}
-        onConfirmBooking={handleConfirmBooking}
-      />
+      {isBookingOpen && (
+        <ErrorBoundary>
+          <BookingModal
+            isOpen={isBookingOpen}
+            onClose={() => {
+              setIsBookingOpen(false);
+              setBookingContext(null);
+            }}
+            initialDate={bookingContext?.date || targetDate}
+            initialStartMinutes={bookingContext?.startMinutes || 480}
+            initialEndMinutes={bookingContext?.endMinutes || 540}
+            initialBatch={bookingContext?.batch}
+            initialBatches={bookingContext?.batches}
+            initialSubject={bookingContext?.subject}
+            initialTeacherName={bookingContext?.teacherName}
+            initialVenue={bookingContext?.venue}
+            initialSessionTitle={bookingContext?.sessionTitle}
+            availableBatches={availableBatches}
+            availableTeachers={availableTeachers}
+            availableVenues={availableVenues}
+            schedule={schedule}
+            onConfirmBooking={handleConfirmBooking}
+          />
+        </ErrorBoundary>
+      )}
 
       {/* Gemini AI Timetable Copilot Modal */}
       <GeminiAssistantModal

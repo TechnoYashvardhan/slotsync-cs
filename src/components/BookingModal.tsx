@@ -176,8 +176,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   }, [isOpen, initialDate, initialStartMinutes, initialEndMinutes, initialBatch, initialBatches, initialSubject, initialTeacherName, initialVenue, initialSessionTitle]);
 
-  if (!isOpen) return null;
-
   const effectiveTeacher = isCustomTeacher ? (customTeacher.trim() || 'Guest Speaker') : teacherName;
   const effectiveVenue = isCustomVenue ? (customVenue.trim() || 'Custom Venue') : venue;
 
@@ -213,30 +211,36 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     return clashes;
   }, [recurringDates, recurrenceType, schedule, startMinutes, endMinutes, effectiveTeacher, effectiveVenue, selectedBatches]);
 
-  const conflictResult = checkBookingConflicts(schedule, {
-    date,
-    startMinutes,
-    endMinutes,
-    teacherName: effectiveTeacher,
-    venue: effectiveVenue,
-    courseSems: selectedBatches,
-  });
+  const conflictResult = useMemo(() => {
+    return checkBookingConflicts(schedule, {
+      date,
+      startMinutes,
+      endMinutes,
+      teacherName: effectiveTeacher,
+      venue: effectiveVenue,
+      courseSems: selectedBatches,
+    });
+  }, [schedule, date, startMinutes, endMinutes, effectiveTeacher, effectiveVenue, selectedBatches]);
 
-  const { available: freeTeachers, busy: busyTeachers } = getAvailableTeachers(
-    schedule,
-    availableTeachers,
-    date,
-    startMinutes,
-    endMinutes
-  );
+  const { available: freeTeachers, busy: busyTeachers } = useMemo(() => {
+    return getAvailableTeachers(
+      schedule,
+      availableTeachers,
+      date,
+      startMinutes,
+      endMinutes
+    );
+  }, [schedule, availableTeachers, date, startMinutes, endMinutes]);
 
-  const { available: freeVenues, busy: busyVenues } = getAvailableVenues(
-    schedule,
-    availableVenues,
-    date,
-    startMinutes,
-    endMinutes
-  );
+  const { available: freeVenues, busy: busyVenues } = useMemo(() => {
+    return getAvailableVenues(
+      schedule,
+      availableVenues,
+      date,
+      startMinutes,
+      endMinutes
+    );
+  }, [schedule, availableVenues, date, startMinutes, endMinutes]);
 
   // Auto-switch to an available free teacher/venue if current selection is occupied at the new time
   useEffect(() => {
@@ -244,14 +248,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     if (!isCustomTeacher && freeTeachers.length > 0 && !freeTeachers.includes(teacherName)) {
       setTeacherName(freeTeachers[0]);
     }
-  }, [isOpen, date, startMinutes, endMinutes, isCustomTeacher, freeTeachers, teacherName]);
+  }, [isOpen, isCustomTeacher, freeTeachers, teacherName]);
 
   useEffect(() => {
     if (!isOpen) return;
     if (!isCustomVenue && freeVenues.length > 0 && !freeVenues.includes(venue)) {
       setVenue(freeVenues[0]);
     }
-  }, [isOpen, date, startMinutes, endMinutes, isCustomVenue, freeVenues, venue]);
+  }, [isOpen, isCustomVenue, freeVenues, venue]);
 
   const hasMultiWeekConflict = recurrenceType === 'weekly' && multiWeekConflicts.length > 0;
   const hasAnyConflict = conflictResult.hasConflict || hasMultiWeekConflict;
@@ -336,6 +340,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   for (let m = DEPT_START_MINUTES; m <= DEPT_END_MINUTES; m += 15) {
     timeStepOptions.push({ minutes: m, label: minutesToReadable(m) });
   }
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md overflow-y-auto">

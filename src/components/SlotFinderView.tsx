@@ -30,7 +30,7 @@ interface SlotFinderViewProps {
   schedule: ScheduleRow[];
   allTeachers: string[];
   allVenues: string[];
-  onBookSlot: (slot: { date: string; startMinutes: number; endMinutes: number; batch?: string }) => void;
+  onBookSlot: (slot: { date: string; startMinutes: number; endMinutes: number; batch?: string; batches?: string[] }) => void;
   onNavigateToTimeline: () => void;
 }
 
@@ -418,6 +418,7 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                         startMinutes: slot.startMinutes,
                         endMinutes: slot.endMinutes,
                         batch: slot.applicableBatches.length === 1 ? slot.applicableBatches[0] : undefined,
+                        batches: slot.applicableBatches,
                       })
                     }
                     className="mt-5 w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md shadow-emerald-600/20 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98"

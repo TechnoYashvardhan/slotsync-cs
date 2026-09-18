@@ -22,8 +22,8 @@ export function parseSingleTimeToMinutes(timeStr: string): number | null {
   if (!timeStr) return null;
   const clean = timeStr.trim().toUpperCase();
 
-  // 1. Standard colon format: "8:00 AM", "08:30 PM", "12:00 PM"
-  const colonMatch = clean.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  // 1. Standard colon or dot format with AM/PM: "8:00 AM", "08.30 AM", "08:30 PM", "12:00 PM"
+  const colonMatch = clean.match(/^(\d{1,2})[:.](\d{2})\s*(AM|PM)$/);
   if (colonMatch) {
     let hour = parseInt(colonMatch[1], 10);
     const minute = parseInt(colonMatch[2], 10);
@@ -34,7 +34,16 @@ export function parseSingleTimeToMinutes(timeStr: string): number | null {
     return hour * 60 + minute;
   }
 
-  // 2. Unpunctuated 3 or 4 digits: "800 AM", "0800 AM", "130 PM", "0130 PM"
+  // 2. 24-hour format: "14:00", "09:30", "13.45"
+  const militaryMatch = clean.match(/^(\d{1,2})[:.](\d{2})$/);
+  if (militaryMatch) {
+    const hour = parseInt(militaryMatch[1], 10);
+    const minute = parseInt(militaryMatch[2], 10);
+    if (hour < 0 || hour > 23 || minute < 0 || minute >= 60) return null;
+    return hour * 60 + minute;
+  }
+
+  // 3. Unpunctuated 3 or 4 digits: "800 AM", "0800 AM", "130 PM", "0130 PM"
   const unpunctMatch = clean.match(/^(\d{1,2})(\d{2})\s*(AM|PM)$/);
   if (unpunctMatch) {
     let hour = parseInt(unpunctMatch[1], 10);
@@ -46,7 +55,7 @@ export function parseSingleTimeToMinutes(timeStr: string): number | null {
     return hour * 60 + minute;
   }
 
-  // 3. Whole hours: "8 AM", "12 PM"
+  // 4. Whole hours: "8 AM", "12 PM"
   const hourOnlyMatch = clean.match(/^(\d{1,2})\s*(AM|PM)$/);
   if (hourOnlyMatch) {
     let hour = parseInt(hourOnlyMatch[1], 10);

@@ -28,7 +28,7 @@ interface TimelineVisualizerProps {
   batchData: Record<string, { occupied: ScheduleRow[]; freeSlots: FreeSlot[] }>;
   commonFreeSlots: FreeSlot[];
   minDurationMinutes: number;
-  onBookSlot: (slot: { date: string; startMinutes: number; endMinutes: number; batch?: string }) => void;
+  onBookSlot: (slot: { date: string; startMinutes: number; endMinutes: number; batch?: string; batches?: string[] }) => void;
 }
 
 const HOURS = [
@@ -257,6 +257,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                               date,
                               startMinutes: slot.startMinutes,
                               endMinutes: slot.endMinutes,
+                              batches: batches,
                             })
                           }
                           style={{ left: `${left}%`, width: `${width}%` }}
@@ -335,6 +336,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                               startMinutes: slot.startMinutes,
                               endMinutes: slot.endMinutes,
                               batch,
+                              batches: [batch],
                             })
                           }
                           style={{ left: `${left}%`, width: `${width}%` }}
@@ -400,8 +402,8 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
           style={{
             position: 'fixed',
             left: `${tooltipPos.x}px`,
-            top: `${tooltipPos.y - 10}px`,
-            transform: 'translate(-50%, -100%)',
+            top: tooltipPos.y < 180 ? `${tooltipPos.y + 35}px` : `${tooltipPos.y - 10}px`,
+            transform: tooltipPos.y < 180 ? 'translate(-50%, 0%)' : 'translate(-50%, -100%)',
           }}
           className="z-50 bg-white/95 border border-rose-300 p-4 rounded-2xl shadow-xl text-xs space-y-1.5 w-64 backdrop-blur-2xl pointer-events-none animate-in fade-in zoom-in-95 duration-100 text-slate-800"
         >

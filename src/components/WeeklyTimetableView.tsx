@@ -77,6 +77,12 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
   const [selectedVenue, setSelectedVenue] = useState<string>('All');
   const [mobileActiveDay, setMobileActiveDay] = useState<string>('');
 
+  useEffect(() => {
+    if (currentDate) {
+      setSelectedDate(currentDate);
+    }
+  }, [currentDate]);
+
   // Academic week (Mon-Sat) for current selectedDate
   const weekDays = useMemo(() => {
     return getAcademicWeekDates(selectedDate);
@@ -414,45 +420,63 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                 </div>
                               )}
 
-                              {lectures.map((lecture) => (
-                                <div
-                                  key={lecture.id}
-                                  className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs transition text-[11px] space-y-1 border-l-4 border-l-indigo-600"
-                                >
-                                  {/* Batch badge + Start time pill */}
-                                  <div className="flex items-center justify-between gap-1">
-                                    <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-extrabold whitespace-nowrap ${
-                                      lecture.courseSem.includes('B.Tech')
-                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                        : lecture.courseSem.includes('MCA')
-                                        ? 'bg-purple-50 text-purple-800 border-purple-300'
-                                        : 'bg-indigo-50 text-indigo-800 border-indigo-300'
-                                    }`}>
-                                      {lecture.courseSem}
-                                    </span>
-                                    <span className="text-[9px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1 rounded border border-emerald-200">
-                                      {lecture.time.split(' to ')[0]}
-                                    </span>
-                                  </div>
+                              {lectures.map((lecture) => {
+                                const isContinuation = lecture.startMinutes < block.start;
+                                return (
+                                  <div
+                                    key={lecture.id}
+                                    className={`p-2 rounded-xl border transition text-[11px] space-y-1 ${
+                                      isContinuation
+                                        ? 'bg-slate-50/80 border-slate-200 border-l-4 border-l-slate-400 opacity-90'
+                                        : 'bg-white border-slate-200/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs border-l-4 border-l-indigo-600'
+                                    }`}
+                                  >
+                                    {isContinuation && (
+                                      <div className="flex items-center gap-1 text-[9px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                                        <span>↳ Ongoing Session</span>
+                                        <span className="font-mono">({lecture.time})</span>
+                                      </div>
+                                    )}
 
-                                  {/* Full Subject Name */}
-                                  <div className="font-black text-slate-900 text-xs leading-snug break-words" title={lecture.subject}>
-                                    {lecture.subject}
-                                  </div>
+                                    {/* Batch badge + Start time pill */}
+                                    <div className="flex items-center justify-between gap-1">
+                                      <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-extrabold whitespace-nowrap ${
+                                        lecture.courseSem.includes('B.Tech')
+                                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                          : lecture.courseSem.includes('MCA')
+                                          ? 'bg-purple-50 text-purple-800 border-purple-300'
+                                          : 'bg-indigo-50 text-indigo-800 border-indigo-300'
+                                      }`}>
+                                        {lecture.courseSem}
+                                      </span>
+                                      <span className={`text-[9px] font-mono font-bold px-1 rounded border ${
+                                        isContinuation
+                                          ? 'text-slate-600 bg-slate-100 border-slate-200'
+                                          : 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                      }`}>
+                                        {isContinuation ? `Started ${minutesToReadable(lecture.startMinutes)}` : lecture.time.split(' to ')[0]}
+                                      </span>
+                                    </div>
 
-                                  {/* Faculty & Venue */}
-                                  <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-1 border-t border-slate-100">
-                                    <span className="truncate flex items-center gap-1">
-                                      <User className="w-2.5 h-2.5 text-indigo-600 flex-shrink-0" />
-                                      <span className="truncate max-w-[70px]">{lecture.teacherName}</span>
-                                    </span>
-                                    <span className="truncate flex items-center gap-1 font-semibold text-slate-700">
-                                      <MapPin className="w-2.5 h-2.5 text-sky-600 flex-shrink-0" />
-                                      <span className="truncate max-w-[70px]">{lecture.venue}</span>
-                                    </span>
+                                    {/* Full Subject Name */}
+                                    <div className="font-black text-slate-900 text-xs leading-snug break-words" title={lecture.subject}>
+                                      {lecture.subject}
+                                    </div>
+
+                                    {/* Faculty & Venue */}
+                                    <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-1 border-t border-slate-100">
+                                      <span className="truncate flex items-center gap-1">
+                                        <User className="w-2.5 h-2.5 text-indigo-600 flex-shrink-0" />
+                                        <span className="truncate max-w-[70px]">{lecture.teacherName}</span>
+                                      </span>
+                                      <span className="truncate flex items-center gap-1 font-semibold text-slate-700">
+                                        <MapPin className="w-2.5 h-2.5 text-sky-600 flex-shrink-0" />
+                                        <span className="truncate max-w-[70px]">{lecture.venue}</span>
+                                      </span>
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           )}
                         </td>
@@ -581,38 +605,51 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                     </button>
                   ) : (
                     <div className="space-y-2">
-                      {lectures.map((lec) => (
-                        <div
-                          key={lec.id}
-                          className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1.5 border-l-4 border-l-indigo-600"
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <span className="font-extrabold text-slate-900 leading-snug">
-                              {lec.subject}
-                            </span>
-                            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border whitespace-nowrap ${
-                              lec.courseSem.includes('B.Tech')
-                                ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                : lec.courseSem.includes('MCA')
-                                ? 'bg-purple-50 text-purple-800 border-purple-300'
-                                : 'bg-indigo-50 text-indigo-800 border-indigo-300'
-                            }`}>
-                              {lec.courseSem}
-                            </span>
-                          </div>
+                      {lectures.map((lec) => {
+                        const isContinuation = lec.startMinutes < block.start;
+                        return (
+                          <div
+                            key={lec.id}
+                            className={`p-3 rounded-xl border text-xs space-y-1.5 ${
+                              isContinuation
+                                ? 'bg-slate-100/70 border-slate-200 border-l-4 border-l-slate-400'
+                                : 'bg-slate-50 border-slate-200 border-l-4 border-l-indigo-600'
+                            }`}
+                          >
+                            {isContinuation && (
+                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded border border-slate-300 w-fit">
+                                <span>↳ Ongoing Session</span>
+                                <span className="font-mono">({lec.time})</span>
+                              </div>
+                            )}
+                            <div className="flex items-start justify-between gap-2">
+                              <span className="font-extrabold text-slate-900 leading-snug">
+                                {lec.subject}
+                              </span>
+                              <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border whitespace-nowrap ${
+                                lec.courseSem.includes('B.Tech')
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                  : lec.courseSem.includes('MCA')
+                                  ? 'bg-purple-50 text-purple-800 border-purple-300'
+                                  : 'bg-indigo-50 text-indigo-800 border-indigo-300'
+                              }`}>
+                                {lec.courseSem}
+                              </span>
+                            </div>
 
-                          <div className="flex items-center justify-between text-[11px] text-slate-600 pt-1.5 border-t border-slate-200">
-                            <span className="flex items-center gap-1 font-medium">
-                              <User className="w-3 h-3 text-indigo-600 flex-shrink-0" />
-                              <span>{lec.teacherName}</span>
-                            </span>
-                            <span className="flex items-center gap-1 font-semibold text-slate-700">
-                              <MapPin className="w-3 h-3 text-sky-600 flex-shrink-0" />
-                              <span>{lec.venue}</span>
-                            </span>
+                            <div className="flex items-center justify-between text-[11px] text-slate-600 pt-1.5 border-t border-slate-200">
+                              <span className="flex items-center gap-1 font-medium">
+                                <User className="w-3 h-3 text-indigo-600 flex-shrink-0" />
+                                <span>{lec.teacherName}</span>
+                              </span>
+                              <span className="flex items-center gap-1 font-semibold text-slate-700">
+                                <MapPin className="w-3 h-3 text-sky-600 flex-shrink-0" />
+                                <span>{lec.venue}</span>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>

@@ -1,5 +1,15 @@
 import { ScheduleRow, ConflictCheckResult, ConflictDetail } from '../types/schedule';
-import { minutesToReadable, overlapsLunchBreak } from './timeUtils';
+import {
+  minutesToReadable,
+  overlapsLunchBreak,
+  DEPT_START_MINUTES,
+  DEPT_END_MINUTES,
+  LUNCH_BREAK_LABEL,
+} from './timeUtils';
+
+function normalizeKey(str: string): string {
+  return (str || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
 
 /**
  * Checks if two intervals [s1, e1] and [s2, e2] overlap.
@@ -33,12 +43,36 @@ export function checkBookingConflicts(
   const conflicts: ConflictDetail[] = [];
   const { date, startMinutes, endMinutes, teacherName, venue, courseSems, excludeId } = proposed;
 
-  // 0. Department Lunch Break Check (10:30 AM – 11:45 AM)
+  // 1. Duration Validity Check
+  if (endMinutes <= startMinutes) {
+    conflicts.push({
+      type: 'batch',
+      entity: 'Invalid Time Window',
+      description: 'End time must be strictly after start time.',
+    });
+  } else if (endMinutes - startMinutes < 30) {
+    conflicts.push({
+      type: 'batch',
+      entity: 'Duration Too Short',
+      description: 'Minimum session duration must be at least 30 minutes.',
+    });
+  }
+
+  // 2. Department Operating Hours Check (08:00 AM – 05:00 PM)
+  if (startMinutes < DEPT_START_MINUTES || endMinutes > DEPT_END_MINUTES) {
+    conflicts.push({
+      type: 'batch',
+      entity: 'Department Operating Hours',
+      description: `Class window (${minutesToReadable(startMinutes)} - ${minutesToReadable(endMinutes)}) is outside operating hours (${minutesToReadable(DEPT_START_MINUTES)} to ${minutesToReadable(DEPT_END_MINUTES)}).`,
+    });
+  }
+
+  // 3. Department Lunch Break Check (10:30 AM – 11:45 AM)
   if (overlapsLunchBreak(startMinutes, endMinutes)) {
     conflicts.push({
       type: 'batch',
       entity: 'Department Lunch Break',
-      description: `Cannot schedule classes during mandatory Department Lunch Break (10:30 AM – 11:45 AM).`,
+      description: `Cannot schedule classes during mandatory Department Lunch Break (${LUNCH_BREAK_LABEL}).`,
     });
   }
 
@@ -46,14 +80,14 @@ export function checkBookingConflicts(
     (row) => row.date === date && (!excludeId || row.id !== excludeId)
   );
 
-  const cleanTeacher = teacherName.trim().toLowerCase();
-  const cleanVenue = venue.trim().toLowerCase();
-  const batchSet = new Set(courseSems.map((b) => b.trim().toLowerCase()));
+  const cleanTeacher = normalizeKey(teacherName);
+  const cleanVenue = normalizeKey(venue);
+  const batchSet = new Set(courseSems.map(normalizeKey));
 
   for (const row of targetDateRows) {
     if (intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)) {
-      // 1. Teacher double-booking conflict
-      if (cleanTeacher && row.teacherName.trim().toLowerCase() === cleanTeacher) {
+      // Teacher double-booking conflict
+      if (cleanTeacher && normalizeKey(row.teacherName) === cleanTeacher) {
         conflicts.push({
           type: 'teacher',
           entity: row.teacherName,
@@ -62,8 +96,8 @@ export function checkBookingConflicts(
         });
       }
 
-      // 2. Venue double-booking conflict
-      if (cleanVenue && row.venue.trim().toLowerCase() === cleanVenue) {
+      // Venue double-booking conflict
+      if (cleanVenue && normalizeKey(row.venue) === cleanVenue) {
         conflicts.push({
           type: 'venue',
           entity: row.venue,
@@ -72,8 +106,8 @@ export function checkBookingConflicts(
         });
       }
 
-      // 3. Batch conflict
-      if (batchSet.has(row.courseSem.trim().toLowerCase())) {
+      // Batch conflict
+      if (batchSet.has(normalizeKey(row.courseSem))) {
         conflicts.push({
           type: 'batch',
           entity: row.courseSem,
@@ -102,12 +136,12 @@ export function isTeacherFree(
   excludeId?: string
 ): boolean {
   if (!teacherName) return true;
-  const clean = teacherName.trim().toLowerCase();
+  const clean = normalizeKey(teacherName);
   return !schedule.some(
     (row) =>
       row.date === date &&
       (!excludeId || row.id !== excludeId) &&
-      row.teacherName.trim().toLowerCase() === clean &&
+      normalizeKey(row.teacherName) === clean &&
       intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
   );
 }
@@ -124,12 +158,12 @@ export function isVenueFree(
   excludeId?: string
 ): boolean {
   if (!venue) return true;
-  const clean = venue.trim().toLowerCase();
+  const clean = normalizeKey(venue);
   return !schedule.some(
     (row) =>
       row.date === date &&
       (!excludeId || row.id !== excludeId) &&
-      row.venue.trim().toLowerCase() === clean &&
+      normalizeKey(row.venue) === clean &&
       intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
   );
 }
@@ -148,10 +182,11 @@ export function getAvailableTeachers(
   const busy: { teacher: string; reason: string }[] = [];
 
   for (const teacher of allTeachers) {
+    const cleanTeacher = normalizeKey(teacher);
     const conflict = schedule.find(
       (row) =>
         row.date === date &&
-        row.teacherName.trim().toLowerCase() === teacher.trim().toLowerCase() &&
+        normalizeKey(row.teacherName) === cleanTeacher &&
         intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
     );
 
@@ -182,10 +217,11 @@ export function getAvailableVenues(
   const busy: { venue: string; reason: string }[] = [];
 
   for (const venue of allVenues) {
+    const cleanVenue = normalizeKey(venue);
     const conflict = schedule.find(
       (row) =>
         row.date === date &&
-        row.venue.trim().toLowerCase() === venue.trim().toLowerCase() &&
+        normalizeKey(row.venue) === cleanVenue &&
         intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
     );
 

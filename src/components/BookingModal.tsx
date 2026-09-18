@@ -37,6 +37,7 @@ interface BookingModalProps {
   initialStartMinutes: number;
   initialEndMinutes: number;
   initialBatch?: string;
+  initialBatches?: string[];
   initialSubject?: string;
   initialTeacherName?: string;
   initialVenue?: string;
@@ -64,6 +65,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   initialStartMinutes,
   initialEndMinutes,
   initialBatch,
+  initialBatches,
   initialSubject,
   initialTeacherName,
   initialVenue,
@@ -81,7 +83,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [subject, setSubject] = useState(initialSubject || 'Advanced Computer Science');
   const [sessionType, setSessionType] = useState<typeof SESSION_TYPES[number]>('Guest Lecture');
   const [selectedBatches, setSelectedBatches] = useState<string[]>(
-    initialBatch ? [initialBatch] : availableBatches.slice(0, 1)
+    initialBatches && initialBatches.length > 0
+      ? initialBatches
+      : initialBatch
+      ? [initialBatch]
+      : availableBatches.slice(0, 1)
   );
   const [teacherName, setTeacherName] = useState('');
   const [isCustomTeacher, setIsCustomTeacher] = useState(false);
@@ -101,7 +107,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       setDate(initialDate);
       setStartMinutes(initialStartMinutes || 480);
       setEndMinutes(initialEndMinutes || 540);
-      setSelectedBatches(initialBatch ? [initialBatch] : availableBatches.slice(0, 1));
+      setSelectedBatches(
+        initialBatches && initialBatches.length > 0
+          ? initialBatches
+          : initialBatch
+          ? [initialBatch]
+          : availableBatches.slice(0, 1)
+      );
       setSessionTitle(initialSessionTitle || '');
       setSubject(initialSubject || 'Advanced Computer Science');
       setForceBook(false);
@@ -160,7 +172,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         }
       }
     }
-  }, [isOpen, initialDate, initialStartMinutes, initialEndMinutes, initialBatch, initialSubject, initialTeacherName, initialVenue, initialSessionTitle]);
+  }, [isOpen, initialDate, initialStartMinutes, initialEndMinutes, initialBatch, initialBatches, initialSubject, initialTeacherName, initialVenue, initialSessionTitle]);
 
   if (!isOpen) return null;
 
@@ -224,6 +236,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     endMinutes
   );
 
+  const hasMultiWeekConflict = recurrenceType === 'weekly' && multiWeekConflicts.length > 0;
+  const hasAnyConflict = conflictResult.hasConflict || hasMultiWeekConflict;
+  const isBlocked = (hasAnyConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes);
+
   const handleToggleBatch = (b: string) => {
     if (selectedBatches.includes(b)) {
       if (selectedBatches.length > 1) {
@@ -258,6 +274,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
 
     if (conflictResult.hasConflict && !forceBook) {
+      return;
+    }
+
+    if (recurrenceType === 'weekly' && multiWeekConflicts.length > 0 && !forceBook) {
+      alert('Cannot schedule recurring session: conflicts detected in future weeks. Resolve conflicts or enable admin override.');
       return;
     }
 
@@ -664,7 +685,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           </div>
 
-          {/* High-Contrast Conflict Alert Banner - Light Mode */}
+          {/* High-Contrast Conflict Alert Banner (Week 1 / Single Date) */}
           {conflictResult.hasConflict && (
             <div className="p-4 rounded-2xl bg-rose-50 border border-rose-300 space-y-2 shadow-sm">
               <div className="flex items-center gap-2 text-xs font-black text-rose-800">
@@ -690,11 +711,44 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
           )}
 
-          {!conflictResult.hasConflict && (
+          {/* Multi-Week Recurring Conflicts Banner (Weeks 2..N) */}
+          {hasMultiWeekConflict && (
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 space-y-2.5 shadow-sm">
+              <div className="flex items-center gap-2 text-xs font-black text-amber-900">
+                <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                <span>Future Recurring Week Conflicts ({multiWeekConflicts.length} {multiWeekConflicts.length === 1 ? 'week has' : 'weeks have'} clashes)</span>
+              </div>
+              <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
+                {multiWeekConflicts.map((c, i) => (
+                  <div key={i} className="text-xs bg-amber-100/70 p-2 rounded-xl border border-amber-200">
+                    <p className="font-bold text-amber-950">Week {c.weekNum} ({c.date}):</p>
+                    <ul className="text-amber-900 list-disc pl-5 font-medium mt-0.5 space-y-0.5">
+                      {c.conflicts.map((desc, di) => (
+                        <li key={di}>{desc}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div className="pt-2 border-t border-amber-200">
+                <label className="flex items-center gap-2 text-[11px] text-amber-950 cursor-pointer font-bold">
+                  <input
+                    type="checkbox"
+                    checked={forceBook}
+                    onChange={(e) => setForceBook(e.target.checked)}
+                    className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                  />
+                  <span>Admin override (Schedule recurring despite future clashes)</span>
+                </label>
+              </div>
+            </div>
+          )}
+
+          {!hasAnyConflict && (
             <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center gap-2.5 text-xs text-emerald-900 shadow-sm font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               <span>
-                <strong>Conflict Verified:</strong> Faculty member, venue, and assigned batches are completely free at this time.
+                <strong>Conflict Verified:</strong> Faculty member, venue, and assigned batches are completely free at this time{recurrenceType === 'weekly' ? ` across all ${repeatWeeks} weeks.` : '.'}
               </span>
             </div>
           )}
@@ -710,9 +764,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={(conflictResult.hasConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes)}
+              disabled={isBlocked}
               className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all shadow-md cursor-pointer ${
-                (conflictResult.hasConflict && !forceBook) || overlapsLunchBreak(startMinutes, endMinutes)
+                isBlocked
                   ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                   : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 active:scale-95'
               }`}

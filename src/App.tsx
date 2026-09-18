@@ -38,6 +38,7 @@ export function App() {
     startMinutes: number;
     endMinutes: number;
     batch?: string;
+    batches?: string[];
     subject?: string;
     teacherName?: string;
     venue?: string;
@@ -143,6 +144,7 @@ export function App() {
     startMinutes: number;
     endMinutes: number;
     batch?: string;
+    batches?: string[];
     subject?: string;
     teacherName?: string;
     venue?: string;
@@ -297,6 +299,7 @@ export function App() {
         initialStartMinutes={bookingContext?.startMinutes || 480}
         initialEndMinutes={bookingContext?.endMinutes || 540}
         initialBatch={bookingContext?.batch}
+        initialBatches={bookingContext?.batches}
         initialSubject={bookingContext?.subject}
         initialTeacherName={bookingContext?.teacherName}
         initialVenue={bookingContext?.venue}

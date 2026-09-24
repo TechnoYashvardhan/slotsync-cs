@@ -57,7 +57,7 @@ export function App() {
     }, 4000);
   };
 
-  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data_v6';
+  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data_v7';
 
   // 1. Initial Mount: restore from localStorage or fallback to mock CS schedule
   useEffect(() => {

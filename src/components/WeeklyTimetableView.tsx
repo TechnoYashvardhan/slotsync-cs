@@ -74,7 +74,7 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
   allVenues,
   onBookSlot,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<string>(currentDate || '21-09-2026');
+  const [selectedDate, setSelectedDate] = useState<string>(currentDate || '25-09-2026');
   const [selectedBatch, setSelectedBatch] = useState<string>('All');
   const [selectedVenue, setSelectedVenue] = useState<string>('All');
   const [mobileActiveDay, setMobileActiveDay] = useState<string>('');

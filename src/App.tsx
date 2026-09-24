@@ -24,7 +24,7 @@ import { CheckCircle2, Sparkles, ShieldCheck } from 'lucide-react';
 
 export function App() {
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
-  const [targetDate, setTargetDate] = useState<string>('');
+  const [targetDate, setTargetDate] = useState<string>('25-09-2026');
   const [selectedBatches, setSelectedBatches] = useState<string[]>([]);
   const [requestedDuration, setRequestedDuration] = useState<number>(60);
   const [activeTab, setActiveTab] = useState<NavTab>('finder');
@@ -56,7 +56,7 @@ export function App() {
     }, 4000);
   };
 
-  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data';
+  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data_v2';
 
   // 1. Initial Mount: restore from localStorage or fallback to mock CS schedule
   useEffect(() => {
@@ -201,7 +201,7 @@ export function App() {
 
   const handleQuickBook = () => {
     handleOpenBooking({
-      date: targetDate || (availableDates.length > 0 ? availableDates[0] : '21-09-2026'),
+      date: targetDate || (availableDates.length > 0 ? availableDates[0] : '25-09-2026'),
       startMinutes: 480,
       endMinutes: 540,
       batches: selectedBatches.length > 0 ? selectedBatches : undefined,

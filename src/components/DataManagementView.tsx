@@ -94,7 +94,7 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({
             Active Batches
           </span>
           <div className="text-3xl font-mono font-black text-slate-900">{totalBatches}</div>
-          <span className="text-[11px] text-slate-400 font-medium">BCA, MCA, B.Tech</span>
+          <span className="text-[11px] text-slate-400 font-medium">From schedule CSV</span>
         </div>
 
         {/* Dates Covered */}
@@ -143,7 +143,7 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white font-extrabold text-xs shadow-md shadow-indigo-500/20 transition cursor-pointer active:scale-95"
           >
             <Sparkles className="w-4 h-4 text-emerald-300" />
-            <span>Load Demo Data (37 Rows)</span>
+            <span>Reset to CSV Timetable ({schedule.length} Rows)</span>
           </button>
         </div>
 

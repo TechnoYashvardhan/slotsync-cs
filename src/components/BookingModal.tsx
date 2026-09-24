@@ -47,6 +47,7 @@ interface BookingModalProps {
   availableBatches: string[];
   availableTeachers: string[];
   availableVenues: string[];
+  availableSubjects?: string[];
   schedule: ScheduleRow[];
   onConfirmBooking: (newRows: ScheduleRow[]) => void;
 }
@@ -75,6 +76,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   availableBatches,
   availableTeachers,
   availableVenues,
+  availableSubjects = [],
   schedule,
   onConfirmBooking,
 }) => {
@@ -82,7 +84,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [startMinutes, setStartMinutes] = useState(initialStartMinutes || 480);
   const [endMinutes, setEndMinutes] = useState(initialEndMinutes || 540);
   const [sessionTitle, setSessionTitle] = useState(initialSessionTitle || '');
-  const [subject, setSubject] = useState(initialSubject || 'Advanced Computer Science');
+  const [subject, setSubject] = useState(initialSubject || (availableSubjects.length > 0 ? availableSubjects[0] : ''));
   const [sessionType, setSessionType] = useState<typeof SESSION_TYPES[number]>('Guest Lecture');
   const [selectedBatches, setSelectedBatches] = useState<string[]>(
     initialBatches && initialBatches.length > 0
@@ -117,7 +119,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           : availableBatches.slice(0, 1)
       );
       setSessionTitle(initialSessionTitle || '');
-      setSubject(initialSubject || 'Advanced Computer Science');
+      setSubject(initialSubject || (availableSubjects.length > 0 ? availableSubjects[0] : ''));
       setForceBook(false);
       setRecurrenceType('once');
       setRepeatWeeks(4);
@@ -383,9 +385,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 required
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                placeholder="e.g. Distributed Systems"
+                placeholder="e.g. Operating Systems / JAVA"
+                list="available-subjects-list"
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm font-medium"
               />
+              {availableSubjects.length > 0 && (
+                <datalist id="available-subjects-list">
+                  {availableSubjects.map((s) => (
+                    <option key={s} value={s} />
+                  ))}
+                </datalist>
+              )}
             </div>
 
             <div className="space-y-1.5">

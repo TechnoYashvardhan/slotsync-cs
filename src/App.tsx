@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { ScheduleRow } from './types/schedule';
-import { DEFAULT_MOCK_CSV, KNOWN_TEACHERS, KNOWN_VENUES } from './data/mockData';
+import { DEFAULT_MOCK_CSV } from './data/mockData';
 import { parseScheduleCSV, generateSampleCSVString } from './utils/csvParser';
 import {
   findFreeSlots,
@@ -9,6 +9,7 @@ import {
   getDistinctBatches,
   getDistinctTeachers,
   getDistinctVenues,
+  getDistinctSubjects,
 } from './utils/scheduleEngine';
 import { exportScheduleToCSV, exportScheduleToPDF } from './utils/exportUtils';
 import { Navbar, NavTab } from './components/Navbar';
@@ -56,7 +57,7 @@ export function App() {
     }, 4000);
   };
 
-  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data_v4';
+  const STORAGE_SCHEDULE_KEY = 'slotsync_cs_schedule_data_v6';
 
   // 1. Initial Mount: restore from localStorage or fallback to mock CS schedule
   useEffect(() => {
@@ -106,17 +107,12 @@ export function App() {
     }
   }, [schedule]);
 
-  // 2. Extracted Distinct Lists
+  // 2. Extracted Distinct Lists - strictly derived from schedule CSV without sample data
   const availableDates = useMemo(() => getDistinctDates(schedule), [schedule]);
   const availableBatches = useMemo(() => getDistinctBatches(schedule), [schedule]);
-  const availableTeachers = useMemo(() => {
-    const fromSchedule = getDistinctTeachers(schedule);
-    return Array.from(new Set([...fromSchedule, ...KNOWN_TEACHERS])).sort();
-  }, [schedule]);
-  const availableVenues = useMemo(() => {
-    const fromSchedule = getDistinctVenues(schedule);
-    return Array.from(new Set([...fromSchedule, ...KNOWN_VENUES])).sort();
-  }, [schedule]);
+  const availableTeachers = useMemo(() => getDistinctTeachers(schedule), [schedule]);
+  const availableVenues = useMemo(() => getDistinctVenues(schedule), [schedule]);
+  const availableSubjects = useMemo(() => getDistinctSubjects(schedule), [schedule]);
 
   // Keep targetDate initialized if empty
   useEffect(() => {
@@ -385,6 +381,7 @@ export function App() {
             availableBatches={availableBatches}
             availableTeachers={availableTeachers}
             availableVenues={availableVenues}
+            availableSubjects={availableSubjects}
             schedule={schedule}
             onConfirmBooking={handleConfirmBooking}
           />

@@ -220,3 +220,7 @@ export function getDistinctTeachers(schedule: ScheduleRow[]): string[] {
 export function getDistinctVenues(schedule: ScheduleRow[]): string[] {
   return Array.from(new Set(schedule.map((r) => r.venue))).filter(Boolean).sort();
 }
+
+export function getDistinctSubjects(schedule: ScheduleRow[]): string[] {
+  return Array.from(new Set(schedule.map((r) => r.subject))).filter(Boolean).sort();
+}

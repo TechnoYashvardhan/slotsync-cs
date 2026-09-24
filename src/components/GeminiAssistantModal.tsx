@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   Sparkles,
   X,
@@ -60,25 +60,6 @@ interface GeminiAssistantModalProps {
   }) => void;
 }
 
-const PRESET_PROMPTS = [
-  {
-    label: '⚡ Find joint free slot',
-    query: 'Find the best conflict-free common slot for BCA 1st Sem and BCA 3rd Sem today.',
-  },
-  {
-    label: '🏫 When is Lab 1 free?',
-    query: 'When is Lab 1 (Programming) completely free today for an extra session?',
-  },
-  {
-    label: '📢 Draft student notice',
-    query: 'Draft an official department circular for an upcoming Guest Lecture on "Artificial Intelligence & Distributed Systems" by Dr. Alan Turing in Seminar Hall A.',
-  },
-  {
-    label: '📊 Audit timetable health',
-    query: 'Analyze the current timetable for bottleneck rooms, back-to-back faculty workload, and prime unused gaps.',
-  },
-];
-
 export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
   isOpen,
   onClose,
@@ -100,19 +81,49 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const presetPrompts: { label: string; query: string }[] = useMemo(() => {
+    const b1 = allBatches[0] || 'BCA 1st Sem';
+    const b2 = allBatches[1] || allBatches[0] || 'BCA 3rd Sem';
+    const v1 = allVenues[0] || 'Lab';
+    const t1 = allTeachers[0] || 'Faculty Member';
+
+    return [
+      {
+        label: '⚡ Find joint free slot',
+        query: `Find the best conflict-free common slot for ${b1} and ${b2} today.`,
+      },
+      {
+        label: `🏫 When is ${v1} free?`,
+        query: `When is ${v1} completely free today for an extra session?`,
+      },
+      {
+        label: '📢 Draft student notice',
+        query: `Draft an official department circular for an upcoming session by ${t1} in ${v1}.`,
+      },
+      {
+        label: '📊 Audit timetable health',
+        query: 'Analyze the current timetable for bottleneck rooms, back-to-back faculty workload, and prime unused gaps.',
+      },
+    ];
+  }, [allBatches, allVenues, allTeachers]);
+
   useEffect(() => {
     if (isOpen) {
       setApiKeyInput(getGeminiApiKey());
+      const b1 = allBatches[0] || 'BCA';
+      const v1 = allVenues[0] || 'Lab';
+      const t1 = allTeachers[0] || 'Faculty';
+
       setMessages([
         {
           id: 'welcome',
           sender: 'assistant',
-          text: `### 👋 Welcome to your Gemini Timetable Copilot!\n\nI have real-time awareness of your **${schedule.length} departmental classes**, faculty assignments, and conflict-free slots on **${targetDate || 'today'}**.\n\n* **Try asking:** *"Find a 1.5-hour free slot for BCA & MCA"* or *"When is Lab 1 free?"*\n* **Automated Notice:** *"Draft a WhatsApp circular for Dr. Turing's guest lecture"*`,
+          text: `### 👋 Welcome to your Gemini Timetable Copilot!\n\nI have real-time awareness of your **${schedule.length} departmental classes**, faculty assignments, and conflict-free slots on **${targetDate || 'today'}**.\n\n* **Try asking:** *"Find a 1-hour free slot for ${b1}"* or *"When is ${v1} free?"*\n* **Automated Notice:** *"Draft a WhatsApp circular for ${t1}'s session"*`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
     }
-  }, [isOpen, targetDate, schedule.length]);
+  }, [isOpen, targetDate, schedule.length, allBatches, allVenues, allTeachers]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -400,7 +411,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
 
         {/* Quick Suggestion Prompt Chips */}
         <div className="px-4 py-2.5 bg-slate-100/70 border-t border-slate-200 overflow-x-auto flex gap-2 no-scrollbar">
-          {PRESET_PROMPTS.map((p, idx) => (
+          {presetPrompts.map((p, idx) => (
             <button
               key={idx}
               type="button"
@@ -426,7 +437,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask Gemini (e.g. Find 2-hr slot for BCA, or When is Lab 1 free?)..."
+              placeholder={`Ask Gemini (e.g. Find 1-hr slot for ${allBatches[0] || 'BCA'}, or When is ${allVenues[0] || 'lab'} free?)...`}
               disabled={isLoading}
               className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-sm font-medium disabled:bg-slate-100"
             />

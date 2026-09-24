@@ -175,11 +175,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={onLoadDemo}
-              title="Reset and reload built-in CS department demo dataset"
+              title="Reset and reload default CS department CSV dataset"
               className="hidden lg:inline-flex items-center gap-2 px-3.5 py-2.5 rounded-2xl text-xs font-extrabold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-sm transition-all cursor-pointer active:scale-95"
             >
               <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Load Demo</span>
+              <span>Reset Data</span>
             </button>
 
             <button

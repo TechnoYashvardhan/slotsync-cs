@@ -5,6 +5,8 @@ import {
   minutesToHHMM,
   minutesToReadable,
   formatTimeRangeToCSV,
+  formatDuration,
+  formatFriendlyDate,
   DEPT_START_MINUTES,
   DEPT_END_MINUTES,
   addWeeksToDDMMYYYY,
@@ -338,10 +340,50 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     onClose();
   };
 
-  const timeStepOptions: { minutes: number; label: string }[] = [];
-  for (let m = DEPT_START_MINUTES; m <= DEPT_END_MINUTES; m += 15) {
-    timeStepOptions.push({ minutes: m, label: minutesToReadable(m) });
-  }
+  const safeToHtmlDate = (dStr: string): string => {
+    if (!dStr) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dStr)) return dStr;
+    const parts = dStr.split('-');
+    if (parts.length === 3) {
+      if (parts[2].length === 4) return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      if (parts[0].length === 4) return dStr;
+    }
+    return dStr;
+  };
+
+  const safeToDDMMYYYY = (dStr: string): string => {
+    if (!dStr) return '';
+    if (/^\d{2}-\d{2}-\d{4}$/.test(dStr)) return dStr;
+    const parts = dStr.split('-');
+    if (parts.length === 3) {
+      if (parts[0].length === 4) return `${parts[2].padStart(2, '0')}-${parts[1].padStart(2, '0')}-${parts[0]}`;
+      if (parts[2].length === 4) return dStr;
+    }
+    return dStr;
+  };
+
+  const timeStepOptions = useMemo(() => {
+    const list: { minutes: number; label: string }[] = [];
+    const seen = new Set<number>();
+
+    // 5-minute intervals cover every timetable period (08:15, 08:20, 09:15, 09:20, 10:20, 10:30, 11:45, 12:45, 12:50, 01:50, etc.)
+    for (let m = DEPT_START_MINUTES; m <= DEPT_END_MINUTES; m += 5) {
+      list.push({ minutes: m, label: minutesToReadable(m) });
+      seen.add(m);
+    }
+
+    if (startMinutes !== undefined && !seen.has(startMinutes)) {
+      list.push({ minutes: startMinutes, label: minutesToReadable(startMinutes) });
+      seen.add(startMinutes);
+    }
+    if (endMinutes !== undefined && !seen.has(endMinutes)) {
+      list.push({ minutes: endMinutes, label: minutesToReadable(endMinutes) });
+      seen.add(endMinutes);
+    }
+
+    list.sort((a, b) => a.minutes - b.minutes);
+    return list;
+  }, [startMinutes, endMinutes]);
 
   if (!isOpen) return null;
 
@@ -372,6 +414,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
+
+          {/* Auto-Filled Slot Confirmation Banner */}
+          <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+              <span className="font-semibold text-zinc-300">
+                Selected Slot:
+              </span>
+              <span className="font-mono font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
+                {minutesToReadable(startMinutes)} → {minutesToReadable(endMinutes)} ({formatDuration(endMinutes - startMinutes)})
+              </span>
+            </div>
+            <div className="text-[11px] font-mono text-zinc-400">
+              {formatFriendlyDate(date)} • {selectedBatches.join(', ') || 'Select batch'}
+            </div>
+          </div>
           
           {/* Row 1: Subject, Session Title & Category */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -429,16 +487,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           {/* Row 2: Date & Time Window */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-zinc-800/50 border border-white/[0.06]">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-zinc-400 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-indigo-400" />
-                Date
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-zinc-400 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                  Date
+                </label>
+                <span className="text-[10px] font-mono text-indigo-400">
+                  {formatFriendlyDate(date)}
+                </span>
+              </div>
               <input
                 type="date"
-                value={ddmmYYYYToHtmlDate(date)}
+                value={safeToHtmlDate(date)}
                 onChange={(e) => {
-                  const newD = htmlDateToDDMMYYYY(e.target.value);
-                  if (newD) setDate(newD);
+                  if (e.target.value) {
+                    setDate(safeToDDMMYYYY(e.target.value));
+                  }
                 }}
                 className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-mono font-medium text-zinc-100 focus:outline-none focus:border-indigo-500/40 cursor-pointer"
               />

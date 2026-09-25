@@ -37,6 +37,9 @@ export interface FreeSlot {
   durationMinutes: number;
   durationFormatted: string; // e.g. "2h 00m" or "1 hr"
   applicableBatches: string[];
+  windowStartMinutes?: number;
+  windowEndMinutes?: number;
+  windowFormattedRange?: string;
 }
 
 export interface BookingFormData {

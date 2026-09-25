@@ -284,10 +284,10 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
           <div>
             <h3 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-emerald-400" />
-              Identified Conflict-Free Windows ({freeSlots.length})
+              Identified Conflict-Free Slots ({freeSlots.length})
             </h3>
             <p className="text-xs text-zinc-500 mt-1 font-medium">
-              Target Date: <strong className="text-zinc-200 font-mono tabular-nums">{selectedDate}</strong> • Minimum duration: <strong className="text-emerald-500 font-mono tabular-nums">≥ {selectedDuration} mins</strong>
+              Target Date: <strong className="text-zinc-200 font-mono tabular-nums">{selectedDate}</strong> • Required duration: <strong className="text-emerald-400 font-mono tabular-nums">{selectedDuration} mins</strong>
             </p>
           </div>
 
@@ -357,14 +357,14 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                     {/* Top Badges */}
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-[10px] font-mono tabular-nums font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
-                        WINDOW #{idx + 1}
+                        SLOT #{idx + 1}
                       </span>
-                      <span className="text-xs font-mono tabular-nums font-black text-amber-400 bg-amber-500/15 px-2.5 py-1 rounded-full border border-amber-500/30">
-                        {slot.durationFormatted} Free
+                      <span className="text-xs font-mono tabular-nums font-black text-emerald-400 bg-emerald-500/15 px-2.5 py-1 rounded-full border border-emerald-500/30">
+                        {slot.durationFormatted}
                       </span>
                     </div>
 
-                    {/* Highly readable time window format with colons and arrow */}
+                    {/* Highly readable time slot format with colons and arrow */}
                     <div className="mb-4">
                       <div className="flex items-baseline gap-2 text-2xl font-mono tabular-nums font-black text-zinc-100 tracking-tight group-hover:text-emerald-400 transition-colors">
                         <span>{minutesToReadable(slot.startMinutes)}</span>
@@ -373,9 +373,11 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                       </div>
                       
                       <div className="text-xs text-zinc-500 mt-2 flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] tabular-nums text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded border border-white/[0.08] font-medium">
-                          {slot.formattedRange}
-                        </span>
+                        {slot.windowFormattedRange && (
+                          <span className="font-mono text-[10px] tabular-nums text-zinc-400 bg-zinc-800/80 px-2 py-0.5 rounded border border-white/[0.06] font-medium" title="Continuous open window">
+                            Window: {slot.windowFormattedRange}
+                          </span>
+                        )}
                         <span>•</span>
                         <span className="text-emerald-500 font-semibold flex items-center gap-1">
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
@@ -416,14 +418,14 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                       onBookSlot({
                         date: slot.date,
                         startMinutes: slot.startMinutes,
-                        endMinutes: Math.min(slot.endMinutes, slot.startMinutes + selectedDuration),
+                        endMinutes: slot.endMinutes,
                         batch: slot.applicableBatches.length === 1 ? slot.applicableBatches[0] : undefined,
                         batches: slot.applicableBatches,
                       })
                     }
                     className="mt-5 w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-card transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                   >
-                    <span>Reserve Session in Slot</span>
+                    <span>Reserve {slot.durationFormatted} Slot</span>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
                 </div>

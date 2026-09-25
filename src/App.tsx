@@ -199,7 +199,7 @@ export function App() {
     handleOpenBooking({
       date: targetDate || (availableDates.length > 0 ? availableDates[0] : '25-09-2026'),
       startMinutes: 480,
-      endMinutes: 540,
+      endMinutes: 480 + requestedDuration,
       batches: selectedBatches.length > 0 ? selectedBatches : undefined,
     });
   };
@@ -393,14 +393,15 @@ export function App() {
       {isBookingOpen && (
         <ErrorBoundary>
           <BookingModal
+            key={`booking-${isBookingOpen}-${bookingContext?.date}-${bookingContext?.startMinutes}-${bookingContext?.endMinutes}-${bookingContext?.batch || ''}`}
             isOpen={isBookingOpen}
             onClose={() => {
               setIsBookingOpen(false);
               setBookingContext(null);
             }}
             initialDate={bookingContext?.date || targetDate}
-            initialStartMinutes={bookingContext?.startMinutes || 480}
-            initialEndMinutes={bookingContext?.endMinutes || 540}
+            initialStartMinutes={bookingContext?.startMinutes !== undefined ? bookingContext.startMinutes : 480}
+            initialEndMinutes={bookingContext?.endMinutes !== undefined ? bookingContext.endMinutes : (480 + requestedDuration)}
             initialBatch={bookingContext?.batch}
             initialBatches={bookingContext?.batches}
             initialSubject={bookingContext?.subject}

@@ -116,13 +116,12 @@ export function findFreeSlots(
     endMinutes: LUNCH_BREAK_END_MINUTES,
   });
 
-  // Invert the occupied blocks
+  // Invert the occupied blocks to find continuous open windows
   const freeIntervals = invertOccupiedBlocks(occupiedIntervals);
 
-  // Filter intervals that satisfy minDurationMinutes and convert to FreeSlot objects
-  const freeSlots: FreeSlot[] = freeIntervals
-    .filter((interval) => interval.endMinutes - interval.startMinutes >= minDurationMinutes)
-    .map((interval, index) => {
+  // If minDurationMinutes is 0, return raw windows
+  if (minDurationMinutes <= 0) {
+    return freeIntervals.map((interval, index) => {
       const duration = interval.endMinutes - interval.startMinutes;
       return {
         id: `free-${targetDate}-${interval.startMinutes}-${interval.endMinutes}-${index}`,
@@ -135,8 +134,46 @@ export function findFreeSlots(
         durationMinutes: duration,
         durationFormatted: formatDuration(duration),
         applicableBatches: selectedBatches,
+        windowStartMinutes: interval.startMinutes,
+        windowEndMinutes: interval.endMinutes,
+        windowFormattedRange: formatTimeRangeToCSV(interval.startMinutes, interval.endMinutes),
       };
     });
+  }
+
+  const duration = minDurationMinutes;
+  const freeSlots: FreeSlot[] = [];
+  let index = 0;
+
+  for (const win of freeIntervals) {
+    const winDuration = win.endMinutes - win.startMinutes;
+    if (winDuration < duration) continue;
+
+    const winFormattedRange = formatTimeRangeToCSV(win.startMinutes, win.endMinutes);
+
+    // Segment continuous window into bookable slots matching the required duration
+    let slotStart = win.startMinutes;
+    while (slotStart + duration <= win.endMinutes) {
+      const slotEnd = slotStart + duration;
+      freeSlots.push({
+        id: `free-${targetDate}-${slotStart}-${slotEnd}-${index++}`,
+        date: targetDate,
+        startMinutes: slotStart,
+        endMinutes: slotEnd,
+        startTime: minutesToReadable(slotStart),
+        endTime: minutesToReadable(slotEnd),
+        formattedRange: formatTimeRangeToCSV(slotStart, slotEnd),
+        durationMinutes: duration,
+        durationFormatted: formatDuration(duration),
+        applicableBatches: selectedBatches,
+        windowStartMinutes: win.startMinutes,
+        windowEndMinutes: win.endMinutes,
+        windowFormattedRange: winFormattedRange,
+      });
+
+      slotStart = slotEnd;
+    }
+  }
 
   return freeSlots;
 }

@@ -151,41 +151,41 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
     <div className="space-y-6">
       
       {/* Header & Controls Bar */}
-      <div className="glass-panel p-6 rounded-3xl shadow-sm border border-slate-200/90 space-y-4">
+      <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           
           <div>
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/20 text-indigo-400">
                 <Calendar className="w-5 h-5" />
               </div>
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-lg font-semibold text-zinc-100 tracking-tight">
                 Weekly Master Timetable
               </h2>
-              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+              <span className="text-xs px-2.5 py-1 rounded-lg font-mono font-medium bg-zinc-800/60 text-zinc-300 border border-white/[0.05]">
                 Monday – Saturday
               </span>
             </div>
-            <p className="text-xs text-slate-500 font-medium mt-1">
+            <p className="text-xs text-zinc-500 font-medium">
               Cross-day departmental class routine and available gaps matrix
             </p>
           </div>
 
           {/* Week Navigation Stepper */}
-          <div className="flex items-center gap-2 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200 shadow-inner">
+          <div className="flex items-center gap-2 bg-zinc-900/50 p-1.5 rounded-xl border border-white/[0.04]">
             <button
               onClick={handlePrevWeek}
-              className="p-2 rounded-xl bg-white text-slate-700 hover:text-slate-900 shadow-2xs border border-slate-200/80 transition cursor-pointer hover:bg-slate-50"
+              className="p-2 rounded-lg bg-zinc-800/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-white/[0.06] transition-colors cursor-pointer"
               title="Previous Week"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-3 text-xs font-mono font-bold text-slate-800">
+            <span className="px-3 text-sm font-mono tabular-nums text-zinc-200">
               {weekRangeDisplay}
             </span>
             <button
               onClick={handleNextWeek}
-              className="p-2 rounded-xl bg-white text-slate-700 hover:text-slate-900 shadow-2xs border border-slate-200/80 transition cursor-pointer hover:bg-slate-50"
+              className="p-2 rounded-lg bg-zinc-800/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-white/[0.06] transition-colors cursor-pointer"
               title="Next Week"
             >
               <ChevronRight className="w-4 h-4" />
@@ -195,21 +195,21 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
         </div>
 
         {/* Filter Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200/80">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/[0.08]">
           
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-slate-600 flex items-center gap-1">
-              <Layers className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-semibold text-zinc-400 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-indigo-400" />
               Batch:
             </span>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1.5">
               <button
                 type="button"
                 onClick={() => setSelectedBatch('All')}
-                className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                   selectedBatch === 'All'
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.05]'
                 }`}
               >
                 All Batches
@@ -219,10 +219,10 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                   key={b}
                   type="button"
                   onClick={() => setSelectedBatch(b)}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     selectedBatch === b
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.05]'
                   }`}
                 >
                   {b}
@@ -231,15 +231,15 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-600 flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-sky-600" />
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-zinc-400 flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-sky-400" />
               Venue:
             </span>
             <select
               value={selectedVenue}
               onChange={(e) => setSelectedVenue(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-xs text-slate-800 font-bold focus:outline-none focus:border-indigo-500 shadow-sm"
+              className="bg-zinc-800/60 border border-white/[0.08] rounded-lg px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 transition-all appearance-none cursor-pointer"
             >
               <option value="All">All Rooms & Labs</option>
               {allVenues.map((v) => (
@@ -253,43 +253,43 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
       </div>
 
       {/* Master Weekly Grid Table (Desktop / Tablet) */}
-      <div className="hidden md:block rounded-3xl shadow-sm border-2 border-slate-300 overflow-hidden bg-white">
+      <div className="hidden md:block rounded-2xl border border-zinc-800 overflow-hidden bg-zinc-900/80 backdrop-blur-xl">
         <div className="overflow-x-auto">
           <table className="w-full table-fixed border-collapse text-left min-w-[1050px]">
             
             {/* Table Header: Time Column + 6 Days */}
             <thead>
-              <tr className="bg-slate-100 border-b-2 border-slate-300 text-xs font-bold text-slate-700">
-                <th className="p-3.5 w-36 min-w-[144px] border-r-2 border-slate-300 font-mono text-[11px] uppercase tracking-wider text-slate-700 bg-slate-200/80 font-black sticky left-0 z-20 shadow-[2px_0_4px_rgba(0,0,0,0.03)]">
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-indigo-600" />
+              <tr className="border-b border-zinc-800 text-xs text-zinc-400 font-medium">
+                <th className="p-4 w-36 min-w-[144px] border-r border-zinc-800 font-medium text-xs uppercase tracking-wider text-zinc-400 bg-zinc-900 sticky left-0 z-20">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-indigo-400" />
                     <span>Time Window</span>
                   </div>
                 </th>
                 {weekDays.map((day, dayIdx) => (
                   <th
                     key={day.date}
-                    className={`p-3.5 text-center border-r-2 border-slate-300 last:border-r-0 ${
+                    className={`p-4 text-center border-r border-zinc-800 last:border-r-0 ${
                       day.isTarget
-                        ? 'bg-indigo-50/80 text-indigo-950 font-black'
+                        ? 'bg-indigo-600/10'
                         : dayIdx % 2 === 1
-                        ? 'bg-slate-100/70'
-                        : 'bg-slate-50'
+                        ? 'bg-zinc-800/30'
+                        : 'bg-zinc-900/40'
                     }`}
                   >
-                    <div className="flex flex-col items-center gap-1">
+                    <div className="flex flex-col items-center gap-1.5">
                       <span
-                        className={`text-xs font-black uppercase tracking-wider px-3 py-0.5 rounded-lg ${
+                        className={`text-xs font-medium uppercase tracking-wider px-3 py-1 rounded-lg ${
                           day.isTarget
-                            ? 'bg-indigo-600 text-white shadow-xs ring-2 ring-indigo-300'
-                            : 'bg-slate-200 text-slate-800'
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-zinc-800/80 text-zinc-300'
                         }`}
                       >
                         {day.shortDay}
                       </span>
                       <span
-                        className={`text-[11px] font-mono font-bold ${
-                          day.isTarget ? 'text-indigo-900 font-extrabold' : 'text-slate-600'
+                        className={`text-xs font-mono tabular-nums ${
+                          day.isTarget ? 'text-indigo-400 font-semibold' : 'text-zinc-500'
                         }`}
                       >
                         {day.date}
@@ -301,39 +301,39 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
             </thead>
 
             {/* Table Body: Timetable Periods */}
-            <tbody className="text-xs">
+            <tbody className="text-sm">
               {TIMETABLE_PERIODS.map((block) => (
                 <tr
                   key={block.start}
-                  className={`border-b-2 border-slate-300 last:border-b-0 hover:bg-slate-50/30 transition ${
-                    block.isLunchBreak ? 'bg-amber-50/40' : ''
+                  className={`border-b border-zinc-800 last:border-b-0 hover:bg-zinc-800/30 transition-colors ${
+                    block.isLunchBreak ? 'bg-amber-500/5' : ''
                   }`}
                 >
                   
                   {/* Time Label Column (Sticky Left Anchor) */}
                   <td
-                    className={`p-3.5 border-r-2 border-slate-300 ${
+                    className={`p-4 border-r border-zinc-800 ${
                       block.isLunchBreak
-                        ? 'bg-amber-100/90 border-y-2 border-y-amber-300'
-                        : 'bg-slate-100/90'
-                    } font-mono text-xs font-black text-slate-900 whitespace-nowrap sticky left-0 z-10 shadow-[2px_0_4px_rgba(0,0,0,0.04)]`}
+                        ? 'bg-zinc-900/90 border-y border-y-amber-500/20'
+                        : 'bg-zinc-900/90'
+                    } font-mono tabular-nums text-sm text-zinc-200 whitespace-nowrap sticky left-0 z-10`}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <span
-                        className={`w-2 h-2 rounded-full ${
-                          block.isLunchBreak ? 'bg-amber-600' : 'bg-indigo-600'
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          block.isLunchBreak ? 'bg-amber-500' : 'bg-indigo-500'
                         } flex-shrink-0`}
                       />
                       <div className="flex flex-col">
-                        <span className="text-xs font-black text-slate-900 tracking-tight font-mono">
+                        <span className="text-sm text-zinc-200">
                           {minutesToReadable(block.start)}
                         </span>
-                        <span className="text-[10px] text-slate-500 font-semibold font-mono">
+                        <span className="text-xs text-zinc-500">
                           to {minutesToReadable(block.end)}
                         </span>
                         <span
-                          className={`text-[9px] uppercase tracking-wide font-black ${
-                            block.isLunchBreak ? 'text-amber-800 font-extrabold' : 'text-indigo-600'
+                          className={`text-[10px] uppercase tracking-wide font-semibold mt-0.5 ${
+                            block.isLunchBreak ? 'text-amber-500' : 'text-indigo-400'
                           }`}
                         >
                           {block.name}
@@ -346,21 +346,21 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                   {block.isLunchBreak ? (
                     <td
                       colSpan={6}
-                      className="p-4 bg-gradient-to-r from-amber-50 via-amber-100/80 to-amber-50 border-y-2 border-amber-300 text-center select-none"
+                      className="p-4 bg-amber-500/10 border-y border-amber-500/20 text-center select-none"
                     >
-                      <div className="flex items-center justify-center gap-3">
-                        <div className="p-2 bg-amber-200 text-amber-900 rounded-xl shadow-2xs">
+                      <div className="flex items-center justify-center gap-3 text-amber-400">
+                        <div className="p-2 bg-amber-500/15 rounded-xl border border-amber-500/30">
                           <Utensils className="w-4 h-4" />
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs uppercase tracking-wider font-black text-amber-950">
+                          <span className="text-sm font-semibold uppercase tracking-wider">
                             Department Lunch Break
                           </span>
-                          <span className="text-[11px] font-mono font-black text-amber-900 bg-amber-200/90 px-2.5 py-0.5 rounded-full border border-amber-300">
+                          <span className="text-xs font-mono tabular-nums bg-amber-500/15 px-2.5 py-1 rounded-lg border border-amber-500/30">
                             10:30 AM – 11:45 AM
                           </span>
                         </div>
-                        <span className="text-[11px] text-amber-800 font-semibold hidden lg:inline">
+                        <span className="text-xs text-amber-500/70 hidden lg:inline ml-2">
                           — Mandatory Department Recess • No Classes Scheduled
                         </span>
                       </div>
@@ -375,12 +375,12 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                       return (
                         <td
                           key={day.date}
-                          className={`p-2.5 border-r-2 border-slate-300 last:border-r-0 align-top h-28 ${
+                          className={`p-3 border-r border-zinc-800 last:border-r-0 align-top h-32 ${
                             day.isTarget
-                              ? 'bg-indigo-50/20'
+                              ? 'bg-indigo-500/5'
                               : dayIdx % 2 === 1
-                              ? 'bg-slate-50/40'
-                              : 'bg-white'
+                              ? 'bg-zinc-800/10'
+                              : 'bg-transparent'
                           }`}
                         >
                           {isVacant ? (
@@ -396,29 +396,29 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                   venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                                 })
                               }
-                              className="w-full h-full min-h-[84px] rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 p-2 flex flex-col items-center justify-center text-slate-400 hover:text-emerald-700 transition cursor-pointer group bg-slate-50/30"
+                              className="w-full h-full min-h-[96px] rounded-xl border border-dashed border-zinc-700 hover:border-emerald-500/40 hover:bg-emerald-500/10 bg-zinc-900/40 p-2 flex flex-col items-center justify-center text-zinc-600 hover:text-emerald-400 transition-all cursor-pointer group"
                               title={`Click to book slot on ${day.dayName} ${day.date} (${block.label})`}
                             >
-                              <div className="w-6 h-6 rounded-full bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors shadow-2xs">
-                                <Plus className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:scale-110 transition-transform" />
+                              <div className="w-8 h-8 rounded-full bg-zinc-800/80 group-hover:bg-emerald-500/20 flex items-center justify-center transition-colors">
+                                <Plus className="w-4 h-4 text-zinc-500 group-hover:text-emerald-400 group-hover:scale-110 transition-transform" />
                               </div>
-                              <span className="text-[10px] font-bold mt-1 text-slate-400 group-hover:text-emerald-700 transition-colors">
+                              <span className="text-xs font-medium mt-2 text-zinc-600 group-hover:text-emerald-400/80 transition-colors">
                                 Vacant Slot
                               </span>
-                              <span className="text-[9px] font-mono text-emerald-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-[10px] font-mono text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity mt-1">
                                 + Book Now
                               </span>
                             </div>
                           ) : (
                             /* Occupied Lecture Cards with Multi-Class Header */
-                            <div className="space-y-2">
+                            <div className="space-y-2.5">
                               {lectures.length > 1 && (
-                                <div className="flex items-center justify-between px-2 py-0.5 bg-indigo-50 border border-indigo-200/90 rounded-md text-[9px] font-bold text-indigo-900">
-                                  <span className="flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
+                                <div className="flex items-center justify-between px-2.5 py-1.5 bg-indigo-500/15 border border-indigo-500/30 rounded-lg text-[10px] font-medium text-indigo-300">
+                                  <span className="flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                                     <span>{lectures.length} Simultaneous Classes</span>
                                   </span>
-                                  <span className="font-mono text-[9px] text-indigo-700 font-extrabold">
+                                  <span className="font-mono text-indigo-400">
                                     {minutesToReadable(block.start)}
                                   </span>
                                 </div>
@@ -429,53 +429,53 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                 return (
                                   <div
                                     key={lecture.id}
-                                    className={`p-2 rounded-xl border transition text-[11px] space-y-1 ${
+                                    className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
                                       isContinuation
-                                        ? 'bg-slate-50/80 border-slate-200 border-l-4 border-l-slate-400 opacity-90'
-                                        : 'bg-white border-slate-200/90 shadow-2xs hover:border-indigo-400 hover:shadow-xs border-l-4 border-l-indigo-600'
+                                        ? 'bg-zinc-800/50 border-zinc-700/50 border-l-4 border-l-zinc-600 opacity-80'
+                                        : 'bg-zinc-800/80 border-zinc-700 hover:border-indigo-500/50 border-l-4 border-l-indigo-500'
                                     }`}
                                   >
                                     {isContinuation && (
-                                      <div className="flex items-center gap-1 text-[9px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                                      <div className="flex items-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-800 px-2 py-1 rounded-lg border border-zinc-700">
                                         <span>↳ Ongoing Session</span>
-                                        <span className="font-mono">({lecture.time})</span>
+                                        <span className="font-mono tabular-nums">({lecture.time})</span>
                                       </div>
                                     )}
 
                                     {/* Batch badge + Start time pill */}
-                                    <div className="flex items-center justify-between gap-1">
-                                      <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-extrabold whitespace-nowrap ${
-                                        lecture.courseSem.includes('B.Tech')
-                                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className={`text-[10px] font-mono tabular-nums px-2 py-0.5 rounded-lg border whitespace-nowrap ${
+                                        lecture.courseSem.includes('B.Tech') || lecture.courseSem.includes('BCA')
+                                          ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30'
                                           : lecture.courseSem.includes('MCA')
-                                          ? 'bg-purple-50 text-purple-800 border-purple-300'
-                                          : 'bg-indigo-50 text-indigo-800 border-indigo-300'
+                                          ? 'bg-violet-500/15 text-violet-400 border-violet-500/30'
+                                          : 'bg-zinc-800 text-zinc-300 border-zinc-700'
                                       }`}>
                                         {lecture.courseSem}
                                       </span>
-                                      <span className={`text-[9px] font-mono font-bold px-1 rounded border ${
+                                      <span className={`text-[10px] font-mono tabular-nums px-1.5 py-0.5 rounded-lg border ${
                                         isContinuation
-                                          ? 'text-slate-600 bg-slate-100 border-slate-200'
-                                          : 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                          ? 'text-zinc-400 bg-zinc-800 border-zinc-700'
+                                          : 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20'
                                       }`}>
                                         {isContinuation ? `Started ${minutesToReadable(lecture.startMinutes)}` : lecture.time.split(' to ')[0]}
                                       </span>
                                     </div>
 
                                     {/* Full Subject Name */}
-                                    <div className="font-black text-slate-900 text-xs leading-snug break-words" title={lecture.subject}>
+                                    <div className="font-medium text-zinc-200 text-sm leading-snug break-words" title={lecture.subject}>
                                       {lecture.subject}
                                     </div>
 
                                     {/* Faculty & Venue */}
-                                    <div className="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-1 border-t border-slate-100">
-                                      <span className="truncate flex items-center gap-1">
-                                        <User className="w-2.5 h-2.5 text-indigo-600 flex-shrink-0" />
-                                        <span className="truncate max-w-[70px]">{lecture.teacherName}</span>
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] text-zinc-400 pt-2 border-t border-zinc-700/50">
+                                      <span className="truncate flex items-center gap-1.5">
+                                        <User className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+                                        <span className="truncate max-w-[80px]">{lecture.teacherName}</span>
                                       </span>
-                                      <span className="truncate flex items-center gap-1 font-semibold text-slate-700">
-                                        <MapPin className="w-2.5 h-2.5 text-sky-600 flex-shrink-0" />
-                                        <span className="truncate max-w-[70px]">{lecture.venue}</span>
+                                      <span className="truncate flex items-center gap-1.5 text-zinc-300">
+                                        <MapPin className="w-3 h-3 text-sky-400 flex-shrink-0" />
+                                        <span className="truncate max-w-[80px]">{lecture.venue}</span>
                                       </span>
                                     </div>
                                   </div>
@@ -497,10 +497,10 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
       </div>
 
       {/* Mobile Day-by-Day Routine View (Small Screens) */}
-      <div className="block md:hidden space-y-4">
+      <div className="block md:hidden space-y-5">
         
         {/* Day Selector Tabs Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-2 no-scrollbar">
           {weekDays.map((day) => {
             const isSelected = day.date === mobileActiveDay;
             return (
@@ -508,16 +508,16 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                 key={day.date}
                 type="button"
                 onClick={() => setMobileActiveDay(day.date)}
-                className={`flex flex-col items-center justify-center min-w-[72px] py-2.5 px-3 rounded-2xl transition cursor-pointer flex-shrink-0 ${
+                className={`flex flex-col items-center justify-center min-w-[72px] py-3 px-4 rounded-xl transition-colors cursor-pointer flex-shrink-0 ${
                   isSelected
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 ring-2 ring-indigo-300'
-                    : 'bg-white border-2 border-slate-200 text-slate-700 hover:bg-slate-50'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-zinc-800/60 text-zinc-400 border border-white/[0.05] hover:bg-zinc-800 hover:text-zinc-200'
                 }`}
               >
-                <span className="text-[10px] font-extrabold uppercase tracking-wider">
+                <span className="text-xs font-medium uppercase tracking-wider">
                   {day.shortDay}
                 </span>
-                <span className="text-sm font-mono font-black mt-0.5">
+                <span className="text-sm font-mono tabular-nums mt-1">
                   {day.date.split('-')[0]}
                 </span>
               </button>
@@ -526,28 +526,28 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
         </div>
 
         {/* Selected Day Timetable Feed */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {TIMETABLE_PERIODS.map((block) => {
             if (block.isLunchBreak) {
               return (
                 <div
                   key={block.start}
-                  className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/80 border-2 border-amber-300 p-4 shadow-2xs flex items-center justify-between"
+                  className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex items-center justify-between"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-amber-200 text-amber-900 shadow-2xs">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
                       <Utensils className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-xs font-black uppercase tracking-wider text-amber-950">
+                      <div className="text-sm font-semibold uppercase tracking-wider text-amber-400">
                         Department Lunch Break
                       </div>
-                      <div className="text-[11px] font-mono font-bold text-amber-800">
+                      <div className="text-xs font-mono tabular-nums text-amber-500/80 mt-1">
                         10:30 AM – 11:45 AM (75 Minutes)
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] uppercase font-mono font-black px-2.5 py-1 bg-amber-200 text-amber-950 rounded-lg border border-amber-300">
+                  <span className="text-xs uppercase font-mono px-3 py-1.5 bg-amber-500/15 text-amber-400 rounded-lg border border-amber-500/30 hidden sm:block">
                     Recess
                   </span>
                 </div>
@@ -561,24 +561,24 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
             return (
               <div
                 key={block.start}
-                className="rounded-2xl bg-white border-2 border-slate-300 shadow-2xs space-y-2.5 overflow-hidden"
+                className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl overflow-hidden"
               >
                 {/* Time Block Header */}
-                <div className="flex items-center justify-between text-xs px-3.5 py-2.5 bg-slate-100/90 border-b-2 border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-black px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-sm p-4 bg-zinc-800/40 border-b border-zinc-800">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] font-mono px-2 py-1 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
                       {block.name}
                     </span>
-                    <span className="font-mono font-black text-slate-900 flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-indigo-600" />
+                    <span className="font-mono text-zinc-200 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-indigo-400" />
                       <span>{block.label}</span>
                     </span>
                   </div>
                   <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    className={`text-xs px-3 py-1 rounded-full ${
                       isVacant
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 font-black'
-                        : 'bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold'
+                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'
                     }`}
                   >
                     {isVacant
@@ -590,7 +590,7 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                 </div>
 
                 {/* Content: Either Vacant CTA or Class Cards */}
-                <div className="p-3">
+                <div className="p-4">
                   {isVacant ? (
                     <button
                       type="button"
@@ -604,52 +604,52 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                           venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                         })
                       }
-                      className="w-full py-3 px-3 rounded-xl border-2 border-dashed border-emerald-300 bg-emerald-50/50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98"
+                      className="w-full py-4 px-4 rounded-xl border border-dashed border-zinc-700 bg-zinc-800/40 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-zinc-400 hover:text-emerald-400 text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
                     >
-                      <Plus className="w-4 h-4 text-emerald-600" />
+                      <Plus className="w-5 h-5" />
                       <span>Reserve Session in this Slot</span>
                     </button>
                   ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {lectures.map((lec) => {
                         const isContinuation = lec.startMinutes < block.start;
                         return (
                           <div
                             key={lec.id}
-                            className={`p-3 rounded-xl border text-xs space-y-1.5 ${
+                            className={`p-4 rounded-xl border text-sm space-y-3 ${
                               isContinuation
-                                ? 'bg-slate-100/70 border-slate-200 border-l-4 border-l-slate-400'
-                                : 'bg-slate-50 border-slate-200 border-l-4 border-l-indigo-600'
+                                ? 'bg-zinc-800/50 border-zinc-700/50 border-l-4 border-l-zinc-600 opacity-80'
+                                : 'bg-zinc-800/80 border-zinc-700 border-l-4 border-l-indigo-500'
                             }`}
                           >
                             {isContinuation && (
-                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded border border-slate-300 w-fit">
+                              <div className="flex items-center gap-2 text-xs text-zinc-400 bg-zinc-800 px-3 py-1.5 rounded-lg border border-zinc-700 w-fit">
                                 <span>↳ Ongoing Session</span>
-                                <span className="font-mono">({lec.time})</span>
+                                <span className="font-mono tabular-nums">({lec.time})</span>
                               </div>
                             )}
-                            <div className="flex items-start justify-between gap-2">
-                              <span className="font-extrabold text-slate-900 leading-snug">
+                            <div className="flex items-start justify-between gap-3">
+                              <span className="font-medium text-zinc-100 leading-snug">
                                 {lec.subject}
                               </span>
-                              <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border whitespace-nowrap ${
-                                lec.courseSem.includes('B.Tech')
-                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                              <span className={`text-[11px] font-mono tabular-nums px-2.5 py-1 rounded-lg border whitespace-nowrap ${
+                                lec.courseSem.includes('B.Tech') || lec.courseSem.includes('BCA')
+                                  ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30'
                                   : lec.courseSem.includes('MCA')
-                                  ? 'bg-purple-50 text-purple-800 border-purple-300'
-                                  : 'bg-indigo-50 text-indigo-800 border-indigo-300'
+                                  ? 'bg-violet-500/15 text-violet-400 border-violet-500/30'
+                                  : 'bg-zinc-800 text-zinc-300 border-zinc-700'
                               }`}>
                                 {lec.courseSem}
                               </span>
                             </div>
 
-                            <div className="flex items-center justify-between text-[11px] text-slate-600 pt-1.5 border-t border-slate-200">
-                              <span className="flex items-center gap-1 font-medium">
-                                <User className="w-3 h-3 text-indigo-600 flex-shrink-0" />
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400 pt-3 border-t border-zinc-700/50">
+                              <span className="flex items-center gap-2">
+                                <User className="w-4 h-4 text-indigo-400 flex-shrink-0" />
                                 <span>{lec.teacherName}</span>
                               </span>
-                              <span className="flex items-center gap-1 font-semibold text-slate-700">
-                                <MapPin className="w-3 h-3 text-sky-600 flex-shrink-0" />
+                              <span className="flex items-center gap-2 text-zinc-300">
+                                <MapPin className="w-4 h-4 text-sky-400 flex-shrink-0" />
                                 <span>{lec.venue}</span>
                               </span>
                             </div>

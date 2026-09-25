@@ -37,18 +37,18 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
   });
 
   return (
-    <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 animate-in fade-in duration-300 bg-white border border-slate-200/90 shadow-sm">
+    <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 space-y-6">
       
-      {/* Header & Search - Light Mode */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/90 pb-5">
+      {/* Header & Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-sm" />
-            <h3 className="text-lg font-black text-slate-900 tracking-tight">
+            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-sm" />
+            <h3 className="text-lg font-semibold text-zinc-100 tracking-tight">
               Class Schedule Directory
             </h3>
           </div>
-          <p className="text-xs text-slate-500 mt-1 font-medium">
+          <p className="text-xs text-zinc-500 mt-1">
             Displaying {filtered.length} scheduled lectures {filterByDateOnly ? `for ${selectedDate}` : 'across entire database'}.
           </p>
         </div>
@@ -56,13 +56,13 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           {/* Search Input */}
           <div className="relative flex-1 sm:flex-initial">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search faculty, batch, lab..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-xs rounded-2xl pl-10 pr-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 w-full sm:w-64 font-medium shadow-sm"
+              className="w-full sm:w-64 bg-zinc-800/60 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 transition-all"
             />
           </div>
 
@@ -70,13 +70,13 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
           <button
             type="button"
             onClick={() => setFilterByDateOnly(!filterByDateOnly)}
-            className={`px-3.5 py-2.5 rounded-2xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-2 ${
+            className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-colors cursor-pointer flex items-center justify-center gap-2 ${
               filterByDateOnly
-                ? 'bg-indigo-50 border-indigo-300 text-indigo-700 shadow-sm'
-                : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30'
+                : 'bg-zinc-800/60 text-zinc-400 border-white/[0.05] hover:bg-zinc-800 hover:text-zinc-200'
             }`}
           >
-            <Filter className="w-3.5 h-3.5 text-indigo-600" />
+            <Filter className="w-4 h-4" />
             <span>{filterByDateOnly ? `Only ${selectedDate}` : 'Show All Dates'}</span>
           </button>
 
@@ -84,7 +84,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
             <button
               type="button"
               onClick={onOpenBooking}
-              className="px-4 py-2.5 rounded-2xl text-xs font-black bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
+              className="px-4 py-2.5 rounded-xl text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-colors cursor-pointer flex items-center justify-center gap-1.5 active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
               <span>Book Session</span>
@@ -96,21 +96,21 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
       {/* Mobile Card List (< 768px) */}
       <div className="md:hidden space-y-3">
         {filtered.length === 0 ? (
-          <div className="border border-dashed border-slate-200 rounded-2xl p-8 text-center text-slate-400 text-xs font-medium">
+          <div className="border border-dashed border-white/[0.08] rounded-xl p-8 text-center text-zinc-500 text-sm font-medium">
             No matching timetable records found.
           </div>
         ) : (
           filtered.map((row) => (
             <div
               key={row.id}
-              className="bg-slate-50/60 rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-3 hover:border-indigo-300 transition-colors"
+              className="bg-zinc-800/60 border border-white/[0.06] rounded-xl p-4 space-y-3 hover:border-indigo-500/30 transition-all duration-300"
             >
-              <div className="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2.5">
+              <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-2.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-mono text-[11px] font-bold text-slate-700 bg-white px-2.5 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
+                  <span className="font-mono tabular-nums text-xs font-medium text-zinc-300 bg-zinc-900/80 px-2.5 py-0.5 rounded-lg border border-white/[0.08]">
                     {row.date}
                   </span>
-                  <span className="font-mono text-xs font-black text-emerald-700">
+                  <span className="font-mono tabular-nums text-sm font-semibold text-emerald-400">
                     {row.time}
                   </span>
                 </div>
@@ -121,7 +121,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
                     }
                   }}
                   title="Delete this class"
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer active:scale-95"
+                  className="p-1.5 rounded-lg text-zinc-600 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer active:scale-95"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -129,39 +129,39 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="font-black text-slate-900 text-sm flex items-center gap-1.5">
+                  <div className="font-semibold text-zinc-100 text-sm flex items-center gap-1.5">
                     <span>{row.courseSem}</span>
                     {row.sessionType && (
-                      <span className="text-[10px] font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">
+                      <span className="text-[10px] font-medium bg-indigo-500/15 text-indigo-400 px-2 py-0.5 rounded-lg border border-indigo-500/30">
                         {row.sessionType}
                       </span>
                     )}
                   </div>
-                  <span className="font-mono text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200 font-medium">
+                  <span className="font-mono tabular-nums text-[10px] text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded border border-zinc-700">
                     {formatDuration(row.endMinutes - row.startMinutes)}
                   </span>
                 </div>
 
                 <div>
-                  <span className="font-semibold text-purple-900 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-200 text-xs inline-block">
+                  <span className="font-medium bg-violet-500/15 text-violet-400 px-2.5 py-1 rounded-lg border border-violet-500/30 text-xs inline-block">
                     {row.subject || 'CS Lecture'}
                   </span>
                 </div>
 
                 {row.sessionTitle && (
-                  <p className="text-xs text-slate-500 italic pt-0.5">
+                  <p className="text-xs text-zinc-400 italic pt-0.5">
                     {row.sessionTitle}
                   </p>
                 )}
               </div>
 
-              <div className="pt-2 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+              <div className="pt-2 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-300">
                 <div className="flex items-center gap-1.5 font-medium">
-                  <User className="w-3.5 h-3.5 text-indigo-600" />
+                  <User className="w-3.5 h-3.5 text-indigo-400" />
                   <span>{row.teacherName}</span>
                 </div>
                 <div className="flex items-center gap-1.5 font-medium">
-                  <MapPin className="w-3.5 h-3.5 text-sky-600" />
+                  <MapPin className="w-3.5 h-3.5 text-sky-400" />
                   <span>{row.venue}</span>
                 </div>
               </div>
@@ -171,9 +171,9 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
       </div>
 
       {/* Desktop Table Container (>= 768px) */}
-      <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
-        <table className="w-full text-left text-xs text-slate-700">
-          <thead className="bg-slate-50 text-slate-600 uppercase tracking-wider font-extrabold text-[10px] border-b border-slate-200">
+      <div className="hidden md:block overflow-x-auto rounded-2xl bg-zinc-900/60 border border-zinc-800">
+        <table className="w-full text-left text-sm text-zinc-300">
+          <thead className="bg-zinc-800/60 text-zinc-400 text-xs uppercase tracking-wider font-semibold border-b border-zinc-800">
             <tr>
               <th className="py-4 px-4 font-mono">Date</th>
               <th className="py-4 px-4 font-mono">Time Window</th>
@@ -185,54 +185,56 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
               <th className="py-4 px-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-zinc-800/50">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-14 text-center text-slate-400 text-xs font-medium">
+                <td colSpan={8} className="py-14 text-center text-zinc-500 text-sm font-medium">
                   No matching timetable records found.
                 </td>
               </tr>
             ) : (
               filtered.map((row) => (
-                <tr key={row.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-3.5 px-4 font-mono text-slate-600 font-medium">{row.date}</td>
-                  <td className="py-3.5 px-4 font-mono font-black text-emerald-700 whitespace-nowrap">
+                <tr key={row.id} className="hover:bg-zinc-800/40 transition-colors">
+                  <td className="py-3.5 px-4 font-mono tabular-nums text-zinc-300 font-medium">{row.date}</td>
+                  <td className="py-3.5 px-4 font-mono tabular-nums font-semibold text-emerald-400 whitespace-nowrap">
                     {row.time}
                   </td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">
+                  <td className="py-3.5 px-4 font-medium text-zinc-100">
                     <div className="flex items-center gap-2">
                       <span>{row.courseSem}</span>
                       {row.sessionType && (
-                        <span className="text-[10px] font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">
+                        <span className="text-[10px] font-medium bg-indigo-500/15 text-indigo-400 px-2 py-0.5 rounded-lg border border-indigo-500/30">
                           {row.sessionType}
                         </span>
                       )}
                     </div>
                     {row.sessionTitle && (
-                      <div className="text-[11px] text-slate-500 font-normal truncate max-w-xs mt-0.5">
+                      <div className="text-xs text-zinc-400 font-normal truncate max-w-xs mt-0.5">
                         {row.sessionTitle}
                       </div>
                     )}
                   </td>
                   <td className="py-3.5 px-4">
-                    <span className="font-semibold text-purple-900 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-200 text-xs">
+                    <span className="font-medium bg-violet-500/15 text-violet-400 px-2.5 py-1 rounded-lg border border-violet-500/30 text-xs">
                       {row.subject || 'CS Lecture'}
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 text-slate-700">
+                  <td className="py-3.5 px-4 text-zinc-300">
                     <div className="flex items-center gap-1.5 font-medium">
-                      <User className="w-3.5 h-3.5 text-indigo-600" />
+                      <User className="w-4 h-4 text-indigo-400" />
                       <span>{row.teacherName}</span>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-slate-700">
+                  <td className="py-3.5 px-4 text-zinc-300">
                     <div className="flex items-center gap-1.5 font-medium">
-                      <MapPin className="w-3.5 h-3.5 text-sky-600" />
+                      <MapPin className="w-4 h-4 text-sky-400" />
                       <span>{row.venue}</span>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-center font-mono text-slate-500 font-medium">
-                    {formatDuration(row.endMinutes - row.startMinutes)}
+                  <td className="py-3.5 px-4 text-center font-mono tabular-nums text-zinc-400">
+                    <span className="bg-zinc-800 px-2 py-0.5 rounded border border-zinc-700 text-[10px]">
+                      {formatDuration(row.endMinutes - row.startMinutes)}
+                    </span>
                   </td>
                   <td className="py-3.5 px-4 text-right">
                     <button
@@ -242,7 +244,7 @@ export const ScheduleTable: React.FC<ScheduleTableProps> = ({
                         }
                       }}
                       title="Delete this class"
-                      className="p-1.5 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-zinc-600 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer inline-flex items-center justify-center"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

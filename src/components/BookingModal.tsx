@@ -346,39 +346,39 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-zinc-900 border border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
         
-        {/* Header - Light Mode */}
-        <div className="px-7 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        {/* Header - Obsidian Aurora Dark Mode */}
+        <div className="px-6 py-5 bg-zinc-900/90 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-center text-emerald-700 shadow-sm">
-              <Sparkles className="w-5 h-5 text-emerald-600" />
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-sm">
+              <Sparkles className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <h3 className="text-base font-black text-slate-900">Reserve Session in Slot</h3>
-              <p className="text-xs text-slate-500 font-medium">
+              <h3 className="text-base font-bold text-zinc-100">Reserve Session in Slot</h3>
+              <p className="text-xs text-zinc-400 font-medium">
                 Automatic faculty & venue double-booking verification
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+            className="p-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Form Body - Light Mode */}
-        <form onSubmit={handleSubmit} className="p-7 space-y-5">
+        {/* Form Body */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           
           {/* Row 1: Subject, Session Title & Category */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-                Subject / Course <span className="text-rose-500">*</span>
+              <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+                Subject / Course <span className="text-rose-400">*</span>
               </label>
               <input
                 type="text"
@@ -387,7 +387,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="e.g. Operating Systems / JAVA"
                 list="available-subjects-list"
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm font-medium"
+                className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 transition-all font-medium"
               />
               {availableSubjects.length > 0 && (
                 <datalist id="available-subjects-list">
@@ -399,38 +399,38 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                Topic / Details <span className="text-slate-400 font-normal">(Optional)</span>
+              <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+                Topic / Details <span className="text-zinc-500 font-normal">(Optional)</span>
               </label>
               <input
                 type="text"
                 value={sessionTitle}
                 onChange={(e) => setSessionTitle(e.target.value)}
                 placeholder="e.g. Core Lecture / Lab"
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 shadow-sm font-medium"
+                className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all font-medium"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">Category</label>
+              <label className="text-xs font-semibold text-zinc-300">Category</label>
               <select
                 value={sessionType}
                 onChange={(e) => setSessionType(e.target.value as any)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500 cursor-pointer shadow-sm font-bold"
+                className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3 py-2.5 text-xs text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 cursor-pointer font-semibold transition-all"
               >
                 {SESSION_TYPES.map((type) => (
-                  <option key={type} value={type}>{type}</option>
+                  <option key={type} value={type} className="bg-zinc-800 text-zinc-100">{type}</option>
                 ))}
               </select>
             </div>
           </div>
 
           {/* Row 2: Date & Time Window */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/90">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-zinc-800/50 border border-white/[0.06]">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+              <label className="text-xs font-semibold text-zinc-400 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-indigo-400" />
                 Date
               </label>
               <input
@@ -440,13 +440,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   const newD = htmlDateToDDMMYYYY(e.target.value);
                   if (newD) setDate(newD);
                 }}
-                className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-indigo-500 cursor-pointer shadow-sm"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-mono font-medium text-zinc-100 focus:outline-none focus:border-indigo-500/40 cursor-pointer"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-emerald-600" />
+              <label className="text-xs font-semibold text-zinc-400 flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
                 Start Time
               </label>
               <select
@@ -458,17 +458,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     setEndMinutes(Math.min(DEPT_END_MINUTES, val + 60));
                   }
                 }}
-                className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 cursor-pointer shadow-sm font-semibold"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none focus:border-emerald-500/40 cursor-pointer font-medium"
               >
                 {timeStepOptions.filter((t) => t.minutes < DEPT_END_MINUTES).map((t) => (
-                  <option key={t.minutes} value={t.minutes}>{t.label} ({minutesToHHMM(t.minutes)})</option>
+                  <option key={t.minutes} value={t.minutes} className="bg-zinc-800 text-zinc-100">{t.label} ({minutesToHHMM(t.minutes)})</option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-sky-600" />
+              <label className="text-xs font-semibold text-zinc-400 flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-sky-400" />
                 End Time
               </label>
               <select
@@ -480,10 +480,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     setStartMinutes(Math.max(DEPT_START_MINUTES, val - 60));
                   }
                 }}
-                className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 cursor-pointer shadow-sm font-semibold"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-mono text-zinc-100 focus:outline-none focus:border-emerald-500/40 cursor-pointer font-medium"
               >
                 {timeStepOptions.filter((t) => t.minutes > startMinutes).map((t) => (
-                  <option key={t.minutes} value={t.minutes}>{t.label} ({minutesToHHMM(t.minutes)})</option>
+                  <option key={t.minutes} value={t.minutes} className="bg-zinc-800 text-zinc-100">{t.label} ({minutesToHHMM(t.minutes)})</option>
                 ))}
               </select>
             </div>
@@ -491,13 +491,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           {/* Lunch Break Warning Banner */}
           {overlapsLunchBreak(startMinutes, endMinutes) && (
-            <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 flex items-start gap-2.5 text-xs shadow-sm">
-              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-start gap-2.5 text-xs">
+              <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="font-black text-amber-950">
+                <strong className="font-bold text-amber-200">
                   Mandatory Department Lunch Break ({LUNCH_BREAK_LABEL}):
                 </strong>
-                <p className="mt-0.5 text-amber-800 font-medium">
+                <p className="mt-0.5 text-amber-300/90 font-normal">
                   University regulations prohibit scheduling lectures, labs, or extra classes during the lunch recess. Please adjust start or end time before 10:30 AM or after 11:45 AM.
                 </p>
               </div>
@@ -505,20 +505,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           )}
 
           {/* Row 2b: Reservation Recurrence (Single vs Weekly Repeat) */}
-          <div className="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200/90 space-y-2.5">
+          <div className="p-3.5 rounded-2xl bg-zinc-800/40 border border-white/[0.08] space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <Repeat className="w-3.5 h-3.5 text-indigo-600" />
+              <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                <Repeat className="w-3.5 h-3.5 text-indigo-400" />
                 Session Recurrence
               </label>
-              <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
+              <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setRecurrenceType('once')}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     recurrenceType === 'once'
-                      ? 'bg-indigo-600 text-white shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'text-zinc-400 hover:text-zinc-200'
                   }`}
                 >
                   One-Time Session
@@ -526,10 +526,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setRecurrenceType('weekly')}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     recurrenceType === 'weekly'
-                      ? 'bg-indigo-600 text-white shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'text-zinc-400 hover:text-zinc-200'
                   }`}
                 >
                   Repeat Weekly
@@ -538,19 +538,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
 
             {recurrenceType === 'weekly' && (
-              <div className="space-y-2 pt-2 border-t border-indigo-200/60 animate-in fade-in duration-150">
+              <div className="space-y-2 pt-2 border-t border-white/[0.06] animate-in fade-in duration-150">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-700">Repeat For:</span>
+                  <span className="font-medium text-zinc-300">Repeat For:</span>
                   <div className="flex gap-1.5">
                     {[2, 4, 8, 12].map((w) => (
                       <button
                         key={w}
                         type="button"
                         onClick={() => setRepeatWeeks(w)}
-                        className={`px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer ${
+                        className={`px-3 py-1 rounded-xl text-xs font-semibold transition cursor-pointer ${
                           repeatWeeks === w
-                            ? 'bg-indigo-600 text-white shadow-2xs'
-                            : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-750 border border-white/[0.06]'
                         }`}
                       >
                         {w} Weeks
@@ -559,25 +559,25 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-white border border-indigo-200 text-xs text-slate-700 space-y-1">
-                  <div className="font-extrabold text-indigo-950 flex items-center justify-between">
+                <div className="p-2.5 rounded-xl bg-zinc-900/80 border border-white/[0.06] text-xs text-zinc-300 space-y-1">
+                  <div className="font-bold text-zinc-100 flex items-center justify-between">
                     <span>Every {getDayOfWeek(date)} for {repeatWeeks} Weeks</span>
-                    <span className="text-[10px] font-mono font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
+                    <span className="text-[10px] font-mono font-bold text-indigo-400 bg-indigo-500/15 px-2 py-0.5 rounded-lg border border-indigo-500/25">
                       {repeatWeeks * selectedBatches.length} Sessions Total
                     </span>
                   </div>
-                  <div className="text-slate-500 font-mono text-[10px] truncate">
+                  <div className="text-zinc-500 font-mono text-[10px] truncate">
                     Dates: {recurringDates.join(' • ')}
                   </div>
                 </div>
 
                 {multiWeekConflicts.length > 0 && (
-                  <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs space-y-1">
-                    <div className="font-extrabold flex items-center gap-1.5 text-amber-900">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-                      <span>Clash Detected in Future Weeks ({multiWeekConflicts.length})</span>
+                  <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-1">
+                    <div className="font-bold flex items-center gap-1.5 text-amber-300">
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                      <span>Clash Detected in Future Weeks ({multiWeekConflicts.length} {multiWeekConflicts.length === 1 ? 'week has' : 'weeks have'} clashes)</span>
                     </div>
-                    <ul className="list-disc pl-4 text-[11px] space-y-0.5 text-amber-800">
+                    <ul className="list-disc pl-4 text-[11px] space-y-0.5 text-amber-300/80">
                       {multiWeekConflicts.map((c, i) => (
                         <li key={i}>
                           <strong>Week {c.weekNum} ({c.date}):</strong> {c.conflicts.join(', ')}
@@ -592,7 +592,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           {/* Row 3: Target Batches Selection */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-700">
+            <label className="text-xs font-semibold text-zinc-300">
               Assigned Semester Batches (Select one or multiple for combined lecture)
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -603,10 +603,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     key={b}
                     type="button"
                     onClick={() => handleToggleBatch(b)}
-                    className={`px-3 py-1.5 text-xs rounded-xl transition cursor-pointer font-bold ${
+                    className={`px-3 py-1.5 text-xs rounded-xl transition cursor-pointer font-semibold ${
                       isSelected
-                        ? 'bg-indigo-600 text-white shadow-sm border border-indigo-600'
-                        : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
+                        ? 'bg-indigo-600 text-white shadow-sm border border-indigo-500'
+                        : 'bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.06]'
                     }`}
                   >
                     {b}
@@ -622,14 +622,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             {/* Faculty Selection */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-indigo-600" />
+                <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-indigo-400" />
                   Assign Faculty Member
                 </label>
                 <button
                   type="button"
                   onClick={() => setIsCustomTeacher(!isCustomTeacher)}
-                  className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 rounded-lg transition"
+                  className="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 bg-indigo-500/15 hover:bg-indigo-500/25 px-2 py-0.5 rounded-lg border border-indigo-500/25 transition"
                 >
                   {isCustomTeacher ? '← Select Listed' : '+ Guest Speaker'}
                 </button>
@@ -641,23 +641,23 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   value={customTeacher}
                   onChange={(e) => setCustomTeacher(e.target.value)}
                   placeholder="e.g. Dr. Yann LeCun (Guest Speaker)"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500 font-medium shadow-sm"
+                  className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 font-medium"
                 />
               ) : (
                 <select
                   value={teacherName}
                   onChange={(e) => setTeacherName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500 cursor-pointer font-medium shadow-sm"
+                  className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/40 cursor-pointer font-medium"
                 >
                   <optgroup label={`Available Faculty (${freeTeachers.length})`}>
                     {freeTeachers.map((t) => (
-                      <option key={t} value={t}>✓ {t}</option>
+                      <option key={t} value={t} className="bg-zinc-800 text-zinc-100">✓ {t}</option>
                     ))}
                   </optgroup>
                   {busyTeachers.length > 0 && (
                     <optgroup label="Occupied / Busy Faculty (Conflict)">
                       {busyTeachers.map(({ teacher, reason }) => (
-                        <option key={teacher} value={teacher}>
+                        <option key={teacher} value={teacher} className="bg-zinc-800 text-zinc-400">
                           ⚠️ {teacher} — {reason}
                         </option>
                       ))}
@@ -670,14 +670,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             {/* Venue Selection */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-sky-600" />
+                <label className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-sky-400" />
                   Assign Venue / Lab
                 </label>
                 <button
                   type="button"
                   onClick={() => setIsCustomVenue(!isCustomVenue)}
-                  className="text-[11px] font-bold text-sky-600 hover:text-sky-800 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-lg transition"
+                  className="text-[11px] font-semibold text-sky-400 hover:text-sky-300 bg-sky-500/15 hover:bg-sky-500/25 px-2 py-0.5 rounded-lg border border-sky-500/25 transition"
                 >
                   {isCustomVenue ? '← Select Listed' : '+ Custom Venue'}
                 </button>
@@ -689,23 +689,23 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   value={customVenue}
                   onChange={(e) => setCustomVenue(e.target.value)}
                   placeholder="e.g. Auditorium Hall B / Lab 6"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:bg-white focus:border-sky-500 font-medium shadow-sm"
+                  className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500/40 font-medium"
                 />
               ) : (
                 <select
                   value={venue}
                   onChange={(e) => setVenue(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500 cursor-pointer font-medium shadow-sm"
+                  className="w-full bg-zinc-800/70 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500/40 cursor-pointer font-medium"
                 >
                   <optgroup label={`Available Venues (${freeVenues.length})`}>
                     {freeVenues.map((v) => (
-                      <option key={v} value={v}>✓ {v}</option>
+                      <option key={v} value={v} className="bg-zinc-800 text-zinc-100">✓ {v}</option>
                     ))}
                   </optgroup>
                   {busyVenues.length > 0 && (
                     <optgroup label="Occupied Venues (Conflict)">
                       {busyVenues.map(({ venue, reason }) => (
-                        <option key={venue} value={venue}>
+                        <option key={venue} value={venue} className="bg-zinc-800 text-zinc-400">
                           ⚠️ {venue} — {reason}
                         </option>
                       ))}
@@ -719,23 +719,23 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           {/* High-Contrast Conflict Alert Banner (Week 1 / Single Date) */}
           {conflictResult.hasConflict && (
-            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-300 space-y-2 shadow-sm">
-              <div className="flex items-center gap-2 text-xs font-black text-rose-800">
-                <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-rose-300">
+                <AlertTriangle className="w-4 h-4 text-rose-400 flex-shrink-0" />
                 <span>Collision Conflict Detected ({conflictResult.conflicts.length})</span>
               </div>
-              <ul className="text-xs text-rose-700 space-y-1 pl-6 list-disc font-medium">
+              <ul className="text-xs text-rose-300/80 space-y-1 pl-6 list-disc font-medium">
                 {conflictResult.conflicts.map((conf, i) => (
                   <li key={i}>{conf.description}</li>
                 ))}
               </ul>
-              <div className="pt-2 border-t border-rose-200 flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[11px] text-rose-800 cursor-pointer font-bold">
+              <div className="pt-2 border-t border-rose-500/20 flex items-center justify-between">
+                <label className="flex items-center gap-2 text-[11px] text-rose-300 cursor-pointer font-semibold">
                   <input
                     type="checkbox"
                     checked={forceBook}
                     onChange={(e) => setForceBook(e.target.checked)}
-                    className="rounded border-rose-300 text-rose-600 focus:ring-rose-500"
+                    className="rounded border-rose-500/40 text-rose-500 focus:ring-rose-500/30 bg-zinc-800"
                   />
                   <span>Admin override (Schedule despite conflict)</span>
                 </label>
@@ -745,16 +745,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           {/* Multi-Week Recurring Conflicts Banner (Weeks 2..N) */}
           {hasMultiWeekConflict && (
-            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 space-y-2.5 shadow-sm">
-              <div className="flex items-center gap-2 text-xs font-black text-amber-900">
-                <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-300">
+                <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
                 <span>Future Recurring Week Conflicts ({multiWeekConflicts.length} {multiWeekConflicts.length === 1 ? 'week has' : 'weeks have'} clashes)</span>
               </div>
               <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
                 {multiWeekConflicts.map((c, i) => (
-                  <div key={i} className="text-xs bg-amber-100/70 p-2 rounded-xl border border-amber-200">
-                    <p className="font-bold text-amber-950">Week {c.weekNum} ({c.date}):</p>
-                    <ul className="text-amber-900 list-disc pl-5 font-medium mt-0.5 space-y-0.5">
+                  <div key={i} className="text-xs bg-zinc-850 p-2.5 rounded-xl border border-amber-500/20">
+                    <p className="font-semibold text-amber-200">Week {c.weekNum} ({c.date}):</p>
+                    <ul className="text-amber-300/80 list-disc pl-5 font-normal mt-0.5 space-y-0.5">
                       {c.conflicts.map((desc, di) => (
                         <li key={di}>{desc}</li>
                       ))}
@@ -762,13 +762,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
                 ))}
               </div>
-              <div className="pt-2 border-t border-amber-200">
-                <label className="flex items-center gap-2 text-[11px] text-amber-950 cursor-pointer font-bold">
+              <div className="pt-2 border-t border-amber-500/20">
+                <label className="flex items-center gap-2 text-[11px] text-amber-300 cursor-pointer font-semibold">
                   <input
                     type="checkbox"
                     checked={forceBook}
                     onChange={(e) => setForceBook(e.target.checked)}
-                    className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                    className="rounded border-amber-500/40 text-amber-500 focus:ring-amber-500/30 bg-zinc-800"
                   />
                   <span>Admin override (Schedule recurring despite future clashes)</span>
                 </label>
@@ -777,30 +777,30 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           )}
 
           {!hasAnyConflict && (
-            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center gap-2.5 text-xs text-emerald-900 shadow-sm font-medium">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2.5 text-xs text-emerald-300 font-medium">
+              <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
               <span>
-                <strong>Conflict Verified:</strong> Faculty member, venue, and assigned batches are completely free at this time{recurrenceType === 'weekly' ? ` across all ${repeatWeeks} weeks.` : '.'}
+                <strong className="text-emerald-200 font-semibold">Conflict Verified:</strong> Faculty member, venue, and assigned batches are completely free at this time{recurrenceType === 'weekly' ? ` across all ${repeatWeeks} weeks.` : '.'}
               </span>
             </div>
           )}
 
           {/* Footer Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-200">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-white/[0.08]">
             <div className="text-xs">
               {overlapsLunchBreak(startMinutes, endMinutes) ? (
-                <span className="text-amber-800 font-bold flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-300">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                <span className="text-amber-300 font-semibold flex items-center gap-1.5 bg-amber-500/15 px-3 py-1.5 rounded-xl border border-amber-500/30">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                   <span>Overlaps Lunch Break ({LUNCH_BREAK_LABEL})</span>
                 </span>
               ) : hasAnyConflict && !forceBook ? (
-                <span className="text-rose-700 font-bold flex items-center gap-1.5 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-300">
-                  <AlertTriangle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
+                <span className="text-rose-300 font-semibold flex items-center gap-1.5 bg-rose-500/15 px-3 py-1.5 rounded-xl border border-rose-500/30">
+                  <AlertTriangle className="w-3.5 h-3.5 text-rose-400 flex-shrink-0" />
                   <span>Conflict detected. Check override or change slot.</span>
                 </span>
               ) : (
-                <span className="text-emerald-700 font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-300">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                <span className="text-emerald-300 font-semibold flex items-center gap-1.5 bg-emerald-500/15 px-3 py-1.5 rounded-xl border border-emerald-500/30">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                   <span>Slot verified & ready to reserve</span>
                 </span>
               )}
@@ -810,16 +810,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer"
+                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-zinc-300 bg-zinc-800 hover:bg-zinc-750 border border-white/[0.08] transition cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all shadow-md cursor-pointer ${
+                className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer ${
                   isBlocked
-                    ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-600/20 active:scale-95'
-                    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20 active:scale-95'
+                    ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-600/20 active:scale-98'
+                    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20 active:scale-98'
                 }`}
               >
                 {isBlocked ? 'Confirm (Resolve Conflict)' : 'Confirm Reservation'}

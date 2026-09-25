@@ -12,7 +12,11 @@ import {
   getDistinctSubjects,
 } from './utils/scheduleEngine';
 import { exportScheduleToCSV, exportScheduleToPDF } from './utils/exportUtils';
-import { Navbar, NavTab } from './components/Navbar';
+import { AuroraBackground } from './components/AuroraBackground';
+import { Sidebar, NavTab } from './components/Sidebar';
+import { TopBar } from './components/TopBar';
+import { MobileBottomNav } from './components/MobileBottomNav';
+import { AnimatedViewWrapper } from './components/AnimatedViewWrapper';
 import { SlotFinderView } from './components/SlotFinderView';
 import { TimelineVisualizer } from './components/TimelineVisualizer';
 import { WeeklyTimetableView } from './components/WeeklyTimetableView';
@@ -21,7 +25,8 @@ import { DataManagementView } from './components/DataManagementView';
 import { BookingModal } from './components/BookingModal';
 import { GeminiAssistantModal } from './components/GeminiAssistantModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { CheckCircle2, Sparkles, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ShieldCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function App() {
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
@@ -107,21 +112,20 @@ export function App() {
     }
   }, [schedule]);
 
-  // 2. Extracted Distinct Lists - strictly derived from schedule CSV without sample data
+  // 2. Extracted Distinct Lists
   const availableDates = useMemo(() => getDistinctDates(schedule), [schedule]);
   const availableBatches = useMemo(() => getDistinctBatches(schedule), [schedule]);
   const availableTeachers = useMemo(() => getDistinctTeachers(schedule), [schedule]);
   const availableVenues = useMemo(() => getDistinctVenues(schedule), [schedule]);
   const availableSubjects = useMemo(() => getDistinctSubjects(schedule), [schedule]);
 
-  // Keep targetDate initialized if empty
   useEffect(() => {
     if (!targetDate && availableDates.length > 0) {
       setTargetDate(availableDates[0]);
     }
   }, [availableDates, targetDate]);
 
-  // 3. Batches Selection Handlers
+  // 3. Batches Selection
   const handleToggleBatch = (batch: string) => {
     if (selectedBatches.includes(batch)) {
       if (selectedBatches.length > 1) {
@@ -138,7 +142,7 @@ export function App() {
     setSelectedBatches([...availableBatches]);
   };
 
-  // 4. Inversion Engine Computations
+  // 4. Inversion Engine
   const commonFreeSlots = useMemo(() => {
     return findFreeSlots(schedule, targetDate, selectedBatches, requestedDuration);
   }, [schedule, targetDate, selectedBatches, requestedDuration]);
@@ -153,25 +157,21 @@ export function App() {
     setSchedule(parsed.rows);
     try {
       localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(parsed.rows));
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) { /* ignore */ }
     const dates = getDistinctDates(parsed.rows);
     const batches = getDistinctBatches(parsed.rows);
     if (dates.length > 0) setTargetDate(dates[0]);
     if (batches.length > 1) {
       setSelectedBatches([batches[0], batches[1]]);
     }
-    showToast(`Loaded ${parsed.rows.length} demo CS timetable entries across multiple batches.`);
+    showToast(`Loaded ${parsed.rows.length} demo CS timetable entries.`);
   };
 
   const handleImportSchedule = (newRows: ScheduleRow[]) => {
     setSchedule(newRows);
     try {
       localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(newRows));
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) { /* ignore */ }
     const dates = getDistinctDates(newRows);
     const batches = getDistinctBatches(newRows);
     if (dates.length > 0) setTargetDate(dates[0]);
@@ -209,9 +209,7 @@ export function App() {
       const updated = [...prev, ...newRows];
       try {
         localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) { /* ignore */ }
       return updated;
     });
     if (newRows.length > 0 && newRows[0].date) {
@@ -226,9 +224,7 @@ export function App() {
       const updated = prev.filter((r) => r.id !== id);
       try {
         localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) { /* ignore */ }
       return updated;
     });
     showToast('Class removed from schedule.');
@@ -236,12 +232,12 @@ export function App() {
 
   const handleExportCSV = () => {
     exportScheduleToCSV(schedule);
-    showToast('Exported schedule to CSV (5 Columns format).');
+    showToast('Exported schedule to CSV.');
   };
 
   const handleExportPDF = () => {
     exportScheduleToPDF(schedule, targetDate, selectedBatches, commonFreeSlots);
-    showToast('Generated executive Department Timetable PDF.');
+    showToast('Generated Department Timetable PDF.');
   };
 
   const handleDownloadTemplate = () => {
@@ -255,112 +251,145 @@ export function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast('Downloaded standard CSV template.');
+    showToast('Downloaded CSV template.');
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-500 selection:text-white tech-grid-bg">
-      
-      {/* Toast Alert */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-xl font-bold text-xs flex items-center gap-2.5 animate-in slide-in-from-bottom-5 border border-slate-800">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+    <AuroraBackground>
+      {/* Toast */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-50 bg-zinc-800/95 backdrop-blur-xl text-zinc-100 px-5 py-3.5 rounded-xl shadow-2xl font-medium text-xs flex items-center gap-2.5 border border-white/[0.1]"
+          >
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Modern Top Tabbed Navbar */}
-      <Navbar
+      {/* Desktop Sidebar */}
+      <Sidebar
         activeTab={activeTab}
         onChangeTab={setActiveTab}
         totalLectures={schedule.length}
         freeSlotsCount={commonFreeSlots.length}
-        onLoadDemo={handleLoadDemo}
-        onExportPDF={handleExportPDF}
         onOpenAIModal={() => setIsAIOpen(true)}
         onOpenBooking={handleQuickBook}
+        onExportPDF={handleExportPDF}
       />
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {/* Tab 1: Find Free Slots */}
-        {activeTab === 'finder' && (
-          <SlotFinderView
-            availableDates={availableDates}
-            selectedDate={targetDate}
-            onSelectDate={setTargetDate}
-            availableBatches={availableBatches}
-            selectedBatches={selectedBatches}
-            onToggleBatch={handleToggleBatch}
-            onSelectAllBatches={handleSelectAllBatches}
-            selectedDuration={requestedDuration}
-            onSelectDuration={setRequestedDuration}
-            freeSlots={commonFreeSlots}
-            schedule={schedule}
-            allTeachers={availableTeachers}
-            allVenues={availableVenues}
-            onBookSlot={handleOpenBooking}
-            onNavigateToTimeline={() => setActiveTab('timeline')}
-          />
-        )}
+      {/* Mobile Top Bar */}
+      <TopBar
+        onOpenAIModal={() => setIsAIOpen(true)}
+        onOpenBooking={handleQuickBook}
+        onLoadDemo={handleLoadDemo}
+        onExportPDF={handleExportPDF}
+      />
 
-        {/* Tab 2: Visual Timeline (Gantt) */}
-        {activeTab === 'timeline' && (
-          <TimelineVisualizer
-            date={targetDate}
-            availableDates={availableDates}
-            onSelectDate={setTargetDate}
-            batches={selectedBatches}
-            allBatches={availableBatches}
-            onToggleBatch={handleToggleBatch}
-            batchData={batchData}
-            commonFreeSlots={commonFreeSlots}
-            minDurationMinutes={requestedDuration}
-            onBookSlot={handleOpenBooking}
-          />
-        )}
+      {/* Main Content Area */}
+      <main className="lg:pl-[252px] min-h-screen pb-20 lg:pb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+          <AnimatedViewWrapper viewKey={activeTab}>
+            {activeTab === 'finder' && (
+              <SlotFinderView
+                availableDates={availableDates}
+                selectedDate={targetDate}
+                onSelectDate={setTargetDate}
+                availableBatches={availableBatches}
+                selectedBatches={selectedBatches}
+                onToggleBatch={handleToggleBatch}
+                onSelectAllBatches={handleSelectAllBatches}
+                selectedDuration={requestedDuration}
+                onSelectDuration={setRequestedDuration}
+                freeSlots={commonFreeSlots}
+                schedule={schedule}
+                allTeachers={availableTeachers}
+                allVenues={availableVenues}
+                onBookSlot={handleOpenBooking}
+                onNavigateToTimeline={() => setActiveTab('timeline')}
+              />
+            )}
 
-        {/* Tab 3: Weekly Master Timetable */}
-        {activeTab === 'weekly' && (
-          <WeeklyTimetableView
-            schedule={schedule}
-            currentDate={targetDate}
-            allBatches={availableBatches}
-            allVenues={availableVenues}
-            onBookSlot={handleOpenBooking}
-          />
-        )}
+            {activeTab === 'timeline' && (
+              <TimelineVisualizer
+                date={targetDate}
+                availableDates={availableDates}
+                onSelectDate={setTargetDate}
+                batches={selectedBatches}
+                allBatches={availableBatches}
+                onToggleBatch={handleToggleBatch}
+                batchData={batchData}
+                commonFreeSlots={commonFreeSlots}
+                minDurationMinutes={requestedDuration}
+                onBookSlot={handleOpenBooking}
+              />
+            )}
 
-        {/* Tab 4: Full Class Directory Table */}
-        {activeTab === 'table' && (
-          <ScheduleTable
-            schedule={schedule}
-            selectedDate={targetDate}
-            onDeleteRow={handleDeleteRow}
-            onOpenBooking={handleQuickBook}
-          />
-        )}
+            {activeTab === 'weekly' && (
+              <WeeklyTimetableView
+                schedule={schedule}
+                currentDate={targetDate}
+                allBatches={availableBatches}
+                allVenues={availableVenues}
+                onBookSlot={handleOpenBooking}
+              />
+            )}
 
-        {/* Tab 5: Data Management & Export */}
-        {activeTab === 'data' && (
-          <DataManagementView
-            schedule={schedule}
-            totalBatches={availableBatches.length}
-            totalTeachers={availableTeachers.length}
-            totalVenues={availableVenues.length}
-            distinctDates={availableDates}
-            onLoadDemo={handleLoadDemo}
-            onImportSchedule={handleImportSchedule}
-            onExportCSV={handleExportCSV}
-            onExportPDF={handleExportPDF}
-            onDownloadTemplate={handleDownloadTemplate}
-          />
-        )}
+            {activeTab === 'table' && (
+              <ScheduleTable
+                schedule={schedule}
+                selectedDate={targetDate}
+                onDeleteRow={handleDeleteRow}
+                onOpenBooking={handleQuickBook}
+              />
+            )}
 
+            {activeTab === 'data' && (
+              <DataManagementView
+                schedule={schedule}
+                totalBatches={availableBatches.length}
+                totalTeachers={availableTeachers.length}
+                totalVenues={availableVenues.length}
+                distinctDates={availableDates}
+                onLoadDemo={handleLoadDemo}
+                onImportSchedule={handleImportSchedule}
+                onExportCSV={handleExportCSV}
+                onExportPDF={handleExportPDF}
+                onDownloadTemplate={handleDownloadTemplate}
+              />
+            )}
+          </AnimatedViewWrapper>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-white/[0.05] py-5 text-center text-xs text-zinc-600 mt-8">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-zinc-400">SlotSync CS</span>
+              <span className="text-zinc-700">•</span>
+              <span className="text-zinc-500 font-medium">Dept of Computer Science & Engineering</span>
+            </div>
+            <div className="flex items-center gap-4 text-zinc-500 font-medium">
+              <span className="font-mono text-[10px]">08:00 AM – 05:00 PM</span>
+              <span className="text-zinc-700">•</span>
+              <span className="text-emerald-500/80 font-semibold flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                Conflict Engine Active
+              </span>
+            </div>
+          </div>
+        </footer>
       </main>
 
-      {/* Reservation & Booking Modal (Single & Recurring Weekly) */}
+      {/* Mobile Bottom Nav */}
+      <MobileBottomNav activeTab={activeTab} onChangeTab={setActiveTab} />
+
+      {/* Booking Modal */}
       {isBookingOpen && (
         <ErrorBoundary>
           <BookingModal
@@ -388,7 +417,7 @@ export function App() {
         </ErrorBoundary>
       )}
 
-      {/* Gemini AI Timetable Copilot Modal */}
+      {/* AI Copilot Modal */}
       <GeminiAssistantModal
         isOpen={isAIOpen}
         onClose={() => setIsAIOpen(false)}
@@ -403,27 +432,7 @@ export function App() {
           handleOpenBooking(slot);
         }}
       />
-
-      {/* Clean Bespoke Footer - Light Mode */}
-      <footer className="border-t border-slate-200/90 bg-white/80 backdrop-blur-md py-6 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">SlotSync CS</span>
-            <span>•</span>
-            <span className="text-slate-600 font-medium">Department of Computer Science & Engineering</span>
-          </div>
-          <div className="flex items-center gap-4 text-slate-600 font-medium">
-            <span>Operating Range: 08:00 AM – 05:00 PM</span>
-            <span>•</span>
-            <span className="text-emerald-700 font-bold flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Conflict Verification Engine Active
-            </span>
-          </div>
-        </div>
-      </footer>
-
-    </div>
+    </AuroraBackground>
   );
 }
 

@@ -71,31 +71,31 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       
-      {/* 1. Bespoke Filter Terminal - Light Mode */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
+      {/* 1. Bespoke Filter Terminal - Dark Mode */}
+      <div className="glass-card rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
         {/* Ambient Top Glows */}
-        <div className="absolute -top-20 left-1/4 w-80 h-28 bg-indigo-500/5 blur-3xl rounded-full pointer-events-none" />
-        <div className="absolute -top-20 right-1/4 w-80 h-28 bg-emerald-500/5 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute -top-20 left-1/4 w-80 h-28 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute -top-20 right-1/4 w-80 h-28 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/90 pb-5 relative">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-5 relative">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm" />
-              <h2 className="text-lg font-black text-slate-900 tracking-tight">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-card" />
+              <h2 className="text-lg font-semibold text-zinc-100 tracking-tight">
                 Slot Inversion Engine
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-1 font-medium flex flex-wrap items-center gap-1.5">
-              <span>Select date, semester batches, and desired duration. Operating range: <span className="text-slate-800 font-mono font-bold">08:00 AM – 05:00 PM</span></span>
-              <span className="text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-md font-mono text-[11px] font-bold border border-amber-300">
+            <p className="text-xs text-zinc-500 mt-1 font-medium flex flex-wrap items-center gap-1.5">
+              <span>Select date, semester batches, and desired duration. Operating range: <span className="text-zinc-200 font-mono tabular-nums font-bold">08:00 AM – 05:00 PM</span></span>
+              <span className="text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md font-mono tabular-nums text-[11px] font-bold border border-amber-500/30">
                 Lunch Break: 10:30 AM – 11:45 AM
               </span>
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-extrabold px-3.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="text-xs font-mono tabular-nums font-extrabold px-3.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-card flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>{freeSlots.length} Available Slot{freeSlots.length === 1 ? '' : 's'}</span>
             </span>
           </div>
@@ -106,14 +106,14 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
           {/* Step 1: Target Date */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-emerald-600" />
+              <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-emerald-400" />
                 1. Target Date
               </label>
               <button
                 type="button"
                 onClick={() => hiddenDateInputRef.current?.showPicker?.() || hiddenDateInputRef.current?.click()}
-                className="text-[11px] text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-bold cursor-pointer"
+                className="text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-bold cursor-pointer"
               >
                 <span>Calendar Picker</span>
               </button>
@@ -123,13 +123,13 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
             <div className="space-y-2">
               <div
                 onClick={() => hiddenDateInputRef.current?.showPicker?.() || hiddenDateInputRef.current?.click()}
-                className="bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-emerald-400 rounded-2xl px-4 py-3 flex items-center justify-between cursor-pointer transition shadow-sm group"
+                className="bg-zinc-800/60 hover:bg-zinc-800 border border-white/[0.08] hover:border-emerald-500/40 rounded-2xl px-4 py-3 flex items-center justify-between cursor-pointer transition shadow-card group"
               >
                 <div className="flex items-center gap-2.5">
-                  <Calendar className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-mono font-bold text-slate-900">{selectedDate}</span>
+                  <Calendar className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-mono tabular-nums font-bold text-zinc-100">{selectedDate}</span>
                 </div>
-                <span className="text-[11px] font-medium text-slate-500 group-hover:text-slate-800 transition-colors">
+                <span className="text-[11px] font-medium text-zinc-500 group-hover:text-zinc-300 transition-colors">
                   Change ▾
                 </span>
                 {/* Hidden native input */}
@@ -147,7 +147,7 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
 
               {/* Quick Preset Dates from Schedule */}
               <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                <span className="text-[10px] text-slate-400 uppercase font-mono mr-1 font-bold">In Schedule:</span>
+                <span className="text-[10px] text-zinc-500 uppercase font-mono mr-1 font-bold">In Schedule:</span>
                 {availableDates.map((d) => {
                   const isActive = selectedDate === d;
                   return (
@@ -155,10 +155,10 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                       key={d}
                       type="button"
                       onClick={() => onSelectDate(d)}
-                      className={`px-2 py-0.5 rounded-lg text-[11px] font-mono transition cursor-pointer ${
+                      className={`px-2 py-0.5 rounded-lg text-[11px] font-mono tabular-nums transition cursor-pointer ${
                         isActive
-                          ? 'bg-emerald-600 text-white font-bold shadow-sm'
-                          : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
+                          ? 'bg-emerald-600 text-white font-bold shadow-card'
+                          : 'bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.05]'
                       }`}
                     >
                       {d}
@@ -172,11 +172,11 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
           {/* Step 2: Minimum Duration */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-indigo-600" />
+              <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-indigo-400" />
                 2. Required Duration
               </label>
-              <span className="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+              <span className="text-[10px] font-mono tabular-nums font-bold text-indigo-400 bg-indigo-500/15 px-2 py-0.5 rounded border border-indigo-500/30">
                 Min: {selectedDuration}m
               </span>
             </div>
@@ -189,10 +189,10 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                     key={p.minutes}
                     type="button"
                     onClick={() => onSelectDuration(p.minutes)}
-                    className={`py-2.5 px-3 rounded-2xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                       active
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20 border border-indigo-600 scale-[1.02]'
-                        : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 hover:text-slate-900'
+                        ? 'bg-indigo-600 text-white shadow-card border border-indigo-500 scale-[1.02]'
+                        : 'bg-zinc-800/60 text-zinc-400 hover:bg-zinc-800 border border-white/[0.05] hover:text-zinc-200'
                     }`}
                   >
                     {p.label}
@@ -205,25 +205,25 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
           {/* Step 3: Target Batches (No ugly scrollbar, clean wrap) */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-sky-600" />
+              <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-sky-400" />
                 3. Semesters ({selectedBatches.length})
               </label>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={onSelectAllBatches}
-                  className="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 hover:underline cursor-pointer"
+                  className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 hover:underline cursor-pointer"
                 >
                   Select All
                 </button>
                 {selectedBatches.length > 1 && (
                   <>
-                    <span className="text-slate-300">•</span>
+                    <span className="text-zinc-600">•</span>
                     <button
                       type="button"
                       onClick={() => onToggleBatch(selectedBatches[0])}
-                      className="text-[11px] text-slate-500 hover:text-slate-800 cursor-pointer"
+                      className="text-[11px] text-zinc-500 hover:text-zinc-300 cursor-pointer"
                     >
                       Single Batch
                     </button>
@@ -241,13 +241,13 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                     key={batch}
                     type="button"
                     onClick={() => onToggleBatch(batch)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm'
-                        : 'bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200'
+                        ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 shadow-card'
+                        : 'bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.05]'
                     }`}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-emerald-600 shadow-sm' : 'bg-slate-300'}`} />
+                    <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-indigo-400 shadow-card' : 'bg-zinc-600'}`} />
                     <span>{batch}</span>
                   </button>
                 );
@@ -257,18 +257,18 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
 
         </div>
 
-        {/* Multi-Batch Status Banner - Light Mode */}
+        {/* Multi-Batch Status Banner - Dark Mode */}
         {selectedBatches.length > 1 && (
-          <div className="p-4 rounded-2xl bg-indigo-50/80 border border-indigo-200/90 flex items-center justify-between text-xs text-indigo-950 shadow-sm">
+          <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between text-xs text-indigo-300 shadow-card">
             <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse" />
               <span>
-                <strong>Multi-Batch Coordination Active:</strong> Inverting schedule to identify slots where <strong>all {selectedBatches.length} batches</strong> are simultaneously free.
+                <strong className="text-indigo-200">Multi-Batch Coordination Active:</strong> Inverting schedule to identify slots where <strong className="text-indigo-200">all {selectedBatches.length} batches</strong> are simultaneously free.
               </span>
             </div>
             <button
               onClick={onNavigateToTimeline}
-              className="text-indigo-700 hover:text-indigo-900 font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
+              className="text-indigo-400 hover:text-indigo-300 font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
             >
               <span>View Timeline</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -278,49 +278,49 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
 
       </div>
 
-      {/* 2. Free Slots Cards Section - Light Mode */}
+      {/* 2. Free Slots Cards Section - Dark Mode */}
       <div>
         <div className="flex items-center justify-between mb-5 px-1">
           <div>
-            <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-emerald-600" />
+            <h3 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-emerald-400" />
               Identified Conflict-Free Windows ({freeSlots.length})
             </h3>
-            <p className="text-xs text-slate-500 mt-1 font-medium">
-              Target Date: <strong className="text-slate-900 font-mono">{selectedDate}</strong> • Minimum duration: <strong className="text-emerald-700 font-mono">≥ {selectedDuration} mins</strong>
+            <p className="text-xs text-zinc-500 mt-1 font-medium">
+              Target Date: <strong className="text-zinc-200 font-mono tabular-nums">{selectedDate}</strong> • Minimum duration: <strong className="text-emerald-500 font-mono tabular-nums">≥ {selectedDuration} mins</strong>
             </p>
           </div>
 
           <button
             onClick={onNavigateToTimeline}
-            className="text-xs font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1.5 bg-white border border-slate-200 hover:border-indigo-400 px-3.5 py-2 rounded-2xl transition cursor-pointer shadow-sm"
+            className="text-xs font-bold text-zinc-300 hover:text-zinc-100 flex items-center gap-1.5 bg-zinc-800/60 hover:bg-zinc-800 border border-white/[0.08] hover:border-indigo-500/30 px-3.5 py-2 rounded-xl transition cursor-pointer shadow-card"
           >
             <span>Timeline Comparison</span>
-            <ArrowRight className="w-3.5 h-3.5 text-indigo-600" />
+            <ArrowRight className="w-3.5 h-3.5 text-indigo-400" />
           </button>
         </div>
 
         {freeSlots.length === 0 ? (
-          <div className="glass-panel border-dashed border-slate-300 rounded-3xl p-14 text-center max-w-lg mx-auto space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-amber-600">
-              <Clock className="w-7 h-7 text-amber-500" />
+          <div className="glass-card border-dashed border-zinc-700 bg-zinc-900/40 rounded-2xl p-14 text-center max-w-lg mx-auto space-y-4">
+            <div className="w-14 h-14 rounded-2xl bg-zinc-800/80 flex items-center justify-center mx-auto text-amber-500 border border-white/[0.05]">
+              <Clock className="w-7 h-7 text-amber-400" />
             </div>
-            <h4 className="text-base font-bold text-slate-900">No Matching Continuous Free Slots</h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-medium">
+            <h4 className="text-base font-bold text-zinc-100">No Matching Continuous Free Slots</h4>
+            <p className="text-xs text-zinc-500 leading-relaxed font-medium">
               No continuous window of at least {selectedDuration} minutes is open on {selectedDate} across the selected batches.
             </p>
             <div className="pt-2 flex justify-center gap-2">
               <button
                 type="button"
                 onClick={() => onSelectDuration(30)}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-emerald-700 border border-slate-200 cursor-pointer transition"
+                className="px-3.5 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-emerald-400 border border-white/[0.08] cursor-pointer transition"
               >
                 Try 30m Duration
               </button>
               <button
                 type="button"
                 onClick={onNavigateToTimeline}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-indigo-700 border border-slate-200 cursor-pointer transition"
+                className="px-3.5 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-indigo-400 border border-white/[0.08] cursor-pointer transition"
               >
                 Open Timeline
               </button>
@@ -348,37 +348,37 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
               return (
                 <div
                   key={slot.id}
-                  className="glass-panel-interactive rounded-3xl p-6 sm:p-7 flex flex-col justify-between group relative overflow-hidden bg-white border border-slate-200/90 shadow-sm hover:shadow-card-hover"
+                  className="glass-card-interactive rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-6 sm:p-7 flex flex-col justify-between group relative overflow-hidden hover:border-indigo-500/30 hover:bg-zinc-900 transition-all duration-300 cursor-pointer shadow-card hover:shadow-card-hover"
                 >
                   {/* Subtle top corner emerald glow */}
-                  <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/10 transition-colors" />
+                  <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/20 transition-colors" />
 
                   <div>
                     {/* Top Badges */}
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-mono font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-lg">
+                      <span className="text-[10px] font-mono tabular-nums font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
                         WINDOW #{idx + 1}
                       </span>
-                      <span className="text-xs font-mono font-black text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-300">
+                      <span className="text-xs font-mono tabular-nums font-black text-amber-400 bg-amber-500/15 px-2.5 py-1 rounded-full border border-amber-500/30">
                         {slot.durationFormatted} Free
                       </span>
                     </div>
 
                     {/* Highly readable time window format with colons and arrow */}
                     <div className="mb-4">
-                      <div className="flex items-baseline gap-2 text-2xl font-mono font-black text-slate-900 tracking-tight group-hover:text-emerald-700 transition-colors">
+                      <div className="flex items-baseline gap-2 text-2xl font-mono tabular-nums font-black text-zinc-100 tracking-tight group-hover:text-emerald-400 transition-colors">
                         <span>{minutesToReadable(slot.startMinutes)}</span>
-                        <span className="text-slate-400 font-sans font-light text-lg">→</span>
+                        <span className="text-zinc-600 font-sans font-light text-lg">→</span>
                         <span>{minutesToReadable(slot.endMinutes)}</span>
                       </div>
                       
-                      <div className="text-xs text-slate-500 mt-2 flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-medium">
+                      <div className="text-xs text-zinc-500 mt-2 flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-[10px] tabular-nums text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded border border-white/[0.08] font-medium">
                           {slot.formattedRange}
                         </span>
                         <span>•</span>
-                        <span className="text-emerald-700 font-semibold flex items-center gap-1">
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="text-emerald-500 font-semibold flex items-center gap-1">
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                           {slot.applicableBatches.length > 1
                             ? `All ${slot.applicableBatches.length} batches free`
                             : slot.applicableBatches[0]}
@@ -387,22 +387,22 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                     </div>
 
                     {/* Available Resources Counters */}
-                    <div className="space-y-2 py-3.5 border-t border-slate-200/80 text-xs">
-                      <div className="flex items-center justify-between text-slate-600 font-medium">
+                    <div className="space-y-2 py-3.5 border-t border-white/[0.08] text-xs">
+                      <div className="flex items-center justify-between text-zinc-400 font-medium">
                         <span className="flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-indigo-600" />
+                          <User className="w-3.5 h-3.5 text-indigo-400" />
                           Faculty Available:
                         </span>
-                        <span className="font-mono font-bold text-slate-800 bg-slate-50 px-2.5 py-0.5 rounded-md border border-slate-200">
+                        <span className="font-mono tabular-nums font-bold text-zinc-200 bg-zinc-800/80 px-2.5 py-0.5 rounded-md border border-white/[0.05]">
                           {freeFaculty.length} available
                         </span>
                       </div>
-                      <div className="flex items-center justify-between text-slate-600 font-medium">
+                      <div className="flex items-center justify-between text-zinc-400 font-medium">
                         <span className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-sky-600" />
+                          <MapPin className="w-3.5 h-3.5 text-sky-400" />
                           Labs / Halls Free:
                         </span>
-                        <span className="font-mono font-bold text-slate-800 bg-slate-50 px-2.5 py-0.5 rounded-md border border-slate-200">
+                        <span className="font-mono tabular-nums font-bold text-zinc-200 bg-zinc-800/80 px-2.5 py-0.5 rounded-md border border-white/[0.05]">
                           {freeRooms.length} available
                         </span>
                       </div>
@@ -421,7 +421,7 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
                         batches: slot.applicableBatches,
                       })
                     }
-                    className="mt-5 w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md shadow-emerald-600/20 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                    className="mt-5 w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-card transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                   >
                     <span>Reserve Session in Slot</span>
                     <ArrowRight className="w-4 h-4 text-white" />

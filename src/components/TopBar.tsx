@@ -6,16 +6,27 @@ import {
   ShieldCheck,
   RefreshCw,
   FileText,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 interface TopBarProps {
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
   onOpenAIModal: () => void;
   onOpenBooking?: () => void;
   onLoadDemo: () => void;
   onExportPDF: () => void;
 }
 
-export function TopBar({ onOpenAIModal, onOpenBooking, onLoadDemo, onExportPDF }: TopBarProps) {
+export function TopBar({
+  theme = 'dark',
+  onToggleTheme,
+  onOpenAIModal,
+  onOpenBooking,
+  onLoadDemo,
+  onExportPDF,
+}: TopBarProps) {
   return (
     <header className="lg:hidden sticky top-0 z-30 bg-zinc-900/90 backdrop-blur-2xl border-b border-white/[0.08]">
       <div className="flex items-center justify-between px-4 py-3">
@@ -34,9 +45,24 @@ export function TopBar({ onOpenAIModal, onOpenBooking, onLoadDemo, onExportPDF }
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {onToggleTheme && (
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              className={`p-2 rounded-lg border transition-colors cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-amber-500/10 text-amber-600 border-amber-500/20'
+                  : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+              }`}
+              title="Toggle Theme"
+            >
+              {theme === 'light' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          )}
+
           <button
             onClick={onOpenAIModal}
-            className="relative p-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 border border-violet-500/20 transition-colors"
+            className="relative p-2 rounded-lg bg-violet-500/10 text-violet-400 hover:bg-violet-500/20 border border-violet-500/20 transition-colors cursor-pointer"
             title="AI Copilot"
           >
             <Sparkles size={18} />
@@ -49,7 +75,7 @@ export function TopBar({ onOpenAIModal, onOpenBooking, onLoadDemo, onExportPDF }
           {onOpenBooking && (
             <button
               onClick={onOpenBooking}
-              className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors"
+              className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors cursor-pointer"
               title="Book a Class"
             >
               <Plus size={18} />
@@ -58,21 +84,12 @@ export function TopBar({ onOpenAIModal, onOpenBooking, onLoadDemo, onExportPDF }
 
           <button
             onClick={onLoadDemo}
-            className="p-2 rounded-lg bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-white/[0.06] transition-colors"
-            title="Reset Data"
+            className="p-2 rounded-lg bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 border border-white/[0.05] transition-colors cursor-pointer"
+            title="Reset to Verified Timetable Data"
           >
             <RefreshCw size={16} />
           </button>
         </div>
-      </div>
-
-      {/* Status bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 text-[10px] text-zinc-500 border-t border-white/[0.04] bg-zinc-950/30">
-        <span className="font-mono">08:00 AM – 05:00 PM</span>
-        <span className="flex items-center gap-1 text-emerald-500/80 font-medium">
-          <ShieldCheck size={10} />
-          Conflict Engine Active
-        </span>
       </div>
     </header>
   );

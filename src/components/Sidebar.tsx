@@ -13,6 +13,8 @@ import {
   ChevronRight,
   Cpu,
   FileText,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 export type NavTab = 'dashboard' | 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
@@ -22,6 +24,8 @@ interface SidebarProps {
   onChangeTab: (tab: NavTab) => void;
   totalLectures: number;
   freeSlotsCount: number;
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
   onOpenAIModal: () => void;
   onOpenBooking?: () => void;
   onExportPDF: () => void;
@@ -41,6 +45,8 @@ export function Sidebar({
   onChangeTab,
   totalLectures,
   freeSlotsCount,
+  theme = 'dark',
+  onToggleTheme,
   onOpenAIModal,
   onOpenBooking,
   onExportPDF,
@@ -90,7 +96,7 @@ export function Sidebar({
 
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors ${collapsed ? 'hidden' : ''}`}
+            className={`p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer ${collapsed ? 'hidden' : ''}`}
             title="Toggle Sidebar (Ctrl+B)"
           >
             <ChevronLeft size={16} />
@@ -106,7 +112,7 @@ export function Sidebar({
               <button
                 key={item.id}
                 onClick={() => onChangeTab(item.id)}
-                className={`w-full flex items-center gap-3 rounded-xl text-[13px] font-medium transition-all relative group ${
+                className={`w-full flex items-center gap-3 rounded-xl text-[13px] font-medium transition-all relative group cursor-pointer ${
                   collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'
                 } ${
                   isActive
@@ -154,7 +160,7 @@ export function Sidebar({
         <div className="space-y-1.5">
           <button
             onClick={onOpenAIModal}
-            className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-violet-400 hover:bg-violet-500/10 border border-transparent hover:border-violet-500/20 transition-all ${
+            className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-violet-400 hover:bg-violet-500/10 border border-transparent hover:border-violet-500/20 transition-all cursor-pointer ${
               collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'
             }`}
             title={collapsed ? 'AI Copilot' : undefined}
@@ -172,7 +178,7 @@ export function Sidebar({
           {onOpenBooking && (
             <button
               onClick={onOpenBooking}
-              className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-emerald-400 hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 transition-all ${
+              className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-emerald-400 hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 transition-all cursor-pointer ${
                 collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'
               }`}
               title={collapsed ? 'Book a Class' : undefined}
@@ -184,7 +190,7 @@ export function Sidebar({
 
           <button
             onClick={onExportPDF}
-            className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all ${
+            className={`w-full flex items-center gap-2.5 rounded-xl text-[13px] font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all cursor-pointer ${
               collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'
             }`}
             title={collapsed ? 'Export PDF' : undefined}
@@ -196,9 +202,33 @@ export function Sidebar({
       </div>
 
       {/* Bottom Section */}
-      <div>
+      <div className="space-y-2">
+        
+        {/* Theme Toggle Button */}
+        {onToggleTheme && (
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className={`w-full flex items-center gap-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              theme === 'light'
+                ? 'bg-amber-500/15 text-amber-600 border border-amber-500/30'
+                : 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20'
+            } ${collapsed ? 'justify-center p-2' : 'px-3 py-2'}`}
+            title={`Current Theme: ${theme === 'light' ? 'Cool Frost' : 'Obsidian Dark'}`}
+          >
+            {theme === 'light' ? (
+              <Sun size={16} className="text-amber-500 flex-shrink-0" />
+            ) : (
+              <Moon size={16} className="text-indigo-400 flex-shrink-0" />
+            )}
+            {!collapsed && (
+              <span className="truncate">{theme === 'light' ? 'Cool Frost' : 'Obsidian Dark'}</span>
+            )}
+          </button>
+        )}
+
         {!collapsed && (
-          <div className="p-2.5 rounded-xl bg-zinc-950/60 border border-white/[0.05] text-[11px] text-zinc-500 flex items-center justify-between">
+          <div className="p-2 rounded-xl bg-zinc-950/60 border border-white/[0.05] text-[11px] text-zinc-500 flex items-center justify-between">
             <span>Toggle Sidebar</span>
             <kbd className="px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded font-mono text-[9px]">Ctrl+B</kbd>
           </div>
@@ -207,7 +237,7 @@ export function Sidebar({
         {collapsed && (
           <button
             onClick={() => setCollapsed(false)}
-            className="w-full flex items-center justify-center p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
+            className="w-full flex items-center justify-center p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
           >
             <ChevronRight size={16} />
           </button>

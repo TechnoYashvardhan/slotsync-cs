@@ -266,3 +266,108 @@ body {
   background-color: rgba(99, 102, 241, 0.35);
   color: #fff;
 }
+
+/* ─── Light Cool Theme Overrides ─── */
+.theme-light {
+  color-scheme: light;
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.theme-light body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.theme-light .bg-zinc-950 {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.theme-light .bg-zinc-900,
+.theme-light .bg-zinc-900\/95,
+.theme-light .bg-zinc-900\/90,
+.theme-light .bg-zinc-900\/80,
+.theme-light .bg-zinc-900\/70,
+.theme-light .bg-zinc-900\/60,
+.theme-light .bg-zinc-900\/50,
+.theme-light .bg-zinc-900\/40 {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.15) !important;
+}
+
+.theme-light .bg-zinc-850,
+.theme-light .bg-zinc-850\/80,
+.theme-light .bg-zinc-850\/50,
+.theme-light .bg-zinc-800,
+.theme-light .bg-zinc-800\/90,
+.theme-light .bg-zinc-800\/80,
+.theme-light .bg-zinc-800\/70,
+.theme-light .bg-zinc-800\/60,
+.theme-light .bg-zinc-800\/50,
+.theme-light .bg-zinc-800\/40,
+.theme-light .bg-zinc-800\/30 {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  color: #1e293b !important;
+}
+
+.theme-light .text-zinc-100,
+.theme-light .text-zinc-200 {
+  color: #0f172a !important;
+}
+
+.theme-light .text-zinc-300,
+.theme-light .text-zinc-400 {
+  color: #334155 !important;
+}
+
+.theme-light .text-zinc-500 {
+  color: #64748b !important;
+}
+
+.theme-light .text-zinc-600 {
+  color: #94a3b8 !important;
+}
+
+.theme-light .border-white\/\[0\.08\],
+.theme-light .border-white\/\[0\.06\],
+.theme-light .border-white\/\[0\.05\],
+.theme-light .border-white\/\[0\.04\],
+.theme-light .border-white\/\[0\.03\],
+.theme-light .border-white\/\[0\.1\],
+.theme-light .border-white\/\[0\.12\],
+.theme-light .border-white\/\[0\.15\],
+.theme-light .border-zinc-800,
+.theme-light .border-zinc-700,
+.theme-light .border-zinc-700\/80,
+.theme-light .border-zinc-700\/60,
+.theme-light .border-zinc-700\/50 {
+  border-color: rgba(203, 213, 225, 0.75) !important;
+}
+
+.theme-light .glass-card {
+  background: rgba(255, 255, 255, 0.90) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.25), 0 1px 3px 0 rgba(148, 163, 184, 0.15) !important;
+}
+
+.theme-light .tech-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px) !important;
+}
+
+.theme-light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+}
+
+.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  color: #0f172a !important;
+}

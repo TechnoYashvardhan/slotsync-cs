@@ -56,6 +56,36 @@ export function App() {
   // Toast Notification
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Theme State: 'dark' (Obsidian Aurora) or 'light' (Cool Frost)
+  const STORAGE_THEME_KEY = 'slotsync_theme_preference';
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_THEME_KEY);
+      if (saved === 'light' || saved === 'dark') return saved;
+    } catch (e) {}
+    return 'dark';
+  });
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem(STORAGE_THEME_KEY, next);
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light', 'theme-light');
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light', 'theme-light');
+    }
+  }, [theme]);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -279,7 +309,7 @@ export function App() {
   };
 
   return (
-    <AuroraBackground>
+    <AuroraBackground theme={theme}>
       {/* Toast */}
       <AnimatePresence>
         {toastMessage && (
@@ -302,6 +332,8 @@ export function App() {
         onChangeTab={setActiveTab}
         totalLectures={schedule.length}
         freeSlotsCount={commonFreeSlots.length}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
         onOpenAIModal={() => setIsAIOpen(true)}
         onOpenBooking={handleQuickBook}
         onExportPDF={handleExportPDF}
@@ -309,6 +341,8 @@ export function App() {
 
       {/* Mobile Top Bar */}
       <TopBar
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
         onOpenAIModal={() => setIsAIOpen(true)}
         onOpenBooking={handleQuickBook}
         onLoadDemo={handleLoadDemo}

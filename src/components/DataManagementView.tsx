@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { ScheduleRow } from '../types/schedule';
 import { parseScheduleCSV, CSVParseResult } from '../utils/csvParser';
+import { RealTimeDataEditor } from './RealTimeDataEditor';
 import {
   UploadCloud,
   FileSpreadsheet,
@@ -21,8 +22,15 @@ interface DataManagementViewProps {
   totalTeachers: number;
   totalVenues: number;
   distinctDates: string[];
+  availableBatches?: string[];
+  availableTeachers?: string[];
+  availableVenues?: string[];
+  availableSubjects?: string[];
   onLoadDemo: () => void;
   onImportSchedule: (rows: ScheduleRow[]) => void;
+  onUpdateRow?: (row: ScheduleRow) => void;
+  onAddRow?: (row: ScheduleRow) => void;
+  onDeleteRow?: (id: string) => void;
   onExportCSV: () => void;
   onExportPDF: () => void;
   onDownloadTemplate: () => void;
@@ -34,8 +42,15 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({
   totalTeachers,
   totalVenues,
   distinctDates,
+  availableBatches = [],
+  availableTeachers = [],
+  availableVenues = [],
+  availableSubjects = [],
   onLoadDemo,
   onImportSchedule,
+  onUpdateRow,
+  onAddRow,
+  onDeleteRow,
   onExportCSV,
   onExportPDF,
   onDownloadTemplate,
@@ -121,7 +136,21 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({
 
       </div>
 
-      {/* 2. Upload & Demo Data Terminal */}
+      {/* 2. Real-Time Interactive CSV / Timetable Editor */}
+      <RealTimeDataEditor
+        schedule={schedule}
+        onUpdateRow={onUpdateRow || (() => {})}
+        onAddRow={onAddRow || (() => {})}
+        onDeleteRow={onDeleteRow || (() => {})}
+        onBatchUpdate={onImportSchedule}
+        availableBatches={availableBatches}
+        availableTeachers={availableTeachers}
+        availableVenues={availableVenues}
+        availableSubjects={availableSubjects}
+        distinctDates={distinctDates}
+      />
+
+      {/* 3. Upload & Demo Data Terminal */}
       <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
           <div>

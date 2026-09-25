@@ -230,6 +230,29 @@ export function App() {
     showToast('Class removed from schedule.');
   };
 
+  const handleUpdateRow = (updatedRow: ScheduleRow) => {
+    setSchedule((prev) => {
+      const updated = prev.map((r) => (r.id === updatedRow.id ? updatedRow : r));
+      try {
+        localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
+      } catch (e) { /* ignore */ }
+      return updated;
+    });
+    showToast(`Updated "${updatedRow.subject}" (${updatedRow.time}) for ${updatedRow.courseSem}.`);
+  };
+
+  const handleAddRow = (newRow: ScheduleRow) => {
+    setSchedule((prev) => {
+      const updated = [newRow, ...prev];
+      try {
+        localStorage.setItem(STORAGE_SCHEDULE_KEY, JSON.stringify(updated));
+      } catch (e) { /* ignore */ }
+      return updated;
+    });
+    if (newRow.date) setTargetDate(newRow.date);
+    showToast(`Added "${newRow.subject}" for ${newRow.courseSem} to timetable!`);
+  };
+
   const handleExportCSV = () => {
     exportScheduleToCSV(schedule);
     showToast('Exported schedule to CSV.');
@@ -345,6 +368,7 @@ export function App() {
                 schedule={schedule}
                 selectedDate={targetDate}
                 onDeleteRow={handleDeleteRow}
+                onUpdateRow={handleUpdateRow}
                 onOpenBooking={handleQuickBook}
               />
             )}
@@ -356,8 +380,15 @@ export function App() {
                 totalTeachers={availableTeachers.length}
                 totalVenues={availableVenues.length}
                 distinctDates={availableDates}
+                availableBatches={availableBatches}
+                availableTeachers={availableTeachers}
+                availableVenues={availableVenues}
+                availableSubjects={availableSubjects}
                 onLoadDemo={handleLoadDemo}
                 onImportSchedule={handleImportSchedule}
+                onUpdateRow={handleUpdateRow}
+                onAddRow={handleAddRow}
+                onDeleteRow={handleDeleteRow}
                 onExportCSV={handleExportCSV}
                 onExportPDF={handleExportPDF}
                 onDownloadTemplate={handleDownloadTemplate}

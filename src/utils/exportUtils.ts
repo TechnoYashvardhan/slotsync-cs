@@ -7,8 +7,10 @@ import { minutesToReadable } from './timeUtils';
 /**
  * Export current schedule rows to a formatted CSV including Subject.
  */
-export function exportScheduleToCSV(schedule: ScheduleRow[], filename?: string): void {
-  // Sort rows chronologically by date and startMinutes
+/**
+ * Converts current schedule rows to a formatted CSV string including Subject.
+ */
+export function scheduleToCSVString(schedule: ScheduleRow[]): string {
   const sorted = [...schedule].sort((a, b) => {
     if (a.date !== b.date) return a.date.localeCompare(b.date);
     return a.startMinutes - b.startMinutes;
@@ -23,10 +25,14 @@ export function exportScheduleToCSV(schedule: ScheduleRow[], filename?: string):
     Venue: row.venue,
   }));
 
-  const csvContent = Papa.unparse(exportData, {
+  return Papa.unparse(exportData, {
     quotes: false,
     header: true,
   });
+}
+
+export function exportScheduleToCSV(schedule: ScheduleRow[], filename?: string): void {
+  const csvContent = scheduleToCSVString(schedule);
 
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);

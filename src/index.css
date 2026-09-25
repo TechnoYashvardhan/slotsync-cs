@@ -317,7 +317,76 @@ html.light body {
 .theme-light [class*="border-white"],
 .theme-light [class*="border-zinc-800"],
 .theme-light [class*="border-zinc-700"] {
-  border-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* 3b. High Contrast Subject Schedule Cards & Accent Borders in Light Mode */
+.theme-light [class*="border-emerald"] {
+  border-color: #059669 !important;
+}
+.theme-light [class*="border-purple"] {
+  border-color: #9333ea !important;
+}
+.theme-light [class*="border-amber"] {
+  border-color: #d97706 !important;
+}
+.theme-light [class*="border-sky"] {
+  border-color: #0284c7 !important;
+}
+.theme-light [class*="border-rose"] {
+  border-color: #e11d48 !important;
+}
+.theme-light [class*="border-indigo"] {
+  border-color: #4f46e5 !important;
+}
+.theme-light [class*="border-cyan"] {
+  border-color: #0891b2 !important;
+}
+.theme-light [class*="border-teal"] {
+  border-color: #0d9488 !important;
+}
+.theme-light [class*="border-fuchsia"] {
+  border-color: #c026d3 !important;
+}
+.theme-light [class*="border-blue"] {
+  border-color: #2563eb !important;
+}
+
+/* 3c. Crisp high-contrast dark text colors for badges and pills in Light Mode */
+.theme-light [class*="text-emerald-300"],
+.theme-light [class*="text-emerald-400"] {
+  color: #064e3b !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-purple-300"],
+.theme-light [class*="text-purple-400"] {
+  color: #581c87 !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-amber-300"],
+.theme-light [class*="text-amber-400"] {
+  color: #78350f !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-sky-300"],
+.theme-light [class*="text-sky-400"] {
+  color: #0c4a6e !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-rose-300"],
+.theme-light [class*="text-rose-400"] {
+  color: #881337 !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-indigo-300"],
+.theme-light [class*="text-indigo-400"] {
+  color: #312e81 !important;
+  font-weight: 700;
+}
+.theme-light [class*="text-cyan-300"],
+.theme-light [class*="text-cyan-400"] {
+  color: #164e63 !important;
+  font-weight: 700;
 }
 
 /* 4. Tables: Crisp white rows, clean headers, no muddy dark overlays */

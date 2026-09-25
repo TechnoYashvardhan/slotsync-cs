@@ -78,72 +78,72 @@ export const getSubjectTheme = (subjectName: string) => {
   const s = subjectName.toLowerCase();
   if (s.includes('hardware') || s.includes('component')) {
     return {
-      bg: 'bg-emerald-500/10 hover:bg-emerald-500/15',
-      border: 'border-emerald-500/30 hover:border-emerald-500/50',
-      badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      text: 'text-emerald-300',
+      bg: 'bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100/80 dark:hover:bg-emerald-500/15',
+      border: 'border-2 border-emerald-600/50 dark:border-emerald-500/40 hover:border-emerald-600 dark:hover:border-emerald-400 shadow-sm',
+      badge: 'bg-emerald-100 text-emerald-950 dark:bg-emerald-500/20 dark:text-emerald-200 border border-emerald-400/80 dark:border-emerald-500/40 font-bold',
+      text: 'text-emerald-950 dark:text-emerald-300 font-bold',
       accent: 'emerald',
-      dot: 'bg-emerald-400',
+      dot: 'bg-emerald-600 dark:bg-emerald-400',
     };
   }
   if (s.includes('automation') || s.includes('office')) {
     return {
-      bg: 'bg-purple-500/10 hover:bg-purple-500/15',
-      border: 'border-purple-500/30 hover:border-purple-500/50',
-      badge: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
-      text: 'text-purple-300',
+      bg: 'bg-purple-50 dark:bg-purple-500/10 hover:bg-purple-100/80 dark:hover:bg-purple-500/15',
+      border: 'border-2 border-purple-600/50 dark:border-purple-500/40 hover:border-purple-600 dark:hover:border-purple-400 shadow-sm',
+      badge: 'bg-purple-100 text-purple-950 dark:bg-purple-500/20 dark:text-purple-200 border border-purple-400/80 dark:border-purple-500/40 font-bold',
+      text: 'text-purple-950 dark:text-purple-300 font-bold',
       accent: 'purple',
-      dot: 'bg-purple-400',
+      dot: 'bg-purple-600 dark:bg-purple-400',
     };
   }
   if (s.includes('operating') || s.includes('system') || s.includes('os')) {
     return {
-      bg: 'bg-amber-500/10 hover:bg-amber-500/15',
-      border: 'border-amber-500/30 hover:border-amber-500/50',
-      badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      text: 'text-amber-300',
+      bg: 'bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100/80 dark:hover:bg-amber-500/15',
+      border: 'border-2 border-amber-600/50 dark:border-amber-500/40 hover:border-amber-600 dark:hover:border-amber-400 shadow-sm',
+      badge: 'bg-amber-100 text-amber-950 dark:bg-amber-500/20 dark:text-amber-200 border border-amber-400/80 dark:border-amber-500/40 font-bold',
+      text: 'text-amber-950 dark:text-amber-300 font-bold',
       accent: 'amber',
-      dot: 'bg-amber-400',
+      dot: 'bg-amber-600 dark:bg-amber-400',
     };
   }
   if (s.includes('network')) {
     return {
-      bg: 'bg-sky-500/10 hover:bg-sky-500/15',
-      border: 'border-sky-500/30 hover:border-sky-500/50',
-      badge: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
-      text: 'text-sky-300',
+      bg: 'bg-sky-50 dark:bg-sky-500/10 hover:bg-sky-100/80 dark:hover:bg-sky-500/15',
+      border: 'border-2 border-sky-600/50 dark:border-sky-500/40 hover:border-sky-600 dark:hover:border-sky-400 shadow-sm',
+      badge: 'bg-sky-100 text-sky-950 dark:bg-sky-500/20 dark:text-sky-200 border border-sky-400/80 dark:border-sky-500/40 font-bold',
+      text: 'text-sky-950 dark:text-sky-300 font-bold',
       accent: 'sky',
-      dot: 'bg-sky-400',
+      dot: 'bg-sky-600 dark:bg-sky-400',
     };
   }
   if (s.includes('electronic') || s.includes('digital')) {
     return {
-      bg: 'bg-cyan-500/10 hover:bg-cyan-500/15',
-      border: 'border-cyan-500/30 hover:border-cyan-500/50',
-      badge: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      text: 'text-cyan-300',
+      bg: 'bg-cyan-50 dark:bg-cyan-500/10 hover:bg-cyan-100/80 dark:hover:bg-cyan-500/15',
+      border: 'border-2 border-cyan-600/50 dark:border-cyan-500/40 hover:border-cyan-600 dark:hover:border-cyan-400 shadow-sm',
+      badge: 'bg-cyan-100 text-cyan-950 dark:bg-cyan-500/20 dark:text-cyan-200 border border-cyan-400/80 dark:border-cyan-500/40 font-bold',
+      text: 'text-cyan-950 dark:text-cyan-300 font-bold',
       accent: 'cyan',
-      dot: 'bg-cyan-400',
+      dot: 'bg-cyan-600 dark:bg-cyan-400',
     };
   }
   if (s.includes('java') || s.includes('c++') || s.includes('python') || s.includes('data')) {
     return {
-      bg: 'bg-rose-500/10 hover:bg-rose-500/15',
-      border: 'border-rose-500/30 hover:border-rose-500/50',
-      badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      text: 'text-rose-300',
+      bg: 'bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100/80 dark:hover:bg-rose-500/15',
+      border: 'border-2 border-rose-600/50 dark:border-rose-500/40 hover:border-rose-600 dark:hover:border-rose-400 shadow-sm',
+      badge: 'bg-rose-100 text-rose-950 dark:bg-rose-500/20 dark:text-rose-200 border border-rose-400/80 dark:border-rose-500/40 font-bold',
+      text: 'text-rose-950 dark:text-rose-300 font-bold',
       accent: 'rose',
-      dot: 'bg-rose-400',
+      dot: 'bg-rose-600 dark:bg-rose-400',
     };
   }
   if (s.includes('math')) {
     return {
-      bg: 'bg-blue-500/10 hover:bg-blue-500/15',
-      border: 'border-blue-500/30 hover:border-blue-500/50',
-      badge: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
-      text: 'text-blue-300',
+      bg: 'bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100/80 dark:hover:bg-blue-500/15',
+      border: 'border-2 border-blue-600/50 dark:border-blue-500/40 hover:border-blue-600 dark:hover:border-blue-400 shadow-sm',
+      badge: 'bg-blue-100 text-blue-950 dark:bg-blue-500/20 dark:text-blue-200 border border-blue-400/80 dark:border-blue-500/40 font-bold',
+      text: 'text-blue-950 dark:text-blue-300 font-bold',
       accent: 'blue',
-      dot: 'bg-blue-400',
+      dot: 'bg-blue-600 dark:bg-blue-400',
     };
   }
 
@@ -153,28 +153,28 @@ export const getSubjectTheme = (subjectName: string) => {
   }
   const colors = [
     {
-      bg: 'bg-indigo-500/10 hover:bg-indigo-500/15',
-      border: 'border-indigo-500/30 hover:border-indigo-500/50',
-      badge: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
-      text: 'text-indigo-300',
+      bg: 'bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100/80 dark:hover:bg-indigo-500/15',
+      border: 'border-2 border-indigo-600/50 dark:border-indigo-500/40 hover:border-indigo-600 dark:hover:border-indigo-400 shadow-sm',
+      badge: 'bg-indigo-100 text-indigo-950 dark:bg-indigo-500/20 dark:text-indigo-200 border border-indigo-400/80 dark:border-indigo-500/40 font-bold',
+      text: 'text-indigo-950 dark:text-indigo-300 font-bold',
       accent: 'indigo',
-      dot: 'bg-indigo-400',
+      dot: 'bg-indigo-600 dark:bg-indigo-400',
     },
     {
-      bg: 'bg-teal-500/10 hover:bg-teal-500/15',
-      border: 'border-teal-500/30 hover:border-teal-500/50',
-      badge: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
-      text: 'text-teal-300',
+      bg: 'bg-teal-50 dark:bg-teal-500/10 hover:bg-teal-100/80 dark:hover:bg-teal-500/15',
+      border: 'border-2 border-teal-600/50 dark:border-teal-500/40 hover:border-teal-600 dark:hover:border-teal-400 shadow-sm',
+      badge: 'bg-teal-100 text-teal-950 dark:bg-teal-500/20 dark:text-teal-200 border border-teal-400/80 dark:border-teal-500/40 font-bold',
+      text: 'text-teal-950 dark:text-teal-300 font-bold',
       accent: 'teal',
-      dot: 'bg-teal-400',
+      dot: 'bg-teal-600 dark:bg-teal-400',
     },
     {
-      bg: 'bg-fuchsia-500/10 hover:bg-fuchsia-500/15',
-      border: 'border-fuchsia-500/30 hover:border-fuchsia-500/50',
-      badge: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/30',
-      text: 'text-fuchsia-300',
+      bg: 'bg-fuchsia-50 dark:bg-fuchsia-500/10 hover:bg-fuchsia-100/80 dark:hover:bg-fuchsia-500/15',
+      border: 'border-2 border-fuchsia-600/50 dark:border-fuchsia-500/40 hover:border-fuchsia-600 dark:hover:border-fuchsia-400 shadow-sm',
+      badge: 'bg-fuchsia-100 text-fuchsia-950 dark:bg-fuchsia-500/20 dark:text-fuchsia-200 border border-fuchsia-400/80 dark:border-fuchsia-500/40 font-bold',
+      text: 'text-fuchsia-950 dark:text-fuchsia-300 font-bold',
       accent: 'fuchsia',
-      dot: 'bg-fuchsia-400',
+      dot: 'bg-fuchsia-600 dark:bg-fuchsia-400',
     },
   ];
   return colors[Math.abs(hash) % colors.length];
@@ -719,41 +719,41 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                           return (
                             <div
                               key={lec.id || idx}
-                              className={`p-3.5 rounded-xl border transition-all space-y-2.5 ${theme.bg} ${theme.border}`}
+                              className={`p-3.5 rounded-xl border-2 transition-all space-y-2.5 ${theme.bg} ${theme.border}`}
                             >
                               {/* Time Range Pill & Duration */}
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                  <span className={`w-2 h-2 rounded-full ${theme.dot}`} />
-                                  <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md border ${theme.badge}`}>
+                                  <span className={`w-2.5 h-2.5 rounded-full ${theme.dot} shadow-xs`} />
+                                  <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-md border ${theme.badge}`}>
                                     {minutesToReadable(lec.startMinutes)} – {minutesToReadable(lec.endMinutes)}
                                   </span>
                                 </div>
-                                <span className="text-[11px] font-mono text-zinc-400">
+                                <span className="text-[11px] font-mono font-bold text-slate-700 dark:text-zinc-400 bg-black/[0.04] dark:bg-white/[0.05] px-1.5 py-0.5 rounded">
                                   {item.durationMinutes}m
                                 </span>
                               </div>
 
                               {/* Full Non-truncated Subject Name */}
                               <div>
-                                <h4 className="text-sm font-semibold text-zinc-100 leading-snug">
+                                <h4 className="text-sm font-bold text-slate-950 dark:text-zinc-100 leading-snug tracking-tight">
                                   {lec.subject}
                                 </h4>
                                 {selectedBatch === 'All' && (
-                                  <span className="inline-block text-[10px] font-mono px-2 py-0.5 mt-1 rounded bg-zinc-800 text-zinc-300 border border-white/[0.06]">
+                                  <span className="inline-block text-[10px] font-mono font-bold px-2 py-0.5 mt-1 rounded bg-slate-200 text-slate-900 dark:bg-zinc-800 dark:text-zinc-300 border border-slate-300 dark:border-white/[0.08]">
                                     {lec.courseSem}
                                   </span>
                                 )}
                               </div>
 
                               {/* Teacher & Venue Metadata */}
-                              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/[0.06] text-xs">
-                                <span className="flex items-center gap-1.5 text-zinc-300 font-medium">
-                                  <User className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+                              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80 dark:border-white/[0.08] text-xs">
+                                <span className="flex items-center gap-1.5 text-slate-900 dark:text-zinc-200 font-bold">
+                                  <User className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
                                   <span>{lec.teacherName}</span>
                                 </span>
-                                <span className="flex items-center gap-1.5 text-sky-300 font-mono text-[11px] bg-sky-500/10 px-2 py-0.5 rounded-md border border-sky-500/20">
-                                  <MapPin className="w-3 h-3 text-sky-400 flex-shrink-0" />
+                                <span className="flex items-center gap-1.5 text-sky-950 dark:text-sky-300 font-mono text-[11px] font-bold bg-sky-100 dark:bg-sky-500/15 px-2 py-0.5 rounded-md border border-sky-300 dark:border-sky-500/30">
+                                  <MapPin className="w-3 h-3 text-sky-600 dark:text-sky-400 flex-shrink-0" />
                                   <span>{lec.venue}</span>
                                 </span>
                               </div>
@@ -766,7 +766,7 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                           return (
                             <div
                               key={idx}
-                              className="flex items-center justify-between px-3 py-1 rounded-lg bg-zinc-800/40 text-[10px] text-zinc-400 font-mono border border-white/[0.03]"
+                              className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800/40 text-[10px] text-slate-800 dark:text-zinc-300 font-mono font-bold border border-slate-200 dark:border-white/[0.05]"
                             >
                               <span className="flex items-center gap-1.5">
                                 <span>⏱️</span>
@@ -784,13 +784,13 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                           return (
                             <div
                               key={idx}
-                              className="px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-xs text-amber-300 font-medium"
+                              className="px-3.5 py-2.5 rounded-xl bg-amber-100/90 dark:bg-amber-500/10 border-2 border-amber-400/80 dark:border-amber-500/25 flex items-center justify-between text-xs text-amber-950 dark:text-amber-300 font-bold shadow-xs"
                             >
                               <div className="flex items-center gap-2">
-                                <Utensils className="w-3.5 h-3.5 text-amber-400" />
+                                <Utensils className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                                 <span>Lunch Recess</span>
                               </div>
-                              <span className="font-mono text-[11px] text-amber-400/90">
+                              <span className="font-mono text-[11px] text-amber-900 dark:text-amber-400/90 bg-amber-200/70 dark:bg-transparent px-1.5 py-0.5 rounded">
                                 {minutesToReadable(item.startMinutes)} – {minutesToReadable(item.endMinutes)}
                               </span>
                             </div>
@@ -812,16 +812,16 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                   venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                                 })
                               }
-                              className="p-2.5 rounded-xl border border-dashed border-zinc-700/80 bg-zinc-900/40 flex items-center justify-between text-xs text-zinc-400 hover:border-sky-500/50 hover:bg-sky-500/5 hover:text-sky-300 transition-all cursor-pointer group"
+                              className="p-3 rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700/80 bg-white/80 dark:bg-zinc-900/40 flex items-center justify-between text-xs text-slate-800 dark:text-zinc-300 hover:border-sky-500 dark:hover:border-sky-500/50 hover:bg-sky-50 dark:hover:bg-sky-500/5 hover:text-sky-950 dark:hover:text-sky-300 transition-all cursor-pointer group shadow-xs"
                               title="Click to reserve a session in this free slot"
                             >
                               <div className="flex items-center gap-2">
-                                <Sparkles className="w-3.5 h-3.5 text-zinc-500 group-hover:text-sky-400 transition-colors" />
-                                <span className="font-mono text-[11px]">
+                                <Sparkles className="w-3.5 h-3.5 text-slate-600 dark:text-zinc-500 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors" />
+                                <span className="font-mono text-[11px] font-bold">
                                   {item.freeLabel || 'Free Window'} ({minutesToReadable(item.startMinutes)} – {minutesToReadable(item.endMinutes)})
                                 </span>
                               </div>
-                              <span className="text-[10px] font-semibold text-sky-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-[10px] font-bold text-sky-600 dark:text-sky-400 opacity-0 group-hover:opacity-100 transition-opacity bg-sky-100 dark:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-300 dark:border-sky-500/30">
                                 + Book
                               </span>
                             </div>
@@ -1023,13 +1023,13 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                                     venue: selectedVenue !== 'All' ? selectedVenue : undefined,
                                   })
                                 }
-                                className="w-full h-full min-h-[96px] rounded-xl border border-dashed border-zinc-700/80 hover:border-emerald-500/40 hover:bg-emerald-500/10 bg-zinc-900/40 p-2 flex flex-col items-center justify-center text-zinc-500 hover:text-emerald-400 transition-all cursor-pointer group"
+                                className="w-full h-full min-h-[96px] rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700/80 hover:border-emerald-500 dark:hover:border-emerald-500/40 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 bg-slate-50/70 dark:bg-zinc-900/40 p-2 flex flex-col items-center justify-center text-slate-600 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all cursor-pointer group shadow-xs"
                                 title={`Click to book slot on ${day.dayName} ${day.date} (${block.label})`}
                               >
-                                <div className="w-7 h-7 rounded-full bg-zinc-800/80 group-hover:bg-emerald-500/20 flex items-center justify-center transition-colors">
-                                  <Plus className="w-3.5 h-3.5 text-zinc-400 group-hover:text-emerald-400 group-hover:scale-110 transition-transform" />
+                                <div className="w-7 h-7 rounded-full bg-slate-200 dark:bg-zinc-800/80 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-500/20 flex items-center justify-center transition-colors">
+                                  <Plus className="w-3.5 h-3.5 text-slate-700 dark:text-zinc-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 group-hover:scale-110 transition-transform" />
                                 </div>
-                                <span className="text-[11px] font-medium mt-1.5 text-zinc-500 group-hover:text-emerald-400 transition-colors">
+                                <span className="text-[11px] font-bold mt-1.5 text-slate-600 dark:text-zinc-500 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
                                   Vacant Slot
                                 </span>
                               </div>
@@ -1037,7 +1037,7 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
                               /* Occupied Lecture Cards with Color Themes */
                               <div className="space-y-2">
                                 {lectures.length > 1 && (
-                                  <div className="flex items-center justify-between px-2 py-1 bg-indigo-500/15 border border-indigo-500/30 rounded-lg text-[10px] font-medium text-indigo-300">
+                                  <div className="flex items-center justify-between px-2 py-1 bg-indigo-100 dark:bg-indigo-500/15 border border-indigo-300 dark:border-indigo-500/30 rounded-lg text-[10px] font-bold text-indigo-950 dark:text-indigo-300">
                                     <span>{lectures.length} Simultaneous Classes</span>
                                     <span className="font-mono">{minutesToReadable(block.start)}</span>
                                   </div>
@@ -1045,36 +1045,35 @@ export const WeeklyTimetableView: React.FC<WeeklyTimetableViewProps> = ({
 
                                 {lectures.map((lecture) => {
                                   const theme = getSubjectTheme(lecture.subject);
-                                  const isContinuation = lecture.startMinutes < block.start;
                                   
                                   return (
                                     <div
                                       key={lecture.id}
-                                      className={`p-2.5 rounded-xl border transition-all text-xs space-y-1.5 ${theme.bg} ${theme.border}`}
+                                      className={`p-2.5 rounded-xl border-2 transition-all text-xs space-y-1.5 ${theme.bg} ${theme.border}`}
                                     >
                                       {/* Batch badge + Time pill */}
                                       <div className="flex items-center justify-between gap-1.5">
-                                        <span className={`text-[10px] font-mono tabular-nums px-2 py-0.5 rounded-md border whitespace-nowrap ${theme.badge}`}>
+                                        <span className={`text-[10px] font-mono font-bold tabular-nums px-2 py-0.5 rounded-md border whitespace-nowrap ${theme.badge}`}>
                                           {lecture.courseSem}
                                         </span>
-                                        <span className="text-[10px] font-mono text-zinc-400">
+                                        <span className="text-[10px] font-mono font-bold text-slate-700 dark:text-zinc-400 bg-black/[0.04] dark:bg-white/[0.05] px-1 py-0.5 rounded">
                                           {lecture.time.split(' to ')[0]}
                                         </span>
                                       </div>
 
                                       {/* Full Subject Name */}
-                                      <div className="font-semibold text-zinc-100 text-xs leading-snug break-words">
+                                      <div className="font-bold text-slate-950 dark:text-zinc-100 text-xs leading-snug break-words">
                                         {lecture.subject}
                                       </div>
 
                                       {/* Faculty & Venue */}
-                                      <div className="flex flex-col gap-1 text-[10px] text-zinc-400 pt-1.5 border-t border-white/[0.06]">
-                                        <span className="truncate flex items-center gap-1">
-                                          <User className="w-3 h-3 text-indigo-400 flex-shrink-0" />
+                                      <div className="flex flex-col gap-1 text-[10px] pt-1.5 border-t border-slate-200/80 dark:border-white/[0.06]">
+                                        <span className="truncate flex items-center gap-1 text-slate-900 dark:text-zinc-200 font-bold">
+                                          <User className="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
                                           <span className="truncate">{lecture.teacherName}</span>
                                         </span>
-                                        <span className="truncate flex items-center gap-1 text-sky-300 font-mono">
-                                          <MapPin className="w-3 h-3 text-sky-400 flex-shrink-0" />
+                                        <span className="truncate flex items-center gap-1 text-sky-950 dark:text-sky-300 font-mono font-bold bg-sky-100 dark:bg-sky-500/15 px-1.5 py-0.5 rounded border border-sky-300 dark:border-sky-500/30">
+                                          <MapPin className="w-3 h-3 text-sky-600 dark:text-sky-400 flex-shrink-0" />
                                           <span className="truncate">{lecture.venue}</span>
                                         </span>
                                       </div>

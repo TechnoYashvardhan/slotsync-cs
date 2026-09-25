@@ -966,18 +966,18 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }
                             style={{ left: `${left}%`, width: `${width}%` }}
                             title={`Click to book free slot: ${slot.formattedRange}`}
-                            className={`absolute top-1.5 bottom-1.5 rounded-xl flex flex-col justify-center items-center px-2 transition-all group cursor-pointer border ${
+                            className={`absolute top-1.5 bottom-1.5 rounded-xl flex flex-col justify-center items-center px-2 transition-all group cursor-pointer border-2 shadow-xs ${
                               meets
-                                ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25 hover:border-emerald-500/50 hover:z-10'
-                                : 'bg-zinc-800/50 border-white/[0.05] text-zinc-500 opacity-60 cursor-not-allowed'
+                                ? 'bg-emerald-100 dark:bg-emerald-500/15 border-emerald-500/60 dark:border-emerald-500/30 text-emerald-950 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-500/25 hover:border-emerald-600 dark:hover:border-emerald-500/50 hover:z-10'
+                                : 'bg-slate-100 dark:bg-zinc-800/50 border-slate-300 dark:border-white/[0.05] text-slate-500 dark:text-zinc-500 opacity-60 cursor-not-allowed'
                             }`}
                             disabled={!meets}
                           >
-                            <div className="text-[11px] font-semibold truncate flex items-center gap-1">
+                            <div className="text-[11px] font-bold truncate flex items-center gap-1">
                               <span>Free {slot.durationFormatted}</span>
-                              <Plus className="w-3 h-3 text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <Plus className="w-3 h-3 text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
-                            <span className="font-mono tabular-nums text-[10px] text-emerald-400/80 truncate mt-0.5">
+                            <span className="font-mono tabular-nums text-[10px] font-bold text-emerald-800 dark:text-emerald-400/80 truncate mt-0.5">
                               {slot.startTime}–{slot.endTime}
                             </span>
                           </button>
@@ -1000,15 +1000,15 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }}
                             onMouseLeave={() => setHoveredRow(null)}
                             style={{ left: `${left}%`, width: `${width}%` }}
-                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border ${theme.bg} ${theme.border} ${theme.text}`}
+                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border-2 ${theme.bg} ${theme.border} shadow-xs`}
                           >
-                            <div className="text-[11px] font-bold truncate leading-tight text-zinc-100">
+                            <div className="text-[11px] font-bold truncate leading-tight text-slate-950 dark:text-zinc-100">
                               {row.subject}
                             </div>
-                            <div className="text-[10px] text-zinc-300 truncate flex items-center gap-1 mt-0.5 font-medium">
+                            <div className="text-[10px] text-slate-800 dark:text-zinc-300 truncate flex items-center gap-1 mt-0.5 font-bold">
                               <span>{row.teacherName}</span>
                               <span>•</span>
-                              <span className="text-sky-300 font-mono">{row.venue}</span>
+                              <span className="text-sky-950 dark:text-sky-300 font-mono bg-sky-100 dark:bg-sky-500/20 px-1 rounded">{row.venue}</span>
                             </div>
                           </div>
                         );
@@ -1050,9 +1050,9 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                           left: `${getPercent(LUNCH_BREAK_START_MINUTES)}%`,
                           width: `${getWidthPercent(LUNCH_BREAK_START_MINUTES, LUNCH_BREAK_END_MINUTES)}%`,
                         }}
-                        className="absolute top-1.5 bottom-1.5 bg-amber-500/10 border border-dashed border-amber-500/20 rounded-xl flex items-center justify-center gap-1 text-amber-400 pointer-events-none select-none z-10"
+                        className="absolute top-1.5 bottom-1.5 bg-amber-100 dark:bg-amber-500/10 border-2 border-dashed border-amber-400/80 dark:border-amber-500/20 rounded-xl flex items-center justify-center gap-1 text-amber-950 dark:text-amber-400 pointer-events-none select-none z-10 font-bold"
                       >
-                        <span className="text-[9px] font-mono font-bold text-amber-400 uppercase tracking-wide">
+                        <span className="text-[9px] font-mono font-bold uppercase tracking-wide">
                           Lunch Break
                         </span>
                       </div>
@@ -1067,10 +1067,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             key={slot.id}
                             style={{ left: `${left}%`, width: `${width}%` }}
                             title={`Available for assignments/duty: ${slot.formattedRange}`}
-                            className="absolute top-1.5 bottom-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-xl flex flex-col justify-center items-center px-2"
+                            className="absolute top-1.5 bottom-1.5 bg-emerald-100 dark:bg-emerald-500/10 border-2 border-emerald-400/80 dark:border-emerald-500/20 text-emerald-950 dark:text-emerald-300 rounded-xl flex flex-col justify-center items-center px-2 font-bold shadow-xs"
                           >
-                            <span className="text-[10px] font-medium font-mono text-emerald-400">Available</span>
-                            <span className="text-[9px] font-mono text-emerald-500/80">{slot.startTime}–{slot.endTime}</span>
+                            <span className="text-[10px] font-bold font-mono text-emerald-900 dark:text-emerald-400">Available</span>
+                            <span className="text-[9px] font-mono font-bold text-emerald-800 dark:text-emerald-500/80">{slot.startTime}–{slot.endTime}</span>
                           </div>
                         );
                       })}
@@ -1091,15 +1091,15 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }}
                             onMouseLeave={() => setHoveredRow(null)}
                             style={{ left: `${left}%`, width: `${width}%` }}
-                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border ${theme.bg} ${theme.border}`}
+                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border-2 ${theme.bg} ${theme.border} shadow-xs`}
                           >
-                            <div className="text-[11px] font-bold truncate text-zinc-100">
+                            <div className="text-[11px] font-bold truncate text-slate-950 dark:text-zinc-100">
                               {row.subject}
                             </div>
-                            <div className="text-[10px] text-zinc-300 truncate flex items-center gap-1 mt-0.5">
-                              <span className="font-semibold text-indigo-300">{row.courseSem}</span>
+                            <div className="text-[10px] text-slate-800 dark:text-zinc-300 truncate flex items-center gap-1 mt-0.5 font-bold">
+                              <span className="font-bold text-indigo-950 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-500/20 px-1 rounded">{row.courseSem}</span>
                               <span>•</span>
-                              <span className="text-sky-300 font-mono">{row.venue}</span>
+                              <span className="text-sky-950 dark:text-sky-300 font-mono bg-sky-100 dark:bg-sky-500/20 px-1 rounded">{row.venue}</span>
                             </div>
                           </div>
                         );
@@ -1140,9 +1140,9 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                           left: `${getPercent(LUNCH_BREAK_START_MINUTES)}%`,
                           width: `${getWidthPercent(LUNCH_BREAK_START_MINUTES, LUNCH_BREAK_END_MINUTES)}%`,
                         }}
-                        className="absolute top-1.5 bottom-1.5 bg-amber-500/10 border border-dashed border-amber-500/20 rounded-xl flex items-center justify-center gap-1 text-amber-400 pointer-events-none select-none z-10"
+                        className="absolute top-1.5 bottom-1.5 bg-amber-100 dark:bg-amber-500/10 border-2 border-dashed border-amber-400/80 dark:border-amber-500/20 rounded-xl flex items-center justify-center gap-1 text-amber-950 dark:text-amber-400 pointer-events-none select-none z-10 font-bold"
                       >
-                        <span className="text-[9px] font-mono font-bold text-amber-400 uppercase tracking-wide">
+                        <span className="text-[9px] font-mono font-bold uppercase tracking-wide">
                           Recess
                         </span>
                       </div>
@@ -1168,13 +1168,13 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }
                             style={{ left: `${left}%`, width: `${width}%` }}
                             title={`Click to book this vacant lab: ${slot.formattedRange}`}
-                            className="absolute top-1.5 bottom-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 rounded-xl flex flex-col justify-center items-center px-2 cursor-pointer transition-all group hover:z-10"
+                            className="absolute top-1.5 bottom-1.5 bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-500/15 dark:hover:bg-emerald-500/25 border-2 border-emerald-400/80 dark:border-emerald-500/30 text-emerald-950 dark:text-emerald-300 rounded-xl flex flex-col justify-center items-center px-2 cursor-pointer transition-all group hover:z-10 font-bold shadow-xs"
                           >
-                            <div className="text-[11px] font-semibold flex items-center gap-1">
+                            <div className="text-[11px] font-bold flex items-center gap-1">
                               <span>Vacant {slot.durationFormatted}</span>
-                              <Plus className="w-3 h-3 text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <Plus className="w-3 h-3 text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
-                            <span className="text-[9px] font-mono text-emerald-400/80">{slot.startTime}–{slot.endTime}</span>
+                            <span className="text-[9px] font-mono font-bold text-emerald-800 dark:text-emerald-400/80">{slot.startTime}–{slot.endTime}</span>
                           </button>
                         );
                       })}
@@ -1195,13 +1195,13 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }}
                             onMouseLeave={() => setHoveredRow(null)}
                             style={{ left: `${left}%`, width: `${width}%` }}
-                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border ${theme.bg} ${theme.border}`}
+                            className={`absolute top-1.5 bottom-1.5 rounded-xl p-2 flex flex-col justify-center overflow-hidden transition cursor-pointer hover:z-20 border-2 ${theme.bg} ${theme.border} shadow-xs`}
                           >
-                            <div className="text-[11px] font-bold truncate text-zinc-100">
+                            <div className="text-[11px] font-bold truncate text-slate-950 dark:text-zinc-100">
                               {row.subject}
                             </div>
-                            <div className="text-[10px] text-zinc-300 truncate flex items-center gap-1 mt-0.5">
-                              <span className="font-semibold text-indigo-300">{row.courseSem}</span>
+                            <div className="text-[10px] text-slate-800 dark:text-zinc-300 truncate flex items-center gap-1 mt-0.5 font-bold">
+                              <span className="font-bold text-indigo-950 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-500/20 px-1 rounded">{row.courseSem}</span>
                               <span>•</span>
                               <span>{row.teacherName}</span>
                             </div>

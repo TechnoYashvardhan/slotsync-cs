@@ -17,6 +17,7 @@ import { Sidebar, NavTab } from './components/Sidebar';
 import { TopBar } from './components/TopBar';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { AnimatedViewWrapper } from './components/AnimatedViewWrapper';
+import { DashboardView } from './components/DashboardView';
 import { SlotFinderView } from './components/SlotFinderView';
 import { TimelineVisualizer } from './components/TimelineVisualizer';
 import { WeeklyTimetableView } from './components/WeeklyTimetableView';
@@ -33,7 +34,7 @@ export function App() {
   const [targetDate, setTargetDate] = useState<string>('25-09-2026');
   const [selectedBatches, setSelectedBatches] = useState<string[]>([]);
   const [requestedDuration, setRequestedDuration] = useState<number>(60);
-  const [activeTab, setActiveTab] = useState<NavTab>('finder');
+  const [activeTab, setActiveTab] = useState<NavTab>('dashboard');
 
   // AI Assistant Modal
   const [isAIOpen, setIsAIOpen] = useState<boolean>(false);
@@ -318,6 +319,28 @@ export function App() {
       <main className="lg:pl-[252px] min-h-screen pb-20 lg:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
           <AnimatedViewWrapper viewKey={activeTab}>
+            {activeTab === 'dashboard' && (
+              <DashboardView
+                schedule={schedule}
+                allBatches={availableBatches}
+                allTeachers={availableTeachers}
+                allVenues={availableVenues}
+                availableDates={availableDates}
+                commonFreeSlotsCount={commonFreeSlots.length}
+                onNavigate={setActiveTab}
+                onOpenAIModal={() => setIsAIOpen(true)}
+                onOpenBooking={() =>
+                  handleOpenBooking({
+                    date: targetDate,
+                    startMinutes: 495,
+                    endMinutes: 555,
+                    batch: availableBatches[0],
+                  })
+                }
+                onExportPDF={handleExportPDF}
+              />
+            )}
+
             {activeTab === 'finder' && (
               <SlotFinderView
                 availableDates={availableDates}

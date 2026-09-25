@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
+  LayoutDashboard,
   Search,
   Calendar,
   CalendarDays,
@@ -14,7 +15,7 @@ import {
   FileText,
 } from 'lucide-react';
 
-export type NavTab = 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
+export type NavTab = 'dashboard' | 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
 
 interface SidebarProps {
   activeTab: NavTab;
@@ -27,6 +28,7 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS: { id: NavTab; label: string; icon: React.ElementType; badge?: string }[] = [
+  { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
   { id: 'finder', label: 'Find Slots', icon: Search },
   { id: 'timeline', label: 'Timeline', icon: Calendar },
   { id: 'weekly', label: 'Weekly Grid', icon: CalendarDays },

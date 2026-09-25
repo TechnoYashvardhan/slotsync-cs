@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import {
+  LayoutDashboard,
   Search,
   Calendar,
   CalendarDays,
@@ -8,7 +9,7 @@ import {
   Database,
 } from 'lucide-react';
 
-export type NavTab = 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
+export type NavTab = 'dashboard' | 'finder' | 'timeline' | 'weekly' | 'table' | 'data';
 
 interface MobileBottomNavProps {
   activeTab: NavTab;
@@ -16,6 +17,7 @@ interface MobileBottomNavProps {
 }
 
 const NAV_ITEMS: { id: NavTab; label: string; icon: React.ElementType }[] = [
+  { id: 'dashboard', label: 'Home', icon: LayoutDashboard },
   { id: 'finder', label: 'Find', icon: Search },
   { id: 'timeline', label: 'Timeline', icon: Calendar },
   { id: 'weekly', label: 'Weekly', icon: CalendarDays },

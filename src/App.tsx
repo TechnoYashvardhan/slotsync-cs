@@ -349,6 +349,9 @@ export function App() {
                 batchData={batchData}
                 commonFreeSlots={commonFreeSlots}
                 minDurationMinutes={requestedDuration}
+                schedule={schedule}
+                allTeachers={availableTeachers}
+                allVenues={availableVenues}
                 onBookSlot={handleOpenBooking}
               />
             )}

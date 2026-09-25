@@ -225,7 +225,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     <div className="space-y-10 animate-in fade-in duration-300 pb-12">
       
       {/* 1. Hero Command Center Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-950/60 via-zinc-900/90 to-purple-950/40 border border-indigo-500/20 p-6 sm:p-8 backdrop-blur-2xl shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50/80 via-white to-purple-50/80 dark:from-indigo-950/60 dark:via-zinc-900/90 dark:to-purple-950/40 border border-indigo-200/80 dark:border-indigo-500/20 p-6 sm:p-8 backdrop-blur-2xl shadow-xl">
         
         {/* Decorative Glow Circles */}
         <div className="absolute top-0 right-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -235,24 +235,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center gap-1.5 shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 flex items-center gap-1.5 shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                 <span>SlotSync CS Intelligence Suite • v2.4</span>
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                 <span>Conflict-Free Engine Active</span>
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-100 tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
               Master Timetable Hub & <br className="hidden sm:inline" />
-              <span className="bg-gradient-to-r from-indigo-400 via-sky-300 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-600 via-sky-500 to-purple-600 dark:from-indigo-400 dark:via-sky-300 dark:to-purple-400 bg-clip-text text-transparent">
                 Department Control Center
               </span>
             </h1>
 
-            <p className="text-sm text-zinc-400 leading-relaxed">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Real-time academic scheduling, multi-batch free slot discovery, 3D Gantt matrices, and instant CSV synchronization for the Department of Computer Science & Engineering.
             </p>
 
@@ -279,25 +279,25 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 type="button"
                 onClick={onOpenAIModal}
-                className="px-4 py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-purple-500/50"
+                className="px-4 py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-700 dark:text-purple-300 border border-purple-500/30 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-purple-500/50"
               >
-                <Bot className="w-4 h-4 text-purple-400" />
+                <Bot className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <span>AI Copilot</span>
               </button>
 
               <button
                 type="button"
                 onClick={onOpenBooking}
-                className="px-4 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-emerald-500/50"
+                className="px-4 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-emerald-500/50"
               >
-                <Plus className="w-4 h-4 text-emerald-400" />
+                <Plus className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Book a Class</span>
               </button>
             </div>
           </div>
 
           {/* Live Department Overview Card */}
-          <div className="lg:w-80 rounded-2xl bg-zinc-950/70 border border-white/[0.08] p-5 space-y-4 backdrop-blur-xl shadow-lg">
+          <div className="lg:w-80 rounded-2xl bg-white/95 dark:bg-zinc-950/70 border border-slate-200/80 dark:border-white/[0.08] p-5 space-y-4 backdrop-blur-xl shadow-lg">
             <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
               <span className="text-xs font-bold text-zinc-200 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-indigo-400" />
@@ -580,20 +580,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </div>
 
       {/* 6. Comprehensive Department Footer */}
-      <footer className="rounded-3xl bg-zinc-950/80 border border-white/[0.08] p-6 sm:p-8 backdrop-blur-xl text-xs text-zinc-500 space-y-6 shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
+      <footer className="rounded-3xl bg-white/95 dark:bg-zinc-950/80 border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-8 backdrop-blur-xl text-xs text-zinc-600 dark:text-zinc-500 space-y-6 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-white/[0.06]">
           
           <div className="space-y-2 max-w-sm">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-indigo-600/30">
                 ⚡
               </div>
-              <span className="text-sm font-bold text-zinc-100 tracking-tight">SlotSync CS</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">SlotSync CS</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/20">
                 Department Edition
               </span>
             </div>
-            <p className="text-[11px] text-zinc-400 leading-relaxed">
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Intelligent Academic Timetable & Multi-Batch Free Slot Discovery Engine for Computer Science & Engineering.
             </p>
           </div>
@@ -601,43 +601,43 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Quick Nav Links */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-[11px]">
             <div className="space-y-2">
-              <div className="font-semibold text-zinc-300">Tool Suite</div>
-              <ul className="space-y-1">
+              <div className="font-semibold text-zinc-900 dark:text-zinc-300">Tool Suite</div>
+              <ul className="space-y-1 text-zinc-600 dark:text-zinc-400">
                 <li>
-                  <button onClick={() => onNavigate('finder')} className="hover:text-indigo-400 transition-colors cursor-pointer">Find Slots</button>
+                  <button onClick={() => onNavigate('finder')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Find Slots</button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('timeline')} className="hover:text-indigo-400 transition-colors cursor-pointer">Timeline Matrix</button>
+                  <button onClick={() => onNavigate('timeline')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Timeline Matrix</button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('weekly')} className="hover:text-indigo-400 transition-colors cursor-pointer">Weekly Routines</button>
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              <div className="font-semibold text-zinc-300">Management</div>
-              <ul className="space-y-1">
-                <li>
-                  <button onClick={() => onNavigate('table')} className="hover:text-indigo-400 transition-colors cursor-pointer">Class Registry</button>
-                </li>
-                <li>
-                  <button onClick={() => onNavigate('data')} className="hover:text-indigo-400 transition-colors cursor-pointer">Data Studio</button>
-                </li>
-                <li>
-                  <button onClick={onOpenBooking} className="hover:text-indigo-400 transition-colors cursor-pointer">Reserve Slot</button>
+                  <button onClick={() => onNavigate('weekly')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Weekly Routines</button>
                 </li>
               </ul>
             </div>
 
             <div className="space-y-2">
-              <div className="font-semibold text-zinc-300">Intelligence</div>
-              <ul className="space-y-1">
+              <div className="font-semibold text-zinc-900 dark:text-zinc-300">Management</div>
+              <ul className="space-y-1 text-zinc-600 dark:text-zinc-400">
                 <li>
-                  <button onClick={onOpenAIModal} className="hover:text-indigo-400 transition-colors cursor-pointer">AI Copilot</button>
+                  <button onClick={() => onNavigate('table')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Class Registry</button>
                 </li>
                 <li>
-                  <button onClick={onExportPDF} className="hover:text-indigo-400 transition-colors cursor-pointer">Export Timetable</button>
+                  <button onClick={() => onNavigate('data')} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Data Studio</button>
+                </li>
+                <li>
+                  <button onClick={onOpenBooking} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Reserve Slot</button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <div className="font-semibold text-zinc-900 dark:text-zinc-300">Intelligence</div>
+              <ul className="space-y-1 text-zinc-600 dark:text-zinc-400">
+                <li>
+                  <button onClick={onOpenAIModal} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">AI Copilot</button>
+                </li>
+                <li>
+                  <button onClick={onExportPDF} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Export Timetable</button>
                 </li>
               </ul>
             </div>
@@ -646,16 +646,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-zinc-500 dark:text-zinc-500">
           <div>
             <span>© {new Date().getFullYear()} Dept. of Computer Science & Engineering • Built with ❤️ for Faculty & Students</span>
           </div>
           <div className="flex items-center gap-4 font-mono">
-            <span className="flex items-center gap-1.5 text-emerald-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
               <span>All Systems Operational</span>
             </span>
-            <span className="text-zinc-700">•</span>
+            <span className="text-zinc-400 dark:text-zinc-700">•</span>
             <span>Version 2.4.0</span>
           </div>
         </div>

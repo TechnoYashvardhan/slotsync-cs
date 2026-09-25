@@ -267,95 +267,159 @@ body {
   color: #fff;
 }
 
-/* ─── Light Cool Theme Overrides ─── */
-.theme-light {
+/* ─── Light Cool Theme Comprehensive System Overhaul ─── */
+.theme-light,
+html.light {
   color-scheme: light;
   background-color: #f1f5f9;
   color: #0f172a;
 }
 
-.theme-light body {
+.theme-light body,
+html.light body {
   background-color: #f1f5f9;
   color: #0f172a;
 }
 
-.theme-light .bg-zinc-950 {
+/* 1. All dark surface background classes -> Pristine white/slate cards */
+.theme-light [class*="bg-zinc-950"],
+.theme-light [class*="bg-zinc-900"],
+.theme-light [class*="bg-zinc-850"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+}
+
+.theme-light [class*="bg-zinc-800"] {
   background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
-.theme-light .bg-zinc-900,
-.theme-light .bg-zinc-900\/95,
-.theme-light .bg-zinc-900\/90,
-.theme-light .bg-zinc-900\/80,
-.theme-light .bg-zinc-900\/70,
-.theme-light .bg-zinc-900\/60,
-.theme-light .bg-zinc-900\/50,
-.theme-light .bg-zinc-900\/40 {
-  background-color: rgba(255, 255, 255, 0.88) !important;
-  color: #0f172a !important;
-  box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.15) !important;
-}
-
-.theme-light .bg-zinc-850,
-.theme-light .bg-zinc-850\/80,
-.theme-light .bg-zinc-850\/50,
-.theme-light .bg-zinc-800,
-.theme-light .bg-zinc-800\/90,
-.theme-light .bg-zinc-800\/80,
-.theme-light .bg-zinc-800\/70,
-.theme-light .bg-zinc-800\/60,
-.theme-light .bg-zinc-800\/50,
-.theme-light .bg-zinc-800\/40,
-.theme-light .bg-zinc-800\/30 {
-  background-color: rgba(241, 245, 249, 0.95) !important;
   color: #1e293b !important;
 }
 
-.theme-light .text-zinc-100,
-.theme-light .text-zinc-200 {
+/* 2. Text colors -> High contrast slate */
+.theme-light [class*="text-zinc-100"],
+.theme-light [class*="text-zinc-200"] {
   color: #0f172a !important;
 }
 
-.theme-light .text-zinc-300,
-.theme-light .text-zinc-400 {
+.theme-light [class*="text-zinc-300"],
+.theme-light [class*="text-zinc-400"] {
   color: #334155 !important;
 }
 
-.theme-light .text-zinc-500 {
+.theme-light [class*="text-zinc-500"] {
   color: #64748b !important;
 }
 
-.theme-light .text-zinc-600 {
+.theme-light [class*="text-zinc-600"] {
   color: #94a3b8 !important;
 }
 
-.theme-light .border-white\/\[0\.08\],
-.theme-light .border-white\/\[0\.06\],
-.theme-light .border-white\/\[0\.05\],
-.theme-light .border-white\/\[0\.04\],
-.theme-light .border-white\/\[0\.03\],
-.theme-light .border-white\/\[0\.1\],
-.theme-light .border-white\/\[0\.12\],
-.theme-light .border-white\/\[0\.15\],
-.theme-light .border-zinc-800,
-.theme-light .border-zinc-700,
-.theme-light .border-zinc-700\/80,
-.theme-light .border-zinc-700\/60,
-.theme-light .border-zinc-700\/50 {
-  border-color: rgba(203, 213, 225, 0.75) !important;
+/* 3. Borders -> Crisp light slate */
+.theme-light [class*="border-white"],
+.theme-light [class*="border-zinc-800"],
+.theme-light [class*="border-zinc-700"] {
+  border-color: #e2e8f0 !important;
 }
 
+/* 4. Tables: Crisp white rows, clean headers, no muddy dark overlays */
+.theme-light table {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.theme-light table thead,
+.theme-light table thead tr,
+.theme-light table thead th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light table tbody,
+.theme-light table tbody tr {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+.theme-light table tbody tr:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light table tbody td {
+  border-color: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+
+/* 5. Inputs, Selects, and Textareas */
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light input:focus,
+.theme-light select:focus,
+.theme-light textarea:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15) !important;
+}
+
+.theme-light input::placeholder,
+.theme-light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* 6. Modals & Drawers */
+.theme-light .fixed .bg-zinc-900,
+.theme-light .fixed .bg-zinc-850 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.theme-light .fixed .bg-zinc-950\/60 {
+  background-color: #f8fafc !important;
+}
+
+/* 7. Markdown Assistant Messages */
+.theme-light .markdown-content h1,
+.theme-light .markdown-content h2,
+.theme-light .markdown-content h3,
+.theme-light .markdown-content h4,
+.theme-light .markdown-content strong {
+  color: #0f172a !important;
+}
+
+.theme-light .markdown-content p,
+.theme-light .markdown-content li,
+.theme-light .markdown-content td {
+  color: #334155 !important;
+}
+
+.theme-light .markdown-content pre {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .markdown-content code {
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  color: #4f46e5 !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+/* 8. Glass Card & Tech Grid */
 .theme-light .glass-card {
-  background: rgba(255, 255, 255, 0.90) !important;
-  border-color: rgba(203, 213, 225, 0.8) !important;
-  box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.25), 0 1px 3px 0 rgba(148, 163, 184, 0.15) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.2), 0 1px 3px 0 rgba(148, 163, 184, 0.1) !important;
 }
 
 .theme-light .tech-grid-bg {
   background-image:
-    linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px) !important;
+    linear-gradient(to right, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.12) 1px, transparent 1px) !important;
 }
 
 .theme-light ::-webkit-scrollbar-thumb {
@@ -364,10 +428,4 @@ body {
 
 .theme-light ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8 !important;
-}
-
-.theme-light input,
-.theme-light select,
-.theme-light textarea {
-  color: #0f172a !important;
 }

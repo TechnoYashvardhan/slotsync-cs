@@ -5,6 +5,7 @@ import {
   DEPT_START_MINUTES,
   DEPT_END_MINUTES,
   LUNCH_BREAK_LABEL,
+  TRANSIT_BUFFER_MINUTES,
 } from './timeUtils';
 
 function normalizeKey(str: string): string {
@@ -25,8 +26,36 @@ export function intervalsOverlap(
 }
 
 /**
+ * Checks if two intervals have an insufficient transit buffer (less than 5 min gap).
+ */
+export function hasTransitConflict(
+  start1: number,
+  end1: number,
+  start2: number,
+  end2: number,
+  bufferMinutes: number = TRANSIT_BUFFER_MINUTES
+): { hasConflict: boolean; gap?: number; isBefore?: boolean } {
+  // If intervals overlap, it's a direct overlap
+  if (intervalsOverlap(start1, end1, start2, end2)) {
+    return { hasConflict: true, gap: 0 };
+  }
+
+  // Interval 1 starts right after Interval 2 ends
+  if (start1 >= end2 && start1 < end2 + bufferMinutes) {
+    return { hasConflict: true, gap: start1 - end2, isBefore: false };
+  }
+
+  // Interval 1 ends right before Interval 2 starts
+  if (end1 <= start2 && end1 > start2 - bufferMinutes) {
+    return { hasConflict: true, gap: start2 - end1, isBefore: true };
+  }
+
+  return { hasConflict: false };
+}
+
+/**
  * Cross-verifies teacher, venue, and batch conflicts for a proposed booking.
- * Excludes an optional rowId if updating an existing entry.
+ * Enforces mandatory 5-minute transit buffer between classes.
  */
 export function checkBookingConflicts(
   schedule: ScheduleRow[],
@@ -85,34 +114,62 @@ export function checkBookingConflicts(
   const batchSet = new Set(courseSems.map(normalizeKey));
 
   for (const row of targetDateRows) {
-    if (intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)) {
-      // Teacher double-booking conflict
-      if (cleanTeacher && normalizeKey(row.teacherName) === cleanTeacher) {
+    const isDirectOverlap = intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes);
+    const transitCheck = hasTransitConflict(startMinutes, endMinutes, row.startMinutes, row.endMinutes);
+
+    // Teacher check
+    if (cleanTeacher && normalizeKey(row.teacherName) === cleanTeacher) {
+      if (isDirectOverlap) {
         conflicts.push({
           type: 'teacher',
           entity: row.teacherName,
           conflictingRow: row,
           description: `Teacher ${row.teacherName} is already teaching ${row.courseSem} at ${row.venue} (${minutesToReadable(row.startMinutes)} - ${minutesToReadable(row.endMinutes)}).`,
         });
+      } else if (transitCheck.hasConflict) {
+        conflicts.push({
+          type: 'teacher',
+          entity: row.teacherName,
+          conflictingRow: row,
+          description: `Insufficient transit buffer for teacher ${row.teacherName}: ${transitCheck.isBefore ? 'next' : 'previous'} session at ${minutesToReadable(transitCheck.isBefore ? row.startMinutes : row.endMinutes)} leaves only ${transitCheck.gap}m gap (${TRANSIT_BUFFER_MINUTES}m required to reach classroom).`,
+        });
       }
+    }
 
-      // Venue double-booking conflict
-      if (cleanVenue && normalizeKey(row.venue) === cleanVenue) {
+    // Venue check
+    if (cleanVenue && normalizeKey(row.venue) === cleanVenue) {
+      if (isDirectOverlap) {
         conflicts.push({
           type: 'venue',
           entity: row.venue,
           conflictingRow: row,
           description: `Venue "${row.venue}" is already booked for ${row.courseSem} with ${row.teacherName} (${minutesToReadable(row.startMinutes)} - ${minutesToReadable(row.endMinutes)}).`,
         });
+      } else if (transitCheck.hasConflict) {
+        conflicts.push({
+          type: 'venue',
+          entity: row.venue,
+          conflictingRow: row,
+          description: `Insufficient venue buffer for "${row.venue}": ${transitCheck.isBefore ? 'next' : 'previous'} booking at ${minutesToReadable(transitCheck.isBefore ? row.startMinutes : row.endMinutes)} leaves only ${transitCheck.gap}m gap (${TRANSIT_BUFFER_MINUTES}m required for room handover).`,
+        });
       }
+    }
 
-      // Batch conflict
-      if (batchSet.has(normalizeKey(row.courseSem))) {
+    // Batch check
+    if (batchSet.has(normalizeKey(row.courseSem))) {
+      if (isDirectOverlap) {
         conflicts.push({
           type: 'batch',
           entity: row.courseSem,
           conflictingRow: row,
           description: `Batch ${row.courseSem} already has an occupied lecture (${minutesToReadable(row.startMinutes)} - ${minutesToReadable(row.endMinutes)}) with ${row.teacherName}.`,
+        });
+      } else if (transitCheck.hasConflict) {
+        conflicts.push({
+          type: 'batch',
+          entity: row.courseSem,
+          conflictingRow: row,
+          description: `Insufficient transit buffer for batch ${row.courseSem}: ${transitCheck.isBefore ? 'next' : 'previous'} class at ${minutesToReadable(transitCheck.isBefore ? row.startMinutes : row.endMinutes)} leaves only ${transitCheck.gap}m gap (${TRANSIT_BUFFER_MINUTES}m required to walk to classroom).`,
         });
       }
     }
@@ -125,7 +182,7 @@ export function checkBookingConflicts(
 }
 
 /**
- * Returns whether a teacher is free during the slot on a given date.
+ * Returns whether a teacher is free during the slot on a given date (including transit buffer).
  */
 export function isTeacherFree(
   schedule: ScheduleRow[],
@@ -137,17 +194,15 @@ export function isTeacherFree(
 ): boolean {
   if (!teacherName) return true;
   const clean = normalizeKey(teacherName);
-  return !schedule.some(
-    (row) =>
-      row.date === date &&
-      (!excludeId || row.id !== excludeId) &&
-      normalizeKey(row.teacherName) === clean &&
-      intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
-  );
+  return !schedule.some((row) => {
+    if (row.date !== date || (excludeId && row.id === excludeId)) return false;
+    if (normalizeKey(row.teacherName) !== clean) return false;
+    return hasTransitConflict(startMinutes, endMinutes, row.startMinutes, row.endMinutes).hasConflict;
+  });
 }
 
 /**
- * Returns whether a venue is free during the slot on a given date.
+ * Returns whether a venue is free during the slot on a given date (including transit buffer).
  */
 export function isVenueFree(
   schedule: ScheduleRow[],
@@ -159,17 +214,15 @@ export function isVenueFree(
 ): boolean {
   if (!venue) return true;
   const clean = normalizeKey(venue);
-  return !schedule.some(
-    (row) =>
-      row.date === date &&
-      (!excludeId || row.id !== excludeId) &&
-      normalizeKey(row.venue) === clean &&
-      intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
-  );
+  return !schedule.some((row) => {
+    if (row.date !== date || (excludeId && row.id === excludeId)) return false;
+    if (normalizeKey(row.venue) !== clean) return false;
+    return hasTransitConflict(startMinutes, endMinutes, row.startMinutes, row.endMinutes).hasConflict;
+  });
 }
 
 /**
- * Filter all teachers to find those who are completely free during a slot.
+ * Filter all teachers to find those who are completely free during a slot (with transit buffer).
  */
 export function getAvailableTeachers(
   schedule: ScheduleRow[],
@@ -183,17 +236,18 @@ export function getAvailableTeachers(
 
   for (const teacher of allTeachers) {
     const cleanTeacher = normalizeKey(teacher);
-    const conflict = schedule.find(
-      (row) =>
-        row.date === date &&
-        normalizeKey(row.teacherName) === cleanTeacher &&
-        intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
-    );
+    const conflict = schedule.find((row) => {
+      if (row.date !== date || normalizeKey(row.teacherName) !== cleanTeacher) return false;
+      return hasTransitConflict(startMinutes, endMinutes, row.startMinutes, row.endMinutes).hasConflict;
+    });
 
     if (conflict) {
+      const isDirect = intervalsOverlap(startMinutes, endMinutes, conflict.startMinutes, conflict.endMinutes);
       busy.push({
         teacher,
-        reason: `Teaching ${conflict.courseSem} in ${conflict.venue}`,
+        reason: isDirect
+          ? `Teaching ${conflict.courseSem} in ${conflict.venue}`
+          : `Transit buffer needed (${minutesToReadable(conflict.startMinutes)} - ${minutesToReadable(conflict.endMinutes)})`,
       });
     } else {
       available.push(teacher);
@@ -204,7 +258,7 @@ export function getAvailableTeachers(
 }
 
 /**
- * Filter all venues to find those that are completely free during a slot.
+ * Filter all venues to find those that are completely free during a slot (with transit buffer).
  */
 export function getAvailableVenues(
   schedule: ScheduleRow[],
@@ -218,17 +272,18 @@ export function getAvailableVenues(
 
   for (const venue of allVenues) {
     const cleanVenue = normalizeKey(venue);
-    const conflict = schedule.find(
-      (row) =>
-        row.date === date &&
-        normalizeKey(row.venue) === cleanVenue &&
-        intervalsOverlap(startMinutes, endMinutes, row.startMinutes, row.endMinutes)
-    );
+    const conflict = schedule.find((row) => {
+      if (row.date !== date || normalizeKey(row.venue) !== cleanVenue) return false;
+      return hasTransitConflict(startMinutes, endMinutes, row.startMinutes, row.endMinutes).hasConflict;
+    });
 
     if (conflict) {
+      const isDirect = intervalsOverlap(startMinutes, endMinutes, conflict.startMinutes, conflict.endMinutes);
       busy.push({
         venue,
-        reason: `Occupied by ${conflict.courseSem}`,
+        reason: isDirect
+          ? `Occupied by ${conflict.courseSem}`
+          : `Room buffer needed (${minutesToReadable(conflict.startMinutes)} - ${minutesToReadable(conflict.endMinutes)})`,
       });
     } else {
       available.push(venue);

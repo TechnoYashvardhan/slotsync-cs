@@ -7,6 +7,9 @@ export const LUNCH_BREAK_START_MINUTES = 10 * 60 + 30; // 630 mins
 export const LUNCH_BREAK_END_MINUTES = 11 * 60 + 45;   // 705 mins
 export const LUNCH_BREAK_LABEL = '10:30 AM – 11:45 AM';
 
+// Mandatory Transit Buffer between classes and sessions (students & faculty cannot teleport)
+export const TRANSIT_BUFFER_MINUTES = 5;
+
 /**
  * Returns true if the interval [startMinutes, endMinutes] strictly overlaps with
  * the department lunch break [10:30 AM, 11:45 AM].

@@ -90,6 +90,9 @@ export const SlotFinderView: React.FC<SlotFinderViewProps> = ({
               <span className="text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md font-mono tabular-nums text-[11px] font-bold border border-amber-500/30">
                 Lunch Break: 10:30 AM – 11:45 AM
               </span>
+              <span className="text-sky-400 bg-sky-500/15 px-2 py-0.5 rounded-md font-mono tabular-nums text-[11px] font-bold border border-sky-500/30">
+                5-Min Transit Buffer Enforced
+              </span>
             </p>
           </div>
 

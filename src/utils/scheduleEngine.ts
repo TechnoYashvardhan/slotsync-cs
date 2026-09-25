@@ -12,6 +12,7 @@ import {
   minutesToReadable,
   formatTimeRangeToCSV,
   formatDuration,
+  TRANSIT_BUFFER_MINUTES,
 } from './timeUtils';
 
 /**
@@ -104,10 +105,10 @@ export function findFreeSlots(
     (row) => row.date === targetDate && batchSet.has(row.courseSem)
   );
 
-  // Extract occupied time intervals across these batches
+  // Extract occupied time intervals across these batches, adding mandatory 5-min transit buffers
   const occupiedIntervals: TimeInterval[] = relevantRows.map((row) => ({
-    startMinutes: row.startMinutes,
-    endMinutes: row.endMinutes,
+    startMinutes: Math.max(DEPT_START_MINUTES, row.startMinutes - TRANSIT_BUFFER_MINUTES),
+    endMinutes: Math.min(DEPT_END_MINUTES, row.endMinutes + TRANSIT_BUFFER_MINUTES),
   }));
 
   // Mandatory Department Lunch Break (10:30 AM – 11:45 AM)
@@ -152,6 +153,7 @@ export function findFreeSlots(
     const winFormattedRange = formatTimeRangeToCSV(win.startMinutes, win.endMinutes);
 
     // Segment continuous window into bookable slots matching the required duration
+    // with a mandatory 5-minute transit buffer between consecutive sessions
     let slotStart = win.startMinutes;
     while (slotStart + duration <= win.endMinutes) {
       const slotEnd = slotStart + duration;
@@ -171,7 +173,8 @@ export function findFreeSlots(
         windowFormattedRange: winFormattedRange,
       });
 
-      slotStart = slotEnd;
+      // 5-minute buffer between consecutive sessions
+      slotStart = slotEnd + TRANSIT_BUFFER_MINUTES;
     }
   }
 
@@ -196,8 +199,8 @@ export function getBatchBreakdown(
       .sort((a, b) => a.startMinutes - b.startMinutes);
 
     const occupiedIntervals = occupied.map((r) => ({
-      startMinutes: r.startMinutes,
-      endMinutes: r.endMinutes,
+      startMinutes: Math.max(DEPT_START_MINUTES, r.startMinutes - TRANSIT_BUFFER_MINUTES),
+      endMinutes: Math.min(DEPT_END_MINUTES, r.endMinutes + TRANSIT_BUFFER_MINUTES),
     }));
 
     // Mandatory Department Lunch Break (10:30 AM – 11:45 AM)

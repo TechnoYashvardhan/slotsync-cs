@@ -426,8 +426,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 {minutesToReadable(startMinutes)} → {minutesToReadable(endMinutes)} ({formatDuration(endMinutes - startMinutes)})
               </span>
             </div>
-            <div className="text-[11px] font-mono text-zinc-400">
-              {formatFriendlyDate(date)} • {selectedBatches.join(', ') || 'Select batch'}
+            <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-400">
+              <span>{formatFriendlyDate(date)}</span>
+              <span>•</span>
+              <span className="text-sky-400 font-semibold bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/20">
+                5m Transit Gap Active
+              </span>
             </div>
           </div>
           

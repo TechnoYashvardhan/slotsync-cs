@@ -223,26 +223,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div className="space-y-10 animate-in fade-in duration-300 pb-12">
-      
+
       {/* 1. Hero Command Center Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50/80 via-white to-purple-50/80 dark:from-indigo-950/60 dark:via-zinc-900/90 dark:to-purple-950/40 border border-indigo-200/80 dark:border-indigo-500/20 p-6 sm:p-8 backdrop-blur-2xl shadow-xl">
-        
+
         {/* Decorative Glow Circles */}
         <div className="absolute top-0 right-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          
+
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 flex items-center gap-1.5 shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-                <span>SlotSync CS Intelligence Suite • v2.4</span>
-              </span>
-              <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-                <span>Conflict-Free Engine Active</span>
-              </span>
+
             </div>
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
@@ -337,7 +330,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* 2. Key Academic Metrics Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        
+
         <div className="p-4 rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl space-y-2 hover:border-indigo-500/30 transition-all group">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-zinc-400">Batches</span>
@@ -539,11 +532,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             return (
               <div
                 key={idx}
-                className={`rounded-2xl border transition-all overflow-hidden ${
-                  isOpen
-                    ? 'bg-zinc-850/80 border-indigo-500/30'
-                    : 'bg-zinc-850/40 border-white/[0.05] hover:border-white/[0.1]'
-                }`}
+                className={`rounded-2xl border transition-all overflow-hidden ${isOpen
+                  ? 'bg-zinc-850/80 border-indigo-500/30'
+                  : 'bg-zinc-850/40 border-white/[0.05] hover:border-white/[0.1]'
+                  }`}
               >
                 <button
                   type="button"
@@ -582,7 +574,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* 6. Comprehensive Department Footer */}
       <footer className="rounded-3xl bg-white/95 dark:bg-zinc-950/80 border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-8 backdrop-blur-xl text-xs text-zinc-600 dark:text-zinc-500 space-y-6 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-white/[0.06]">
-          
+
           <div className="space-y-2 max-w-sm">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-indigo-600/30">

@@ -52,7 +52,7 @@ export interface GeminiResponse {
   actionableBooking?: ActionableSlotBooking | null;
 }
 
-const CANDIDATE_MODELS = ['gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+const CANDIDATE_MODELS = ['gemini-2.5-flash', 'gemini-3-flash', 'gemini-flash-latest'];
 
 /**
  * Direct REST caller to Google Generative Language API.
@@ -169,11 +169,11 @@ export async function askGeminiScheduler(
   const freeSlotsFormatted =
     context.freeSlots.length > 0
       ? context.freeSlots
-          .map(
-            (s) =>
-              `- Free Slot: ${s.formattedRange} (${s.durationFormatted}) [${s.startMinutes}-${s.endMinutes}m] free for: ${s.applicableBatches.join(', ')}`
-          )
-          .join('\n')
+        .map(
+          (s) =>
+            `- Free Slot: ${s.formattedRange} (${s.durationFormatted}) [${s.startMinutes}-${s.endMinutes}m] free for: ${s.applicableBatches.join(', ')}`
+        )
+        .join('\n')
       : 'None identified for the selected batches and duration.';
 
   const systemInstruction = `You are "Gemini SlotSync AI", the dedicated intelligent scheduling assistant for a University Computer Science Department.

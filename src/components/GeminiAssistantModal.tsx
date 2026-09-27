@@ -280,7 +280,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
                   type="password"
                   value={apiKeyInput}
                   onChange={(e) => setApiKeyInput(e.target.value)}
-                  placeholder="Paste Google AI Studio key starting with AIzaSy..."
+                  placeholder="Paste your Gemini API key (AQ... or AIzaSy...)"
                   className="flex-1 bg-zinc-800 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/30"
                 />
                 <button
@@ -291,18 +291,9 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
                 </button>
               </div>
 
-              {apiKeyInput.startsWith('AQ.') && (
-                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <strong>Key Format Notice:</strong> Your key starts with <code>AQ.</code> which looks like an OAuth token. Official Google AI Studio keys start with <code>AIzaSy...</code> from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="underline font-bold text-amber-200">aistudio.google.com</a>.
-                  </span>
-                </div>
-              )}
-
               <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-400 pt-1">
-                <span>Stored securely in browser LocalStorage.</span>
-                <span className="font-mono text-zinc-500 text-[10px]">Auto-detects: gemini-1.5-flash, gemini-2.0-flash, gemini-1.5-pro</span>
+                <span>✓ Fully compatible with new <code>AQ.</code> and legacy <code>AIzaSy</code> keys.</span>
+                <span className="font-mono text-zinc-500 text-[10px]">Auto-detects active models</span>
               </div>
             </form>
           </div>

@@ -77,7 +77,11 @@ export async function fetchAvailableGeminiModels(apiKey?: string): Promise<strin
   }
 
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`, {
+      headers: {
+        'x-goog-api-key': key,
+      },
+    });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data.models)) {
@@ -173,6 +177,7 @@ export async function generateGeminiContent(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey,
         },
         body: JSON.stringify(payload),
       });

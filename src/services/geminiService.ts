@@ -61,7 +61,7 @@ const CANDIDATE_MODELS = ['gemini-2.5-flash', 'gemini-3-flash', 'gemini-flash-la
 export async function generateGeminiContent(
   prompt: string,
   systemInstruction?: string,
-  model = 'gemini-3.6-flash'
+  model = 'gemini-2.5-flash'
 ): Promise<GeminiResponse> {
   const apiKey = getGeminiApiKey();
   if (!apiKey) {
@@ -229,7 +229,7 @@ export async function generateStudentNotice(sessionDetails: {
 - Category: ${sessionDetails.sessionType || 'Guest Session'}
 
 Include:
-1. Official Department Header ("DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING")
+1. Official Department Header ("DEPARTMENT OF COMPUTER SCIENCE")
 2. Catchy yet formal announcement headline
 3. Key bullet points (Date, Time, Venue, Speaker profile reminder)
 4. Brief note explaining why this session is important for CS students (1-2 sentences on career/technical relevance)

@@ -52,16 +52,16 @@ export interface GeminiResponse {
   actionableBooking?: ActionableSlotBooking | null;
 }
 
-const CANDIDATE_MODELS = ['gemini-2.5-flash', 'gemini-3-flash', 'gemini-flash-latest'];
+const CANDIDATE_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
 
 /**
  * Direct REST caller to Google Generative Language API.
- * Uses gemini-3.6-flash by default, falls back gracefully across active models.
+ * Uses gemini-2.0-flash by default, falls back gracefully across active models.
  */
 export async function generateGeminiContent(
   prompt: string,
   systemInstruction?: string,
-  model = 'gemini-2.5-flash'
+  model = 'gemini-2.0-flash'
 ): Promise<GeminiResponse> {
   const apiKey = getGeminiApiKey();
   if (!apiKey) {

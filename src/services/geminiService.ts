@@ -53,9 +53,11 @@ export interface GeminiResponse {
 }
 
 export const DEFAULT_FALLBACK_MODELS = [
-  'gemini-1.5-flash',
+  'gemini-3.6-flash',
+  'gemini-3.8-flash',
+  'gemini-3-flash',
   'gemini-2.0-flash',
-  'gemini-1.5-flash-8b',
+  'gemini-1.5-flash',
   'gemini-1.5-pro',
   'gemini-2.0-flash-lite',
   'gemini-1.0-pro',
@@ -92,9 +94,11 @@ export async function fetchAvailableGeminiModels(apiKey?: string): Promise<strin
 
         if (supported.length > 0) {
           const priority = [
-            'gemini-1.5-flash',
+            'gemini-3.6-flash',
+            'gemini-3.8-flash',
+            'gemini-3-flash',
             'gemini-2.0-flash',
-            'gemini-1.5-flash-8b',
+            'gemini-1.5-flash',
             'gemini-1.5-pro',
             'gemini-2.0-flash-lite',
             'gemini-1.0-pro',
@@ -124,12 +128,12 @@ export async function fetchAvailableGeminiModels(apiKey?: string): Promise<strin
 
 /**
  * Direct REST caller to Google Generative Language API.
- * Dynamically tests discovered models with automatic failover.
+ * Uses gemini-3.6-flash by default and dynamically falls back across active models.
  */
 export async function generateGeminiContent(
   prompt: string,
   systemInstruction?: string,
-  preferredModel?: string
+  preferredModel = 'gemini-3.6-flash'
 ): Promise<GeminiResponse> {
   const apiKey = getGeminiApiKey();
   if (!apiKey) {

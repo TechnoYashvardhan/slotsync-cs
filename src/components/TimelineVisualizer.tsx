@@ -88,7 +88,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 }) => {
   // Track Dimension: 'batches' | 'faculty' | 'venues'
   const [trackDimension, setTrackDimension] = useState<'batches' | 'faculty' | 'venues'>('batches');
-  
+
   // Interactive Tooltip State
   const [hoveredRow, setHoveredRow] = useState<ScheduleRow | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
@@ -472,12 +472,12 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      
+
       {/* 1. Header & Multi-Dimension Controls */}
       <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 space-y-5 shadow-sm">
-        
+
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          
+
           <div>
             <div className="flex items-center gap-3 mb-1">
               <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/20 text-indigo-400">
@@ -514,11 +514,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
             <button
               type="button"
               onClick={() => setShowRadar(!showRadar)}
-              className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                showRadar
+              className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${showRadar
                   ? 'bg-sky-500/15 text-sky-300 border-sky-500/30 shadow-md shadow-sky-500/10'
                   : 'bg-zinc-950 text-zinc-400 hover:text-zinc-200 border-white/[0.08]'
-              }`}
+                }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-sky-400" />
               <span>Who is Free Radar</span>
@@ -529,18 +528,17 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
         {/* Dimension Switcher Pills: Batches vs Faculty vs Venues */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
-          
+
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-zinc-400 mr-1">Matrix Dimension:</span>
             <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-white/[0.08]">
               <button
                 type="button"
                 onClick={() => setTrackDimension('batches')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  trackDimension === 'batches'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${trackDimension === 'batches'
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                  }`}
               >
                 <Layers className="w-3.5 h-3.5" />
                 <span>Semester Batches</span>
@@ -548,11 +546,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
               <button
                 type="button"
                 onClick={() => setTrackDimension('faculty')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  trackDimension === 'faculty'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${trackDimension === 'faculty'
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                  }`}
               >
                 <User className="w-3.5 h-3.5" />
                 <span>Faculty Workload</span>
@@ -560,11 +557,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
               <button
                 type="button"
                 onClick={() => setTrackDimension('venues')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  trackDimension === 'venues'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${trackDimension === 'venues'
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                  }`}
               >
                 <MapPin className="w-3.5 h-3.5" />
                 <span>Labs & Rooms</span>
@@ -610,11 +606,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                   key={b}
                   type="button"
                   onClick={() => onToggleBatch(b)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 border ${
-                    active
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 border ${active
                       ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
                       : 'bg-zinc-800/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border-white/[0.05]'
-                  }`}
+                    }`}
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-indigo-400' : 'bg-zinc-500'}`} />
                   <span>{b}</span>
@@ -667,7 +662,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                 Live Department Radar: Who is Free Right Now?
               </h3>
             </div>
-            
+
             {/* Scrubber buttons */}
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-xs text-zinc-400 mr-1">Inspect Time:</span>
@@ -683,11 +678,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                   key={slot.min}
                   type="button"
                   onClick={() => setRadarTimeMinutes(slot.min)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
-                    radarTimeMinutes === slot.min
+                  className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${radarTimeMinutes === slot.min
                       ? 'bg-sky-500 text-white font-bold shadow-sm'
                       : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-white/[0.05]'
-                  }`}
+                    }`}
                 >
                   {slot.label}
                 </button>
@@ -697,7 +691,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
           {/* 3-Column Radar Status Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            
+
             {/* Faculty Radar */}
             <div className="p-3.5 rounded-xl bg-zinc-800/40 border border-white/[0.06] space-y-2">
               <div className="flex items-center justify-between font-semibold text-zinc-200">
@@ -786,7 +780,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
       {/* 4. Visual Gantt Timeline Container */}
       <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 overflow-x-auto shadow-sm">
         <div className="min-w-[960px] relative">
-          
+
           {/* Time Ruler */}
           <div className="grid grid-cols-12 gap-0 border-b border-white/[0.08] pb-3 mb-4">
             <div className="col-span-2 text-xs font-bold text-zinc-400 uppercase tracking-wider pl-1">
@@ -799,9 +793,8 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                   <div
                     key={hr.min}
                     style={{ left: `${pct}%` }}
-                    className={`absolute top-0 -translate-x-1/2 flex flex-col items-center ${
-                      idx === 0 ? 'translate-x-0' : idx === HOURS.length - 1 ? '-translate-x-full' : ''
-                    }`}
+                    className={`absolute top-0 -translate-x-1/2 flex flex-col items-center ${idx === 0 ? 'translate-x-0' : idx === HOURS.length - 1 ? '-translate-x-full' : ''
+                      }`}
                   >
                     <span className="font-mono text-[10px] tabular-nums text-zinc-400 font-medium">
                       {hr.label}
@@ -905,7 +898,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
           {/* Render Tracks according to Dimension */}
           <div className="space-y-4">
-            
+
             {/* DIMENSION 1: BATCH TRACKS */}
             {trackDimension === 'batches' && (
               batches.map((batch) => {
@@ -966,11 +959,10 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
                             }
                             style={{ left: `${left}%`, width: `${width}%` }}
                             title={`Click to book free slot: ${slot.formattedRange}`}
-                            className={`absolute top-1.5 bottom-1.5 rounded-xl flex flex-col justify-center items-center px-2 transition-all group cursor-pointer border-2 shadow-xs ${
-                              meets
+                            className={`absolute top-1.5 bottom-1.5 rounded-xl flex flex-col justify-center items-center px-2 transition-all group cursor-pointer border-2 shadow-xs ${meets
                                 ? 'bg-emerald-100 dark:bg-emerald-500/15 border-emerald-500/60 dark:border-emerald-500/30 text-emerald-950 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-500/25 hover:border-emerald-600 dark:hover:border-emerald-500/50 hover:z-10'
                                 : 'bg-slate-100 dark:bg-zinc-800/50 border-slate-300 dark:border-white/[0.05] text-slate-500 dark:text-zinc-500 opacity-60 cursor-not-allowed'
-                            }`}
+                              }`}
                             disabled={!meets}
                           >
                             <div className="text-[11px] font-bold truncate flex items-center gap-1">
@@ -1221,7 +1213,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
       {/* 5. Live "What-If" Conflict Simulator & Smart Resolver Drawer */}
       <div className="rounded-2xl bg-zinc-900/80 border border-white/[0.08] backdrop-blur-xl p-5 sm:p-6 space-y-4 shadow-sm">
-        
+
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/20 text-indigo-400">
@@ -1243,7 +1235,7 @@ export const TimelineVisualizer: React.FC<TimelineVisualizerProps> = ({
 
         {/* Simulator Controls Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-2">
-          
+
           <div>
             <label className="block text-[11px] font-semibold text-zinc-400 mb-1.5">Start Time</label>
             <input

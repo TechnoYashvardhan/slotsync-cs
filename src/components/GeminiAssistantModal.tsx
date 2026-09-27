@@ -25,6 +25,8 @@ import {
   getGeminiApiKey,
   saveGeminiApiKey,
   hasCustomApiKey,
+  fetchAvailableGeminiModels,
+  DEFAULT_FALLBACK_MODELS,
   ActionableSlotBooking,
 } from '../services/geminiService';
 import { minutesToReadable } from '../utils/timeUtils';
@@ -256,8 +258,8 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
 
         {/* Optional Key Configuration Drawer */}
         {showKeyConfig && (
-          <div className="p-4 bg-zinc-850 border-b border-white/[0.08] animate-in slide-in-from-top-2 duration-150 flex-shrink-0">
-            <form onSubmit={handleSaveKey} className="space-y-2">
+          <div className="p-4 bg-zinc-850 border-b border-white/[0.08] animate-in slide-in-from-top-2 duration-150 flex-shrink-0 space-y-3">
+            <form onSubmit={handleSaveKey} className="space-y-2.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-zinc-200 flex items-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-violet-400" />
@@ -269,7 +271,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
                   rel="noreferrer"
                   className="text-[11px] font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1"
                 >
-                  <span>Get Free Key</span>
+                  <span>Get Free Key (Google AI Studio)</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
@@ -278,19 +280,30 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
                   type="password"
                   value={apiKeyInput}
                   onChange={(e) => setApiKeyInput(e.target.value)}
-                  placeholder="Paste your Gemini API key (AQ... or AIzaSy...)"
-                  className="flex-1 bg-zinc-800 border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-zinc-100 font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                  placeholder="Paste Google AI Studio key starting with AIzaSy..."
+                  className="flex-1 bg-zinc-800 border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-zinc-100 font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/30"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold shadow-sm cursor-pointer transition"
+                  className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold shadow-sm cursor-pointer transition whitespace-nowrap"
                 >
                   Save Key
                 </button>
               </div>
-              <p className="text-[10px] text-zinc-400">
-                Your key is stored securely in your browser's local storage and used directly for Google AI Studio API calls.
-              </p>
+
+              {apiKeyInput.startsWith('AQ.') && (
+                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Key Format Notice:</strong> Your key starts with <code>AQ.</code> which looks like an OAuth token. Official Google AI Studio keys start with <code>AIzaSy...</code> from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="underline font-bold text-amber-200">aistudio.google.com</a>.
+                  </span>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-400 pt-1">
+                <span>Stored securely in browser LocalStorage.</span>
+                <span className="font-mono text-zinc-500 text-[10px]">Auto-detects: gemini-1.5-flash, gemini-2.0-flash, gemini-1.5-pro</span>
+              </div>
             </form>
           </div>
         )}

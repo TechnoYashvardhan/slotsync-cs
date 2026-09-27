@@ -246,7 +246,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </h1>
 
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Real-time academic scheduling, multi-batch free slot discovery, 3D Gantt matrices, and instant CSV synchronization for the Department of Computer Science & Engineering.
+              Real-time academic scheduling, multi-batch free slot discovery, 3D Gantt matrices, and instant CSV synchronization for the Department of Computer Science.
             </p>
 
             {/* Quick Action Launch Buttons */}
@@ -586,7 +586,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </span>
             </div>
             <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Intelligent Academic Timetable & Multi-Batch Free Slot Discovery Engine for Computer Science & Engineering.
+              Intelligent Academic Timetable & Multi-Batch Free Slot Discovery Engine for Computer Science.
             </p>
           </div>
 
@@ -640,7 +640,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-zinc-500 dark:text-zinc-500">
           <div>
-            <span>© {new Date().getFullYear()} Dept. of Computer Science & Engineering • Built with ❤️ for Faculty & Students</span>
+            <span>© {new Date().getFullYear()} Made by Yashvardhan Tiwari • Built with ❤️ for Faculty & Department</span>
           </div>
           <div className="flex items-center gap-4 font-mono">
             <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">

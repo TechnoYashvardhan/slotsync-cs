@@ -106,7 +106,7 @@ export function exportScheduleToPDF(
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING', 14, 11);
+  doc.text('DEPARTMENT OF COMPUTER SCIENCE', 14, 11);
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');

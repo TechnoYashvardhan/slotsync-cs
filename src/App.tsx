@@ -62,7 +62,7 @@ export function App() {
     try {
       const saved = localStorage.getItem(STORAGE_THEME_KEY);
       if (saved === 'light' || saved === 'dark') return saved;
-    } catch (e) {}
+    } catch (e) { }
     return 'dark';
   });
 
@@ -71,7 +71,7 @@ export function App() {
       const next = prev === 'dark' ? 'light' : 'dark';
       try {
         localStorage.setItem(STORAGE_THEME_KEY, next);
-      } catch (e) {}
+      } catch (e) { }
       return next;
     });
   };
@@ -463,7 +463,7 @@ export function App() {
             <div className="flex items-center gap-2">
               <span className="font-bold text-zinc-400">SlotSync CS</span>
               <span className="text-zinc-700">•</span>
-              <span className="text-zinc-500 font-medium">Dept of Computer Science & Engineering</span>
+              <span className="text-zinc-500 font-medium">Dept of Computer Science</span>
             </div>
             <div className="flex items-center gap-4 text-zinc-500 font-medium">
               <span className="font-mono text-[10px]">08:00 AM – 05:00 PM</span>

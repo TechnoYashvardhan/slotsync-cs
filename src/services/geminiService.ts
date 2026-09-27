@@ -52,16 +52,80 @@ export interface GeminiResponse {
   actionableBooking?: ActionableSlotBooking | null;
 }
 
-const CANDIDATE_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
+export const DEFAULT_FALLBACK_MODELS = [
+  'gemini-1.5-flash',
+  'gemini-2.0-flash',
+  'gemini-1.5-flash-8b',
+  'gemini-1.5-pro',
+  'gemini-2.0-flash-lite',
+  'gemini-1.0-pro',
+];
+
+let cachedDiscoveredModels: string[] | null = null;
+let lastQueriedKey: string | null = null;
+
+/**
+ * Dynamically queries Google Generative Language API for the actual models
+ * available to this specific API key that support generateContent.
+ */
+export async function fetchAvailableGeminiModels(apiKey?: string): Promise<string[]> {
+  const key = (apiKey || getGeminiApiKey()).trim();
+  if (!key) return DEFAULT_FALLBACK_MODELS;
+
+  if (cachedDiscoveredModels && cachedDiscoveredModels.length > 0 && lastQueriedKey === key) {
+    return cachedDiscoveredModels;
+  }
+
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.models)) {
+        const supported = data.models
+          .filter((m: any) => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+          .map((m: any) => m.name.replace(/^models\//, ''))
+          .filter((name: string) => !name.includes('embedding') && !name.includes('aqa') && !name.includes('imagen'));
+
+        if (supported.length > 0) {
+          const priority = [
+            'gemini-1.5-flash',
+            'gemini-2.0-flash',
+            'gemini-1.5-flash-8b',
+            'gemini-1.5-pro',
+            'gemini-2.0-flash-lite',
+            'gemini-1.0-pro',
+          ];
+
+          supported.sort((a: string, b: string) => {
+            const idxA = priority.indexOf(a);
+            const idxB = priority.indexOf(b);
+            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+            if (idxA !== -1) return -1;
+            if (idxB !== -1) return 1;
+            return a.localeCompare(b);
+          });
+
+          cachedDiscoveredModels = supported;
+          lastQueriedKey = key;
+          return supported;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Could not query dynamic models list from Google API, falling back to static list:', err);
+  }
+
+  return DEFAULT_FALLBACK_MODELS;
+}
 
 /**
  * Direct REST caller to Google Generative Language API.
- * Uses gemini-2.0-flash by default, falls back gracefully across active models.
+ * Dynamically tests discovered models with automatic failover.
  */
 export async function generateGeminiContent(
   prompt: string,
   systemInstruction?: string,
-  model = 'gemini-2.0-flash'
+  preferredModel?: string
 ): Promise<GeminiResponse> {
   const apiKey = getGeminiApiKey();
   if (!apiKey) {
@@ -87,12 +151,24 @@ export async function generateGeminiContent(
     };
   }
 
-  const modelsToTry = [model, ...CANDIDATE_MODELS.filter((m) => m !== model)];
+  // Retrieve dynamic candidate models available for this key
+  const availableModels = await fetchAvailableGeminiModels(apiKey);
+  const modelsToTry: string[] = [];
+  if (preferredModel && !modelsToTry.includes(preferredModel)) {
+    modelsToTry.push(preferredModel);
+  }
+  for (const m of availableModels) {
+    if (!modelsToTry.includes(m)) modelsToTry.push(m);
+  }
+  for (const m of DEFAULT_FALLBACK_MODELS) {
+    if (!modelsToTry.includes(m)) modelsToTry.push(m);
+  }
+
   let lastErrorMessage = '';
 
   for (const currentModel of modelsToTry) {
     try {
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -129,9 +205,24 @@ export async function generateGeminiContent(
         lastErrorMessage =
           errorData?.error?.message ||
           `Gemini API returned HTTP ${response.status} (${response.statusText})`;
-        // If not a model error, don't keep retrying other models
-        if (response.status !== 404 && response.status !== 400) {
-          throw new Error(lastErrorMessage);
+        
+        // If 404 (model not found on this account), continue to next available model
+        if (response.status === 404) {
+          continue;
+        }
+
+        // If it's an API key / auth error (400 / 403 / 401), fail immediately with clear instructions
+        if (response.status === 400 || response.status === 403 || response.status === 401) {
+          if (
+            lastErrorMessage.toLowerCase().includes('api_key') ||
+            lastErrorMessage.toLowerCase().includes('key not valid') ||
+            lastErrorMessage.toLowerCase().includes('unregistered') ||
+            response.status === 403
+          ) {
+            throw new Error(
+              `API Key Error: ${lastErrorMessage}. Please ensure you are using a valid Google AI Studio key starting with "AIzaSy" from aistudio.google.com/app/apikey.`
+            );
+          }
         }
       }
     } catch (err: any) {
